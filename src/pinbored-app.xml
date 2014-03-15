@@ -22,9 +22,9 @@
 		<!-- Whether the user can resize the window. Optional. Default true. -->
 		<!-- <resizable></resizable> -->
 		<!-- The window's initial width in pixels. Optional. -->
-		<width>960</width>
-		<height>640</height>
-		<minSize>960 640</minSize>
+		<width>1024</width>
+		<height>768</height>
+		<minSize>1024 768</minSize>
         <renderMode>direct</renderMode>
     </initialWindow>
 

@@ -13,7 +13,7 @@ package
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
 	
-	[SWF(width="960",height="640",frameRate="60",backgroundColor="#2f2f2f")]
+	[SWF(width="1024",height="768",frameRate="60",backgroundColor="#2f2f2f")]
 	public class pinbored extends Sprite
 	{
 		private var _starling:Starling;
@@ -30,9 +30,9 @@ package
 			this.mouseEnabled = this.mouseChildren = false;
 			
 			// pretends to be an iPhone Retina screen
-			DeviceCapabilities.dpi = 226;
-			DeviceCapabilities.screenPixelWidth = 960;
-			DeviceCapabilities.screenPixelHeight = 640;
+			DeviceCapabilities.dpi = 150;
+			DeviceCapabilities.screenPixelWidth = 1024;
+			DeviceCapabilities.screenPixelHeight = 768;
 			
 			// create starling instance
 			this._starling = new Starling(App, stage);

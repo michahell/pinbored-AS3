@@ -13,6 +13,7 @@ package screens
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.TextInput;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
+	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
 	
@@ -115,6 +116,13 @@ package screens
 				container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
 				return container;
 			}
+				
+			list.itemRendererFactory = function():IListItemRenderer
+			{
+				var renderer:PinboardLayoutGroupItemRenderer = new PinboardLayoutGroupItemRenderer();
+				renderer.padding = 10;
+				return renderer;
+			};
 			
 			list.itemRendererProperties.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
 			list.itemRendererProperties.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
