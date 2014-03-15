@@ -1,2 +1,5 @@
 z_resources/
 bin-debug/
+.actionScriptProperties
+.project
+.settings/
