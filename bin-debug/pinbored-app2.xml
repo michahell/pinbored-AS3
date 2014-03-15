@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/3.7">
+
+	<id>pinbored</id>
+	<filename>pinbored</filename>
+	<name>pinbored</name>
+	<versionNumber>0.0.0</versionNumber>
+	<versionLabel>Alpha 1</versionLabel>
+	<description>todo description</description>
+	<copyright>see MIT license on Github.com</copyright>
+
+	<initialWindow>
+		<content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
+		<title>pinbored</title>
+		<!-- The type of system chrome to use (either "standard" or "none"). Optional. Default standard. -->
+		<!-- <systemChrome></systemChrome> -->
+		<visible>true</visible>
+		<!-- Whether the user can minimize the window. Optional. Default true. -->
+		<!-- <minimizable></minimizable> -->
+		<!-- Whether the user can maximize the window. Optional. Default true. -->
+		<!-- <maximizable></maximizable> -->
+		<!-- Whether the user can resize the window. Optional. Default true. -->
+		<!-- <resizable></resizable> -->
+		<!-- The window's initial width in pixels. Optional. -->
+		<width>800</width>
+		<height>600</height>
+		<minSize>800 600</minSize>
+        <renderMode>direct</renderMode>
+	<autoOrients>false</autoOrients>
+        <fullScreen>false</fullScreen>
+        <visible>true</visible>
+    </initialWindow>
+
+	<supportedProfiles>desktop extendedDesktop</supportedProfiles>
+	<supportedLanguages>en</supportedLanguages>
+
+	<!-- The subpath of the standard default installation location to use. Optional. -->
+	<!-- <installFolder></installFolder> -->
+
+	<!-- The subpath of the Programs menu to use. (Ignored on operating systems without a Programs menu.) Optional. -->
+	<!-- <programMenuFolder></programMenuFolder> -->
+
+	<!-- The icon the system uses for the application. For at least one resolution,
+	specify the path to a PNG file included in the AIR package. Optional. -->
+	<!-- <icon>
+		<image16x16></image16x16>
+		<image29x29></image29x29>
+		<image32x32></image32x32>
+		<image36x36></image36x36>
+		<image48x48></image48x48>
+		<image50x50></image50x50>
+		<image57x57></image57x57>
+		<image58x58></image58x58>
+		<image72x72></image72x72>
+		<image96x96></image96x96>
+		<image100x100></image100x100>
+		<image114x114></image114x114>
+		<image128x128></image128x128>
+		<image144x144></image144x144>
+		<image512x512></image512x512>
+		<image732x412></image732x412>
+		<image1024x1024></image1024x1024>
+	</icon> -->
+
+	<!-- Whether the application handles the update when a user double-clicks an update version
+	of the AIR file (true), or the default AIR application installer handles the update (false).
+	Optional. Default false. -->
+	<!-- <customUpdateUI></customUpdateUI> -->
+
+</application>

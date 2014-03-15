@@ -1,0 +1,580 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><!-- saved from url=(0014)about:internet --><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" href="../../../style.css" type="text/css" media="screen"><link rel="stylesheet" href="../../../print.css" type="text/css" media="print"><link rel="stylesheet" href="../../../override.css" type="text/css"><meta name="keywords" content="DefaultGroupedListHeaderOrFooterRenderer,feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer,ACCESSORY_POSITION_BOTTOM,ACCESSORY_POSITION_LEFT,ACCESSORY_POSITION_MANUAL,ACCESSORY_POSITION_RIGHT,ACCESSORY_POSITION_TOP,DEFAULT_CHILD_NAME_ACCESSORY_LABEL,DEFAULT_CHILD_NAME_CONTENT_LABEL,HORIZONTAL_ALIGN_CENTER,HORIZONTAL_ALIGN_JUSTIFY,HORIZONTAL_ALIGN_LEFT,HORIZONTAL_ALIGN_RIGHT,LAYOUT_ORDER_LABEL_ACCESSORY_ICON,LAYOUT_ORDER_LABEL_ICON_ACCESSORY,VERTICAL_ALIGN_BOTTOM,VERTICAL_ALIGN_JUSTIFY,VERTICAL_ALIGN_MIDDLE,VERTICAL_ALIGN_TOP,accessoryField,accessoryFunction,accessoryGap,accessoryLabelFactory,accessoryLabelField,accessoryLabelFunction,accessoryLabelName,accessoryLabelProperties,accessoryLoaderFactory,accessoryOffsetX,accessoryOffsetY,accessoryPosition,accessorySourceField,accessorySourceFunction,backgroundDisabledSkin,backgroundSkin,contentField,contentFunction,contentLabelFactory,contentLabelField,contentLabelFunction,contentLabelName,contentLabelProperties,contentLoaderFactory,contentSourceField,contentSourceFunction,data,data,data,data,data,data,data,data,delayTextureCreationOnScroll,groupIndex,groupIndex,groupIndex,groupIndex,groupIndex,groupIndex,horizontalAlign,iconField,iconFunction,iconLoaderFactory,iconSourceField,iconSourceFunction,index,index,index,isSelectableWithoutToggle,isSelected,isSelected,isSelected,itemHasAccessory,itemHasIcon,itemHasLabel,itemIndex,itemIndex,itemIndex,labelField,labelFunction,layoutIndex,layoutIndex,layoutIndex,layoutIndex,layoutIndex,layoutIndex,layoutOrder,owner,owner,owner,owner,owner,owner,owner,owner,owner,padding,paddingBottom,paddingLeft,paddingRight,paddingTop,stopScrollingOnAccessoryTouch,useStateDelayTimer,verticalAlign,autoSizeIfNeeded,autoSizeIfNeeded,commitData,commitData,commitData,itemToAccessory,itemToContent,itemToIcon,itemToLabel,postLayout,postLayout,postLayout,preLayout,preLayout,preLayout"><title>feathers.controls.renderers.DefaultGroupedListHeaderOrFooterRenderer</title></head><body><script language="javascript" type="text/javascript" src="../../../asdoc.js"></script><script language="javascript" type="text/javascript" src="../../../help.js"></script><script language="javascript" type="text/javascript" src="../../../cookies.js"></script><script language="javascript" type="text/javascript"><!--
+				asdocTitle = 'DefaultGroupedListHeaderOrFooterRenderer - Feathers User Interface Controls for Starling Framework API Reference';
+				var baseRef = '../../../';
+				window.onload = configPage;
+			--></script>
+<script type="text/javascript">
+			scrollToNameAnchor();
+		</script><table class="titleTable" cellpadding="0" cellspacing="0" id="titleTable" style="display:none"><tr><td class="titleTableTitle" align="left">Feathers 1.2 API Reference</td><td class="titleTableTopNav" align="right"><a href="../../../package-summary.html" onclick="loadClassListFrame('../../../all-classes.html')">All Packages</a>&nbsp;|&nbsp;<a href="../../../class-summary.html" onclick="loadClassListFrame('../../../all-classes.html')">All Classes</a>&nbsp;|&nbsp;<a href="../../../all-index-A.html" onclick="loadClassListFrame('../../../index-list.html')">Index</a>&nbsp;|&nbsp;<a id="framesLink1" href="../../../index.html?feathers/controls/renderers/DefaultGroupedListHeaderOrFooterRenderer.html&amp;feathers/controls/renderers/class-list.html">Frames</a><a id="noFramesLink1" style="display:none" href="" onclick="parent.location=document.location"> No Frames </a></td><td class="titleTableLogo" align="right" rowspan="3"><img src="../../../images/logo.jpg" class="logoImage" alt=" Adobe Logo " title=" Adobe Logo "></td></tr><tr class="titleTableRow2"><td class="titleTableSubTitle" id="subTitle" align="left">DefaultGroupedListHeaderOrFooterRenderer</td><td class="titleTableSubNav" id="subNav" align="right"><a href="#propertySummary">Properties</a>&nbsp;| <a href="#methodSummary">Methods</a>&nbsp;| <a href="#eventSummary">Events</a>&nbsp;| <a href="#constantSummary">Constants</a></td></tr><tr class="titleTableRow3"><td colspan="3">&nbsp;</td></tr></table><script language="javascript" type="text/javascript" xml:space="preserve">
+				<!--
+				
+					if (!isEclipse() || window.name != ECLIPSE_FRAME_NAME) {titleBar_setSubTitle("DefaultGroupedListHeaderOrFooterRenderer"); titleBar_setSubNav(true,true,false,false,false,false,true,false,true,false,false	,false,false,false,false,false);}	
+				-->
+			</script><div xmlns:fn="http://www.w3.org/2005/xpath-functions" class="MainContent"><table class="classHeaderTable" cellpadding="0" cellspacing="0"><tr><td class="classHeaderTableLabel">Package</td><td><a href="package-detail.html" onclick="javascript:loadClassListFrame('class-list.html')">feathers.controls.renderers</a></td></tr><tr><td class="classHeaderTableLabel">Class</td><td class="classSignature">public  class  DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr><td class="classHeaderTableLabel">Inheritance</td><td class="inheritanceList">DefaultGroupedListHeaderOrFooterRenderer  <img src="../../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> <a href="../../../feathers/core/FeathersControl.html">FeathersControl</a> <img src="../../../images/inherit-arrow.gif" title="Inheritance" alt="Inheritance" class="inheritArrow"> starling.display.Sprite</td></tr><tr><td class="classHeaderTableLabel">Implements</td><td> <a href="../../../feathers/controls/renderers/IGroupedListHeaderOrFooterRenderer.html">IGroupedListHeaderOrFooterRenderer</a></td></tr></table><p></p><p></p><p></p>
+	 The default renderer used for headers and footers in a GroupedList
+	 control.
+	 
+	 <p></p><p><span class="classHeaderTableLabel">See also</span></p><div class="seeAlso"><a href="../../../feathers/controls/GroupedList.html" target="">feathers.controls.GroupedList</a></div><br/><hr></div><a name="propertySummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Properties</div><div class="showHideLinks"><div id="hideInheritedProperty" class="hideInheritedProperty"><a class="showHideLink" href="#propertySummary" onclick="javascript:setInheritedVisible(false,'Property');"><img class="showHideLinkImage" src="../../../images/expanded.gif"> Hide Inherited Public Properties</a></div><div id="showInheritedProperty" class="showInheritedProperty"><a class="showHideLink" href="#propertySummary" onclick="javascript:setInheritedVisible(true,'Property');"><img class="showHideLinkImage" src="../../../images/collapsed.gif"> Show Inherited Public Properties</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProperty"><tr><th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#backgroundDisabledSkin" class="signatureLink">backgroundDisabledSkin</a> : DisplayObject<div class="summaryTableDescription">
+		 A background to display when the component is disabled.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#backgroundSkin" class="signatureLink">backgroundSkin</a> : DisplayObject<div class="summaryTableDescription">
+		 A background to behind the component's content.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#contentField" class="signatureLink">contentField</a> : String<div class="summaryTableDescription">
+		 The field in the item that contains a display object to be positioned
+		 in the content position of the renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#contentFunction" class="signatureLink">contentFunction</a> : Function<div class="summaryTableDescription">
+		 A function that returns a display object to be positioned in the
+		 content position of the renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#contentLabelFactory" class="signatureLink">contentLabelFactory</a> : Function<div class="summaryTableDescription">
+		 A function that generates an ITextRenderer that uses the result
+		 of contentLabelField or contentLabelFunction.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#contentLabelField" class="signatureLink">contentLabelField</a> : String<div class="summaryTableDescription">
+		 The field in the item that contains a string to be displayed in a
+		 renderer-managed Label in the content position of the
+		 renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#contentLabelFunction" class="signatureLink">contentLabelFunction</a> : Function<div class="summaryTableDescription">
+		 A function that returns a string to be displayed in a
+		 renderer-managed Label in the content position of the
+		 renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#contentLabelProperties" class="signatureLink">contentLabelProperties</a> : Object<div class="summaryTableDescription">
+		 A set of key/value pairs to be passed down to a content label.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#contentLoaderFactory" class="signatureLink">contentLoaderFactory</a> : Function<div class="summaryTableDescription">
+		 A function that generates an ImageLoader that uses the result
+		 of contentSourceField or contentSourceFunction.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#contentSourceField" class="signatureLink">contentSourceField</a> : String<div class="summaryTableDescription">
+		 The field in the data that contains a starling.textures.Texture
+		 or a URL that points to a bitmap to be used as the renderer's
+		 content.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#contentSourceFunction" class="signatureLink">contentSourceFunction</a> : Function<div class="summaryTableDescription">
+		 A function used to generate a starling.textures.Texture
+		 or a URL that points to a bitmap to be used as the renderer's
+		 content.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#data" class="signatureLink">data</a> : Object<div class="summaryTableDescription">
+		 
+		 Data for a header or footer from the grouped list's data provider.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#defaultTextEditorFactory" class="signatureLink">defaultTextEditorFactory</a> : Function<div class="summaryTableDescription">[static] 
+		 A function used by all UI controls that support text editor to
+		 create an ITextEditor instance.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#defaultTextRendererFactory" class="signatureLink">defaultTextRendererFactory</a> : Function<div class="summaryTableDescription">[static] 
+		 A function used by all UI controls that support text renderers to
+		 create an ITextRenderer instance.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#focusIndicatorSkin" class="signatureLink">focusIndicatorSkin</a> : DisplayObject<div class="summaryTableDescription">
+		 If this component supports focus, this optional skin will be
+		 displayed above the component when showFocus() is
+		 called.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#focusManager" class="signatureLink">focusManager</a> : <a href="../../../feathers/core/IFocusManager.html">IFocusManager</a><div class="summaryTableDescription">
+		 The current focus manager for this component.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#focusPadding" class="signatureLink">focusPadding</a> : Number<div class="summaryTableDescription">
+		 Quickly sets all focus padding properties to the same value.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#focusPaddingBottom" class="signatureLink">focusPaddingBottom</a> : Number<div class="summaryTableDescription">
+		 The minimum space, in pixels, between the object's bottom edge and the
+		 bottom edge of the focus indicator skin.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#focusPaddingLeft" class="signatureLink">focusPaddingLeft</a> : Number<div class="summaryTableDescription">
+		 The minimum space, in pixels, between the object's left edge and the
+		 left edge of the focus indicator skin.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#focusPaddingRight" class="signatureLink">focusPaddingRight</a> : Number<div class="summaryTableDescription">
+		 The minimum space, in pixels, between the object's right edge and the
+		 right edge of the focus indicator skin.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#focusPaddingTop" class="signatureLink">focusPaddingTop</a> : Number<div class="summaryTableDescription">
+		 The minimum space, in pixels, between the object's top edge and the
+		 top edge of the focus indicator skin.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#groupIndex" class="signatureLink">groupIndex</a> : int<div class="summaryTableDescription">
+		 
+		 The index of the group within the data provider of the grouped list.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#height" class="signatureLink">height</a> : Number<div class="summaryTableDescription">[override] 
+		 The height of the component, in pixels.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#horizontalAlign" class="signatureLink">horizontalAlign</a> : String<div class="summaryTableDescription">
+		 The location where the renderer's content is aligned horizontally
+		 (on the x-axis).</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#includeInLayout" class="signatureLink">includeInLayout</a> : Boolean<div class="summaryTableDescription">
+		 
+		 Determines if the ILayout should use this object or ignore it.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#isCreated" class="signatureLink">isCreated</a> : Boolean<div class="summaryTableDescription">[read-only] 
+		 Determines if the component has been initialized and validated for
+		 the first time.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#isEnabled" class="signatureLink">isEnabled</a> : Boolean<div class="summaryTableDescription">
+		 Indicates whether the control is interactive or not.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#isFocusEnabled" class="signatureLink">isFocusEnabled</a> : Boolean<div class="summaryTableDescription">
+		 Determines if this component can receive focus.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#isInitialized" class="signatureLink">isInitialized</a> : Boolean<div class="summaryTableDescription">[read-only] 
+		 Determines if the component has been initialized yet.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#isQuickHitAreaEnabled" class="signatureLink">isQuickHitAreaEnabled</a> : Boolean<div class="summaryTableDescription">
+		 Similar to mouseChildren on the classic display list.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#layoutData" class="signatureLink">layoutData</a> : <a href="../../../feathers/layout/ILayoutData.html">ILayoutData</a><div class="summaryTableDescription">
+		 
+		 Extra parameters associated with this display object that will be
+		 used by the layout algorithm.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#layoutIndex" class="signatureLink">layoutIndex</a> : int<div class="summaryTableDescription">
+		 
+		 The index of the item within the layout.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#maxHeight" class="signatureLink">maxHeight</a> : Number<div class="summaryTableDescription">
+		 The maximum recommended height to be used for self-measurement and,
+		 optionally, by any code that is resizing this component.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#maxWidth" class="signatureLink">maxWidth</a> : Number<div class="summaryTableDescription">
+		 The maximum recommended width to be used for self-measurement and,
+		 optionally, by any code that is resizing this component.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#minHeight" class="signatureLink">minHeight</a> : Number<div class="summaryTableDescription">
+		 The minimum recommended height to be used for self-measurement and,
+		 optionally, by any code that is resizing this component.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#minTouchHeight" class="signatureLink">minTouchHeight</a> : Number<div class="summaryTableDescription">
+		 If using isQuickHitAreaEnabled, and the hit area's
+		 height is smaller than this value, it will be expanded.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#minTouchWidth" class="signatureLink">minTouchWidth</a> : Number<div class="summaryTableDescription">
+		 If using isQuickHitAreaEnabled, and the hit area's
+		 width is smaller than this value, it will be expanded.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#minWidth" class="signatureLink">minWidth</a> : Number<div class="summaryTableDescription">
+		 The minimum recommended width to be used for self-measurement and,
+		 optionally, by any code that is resizing this component.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#name" class="signatureLink">name</a> : String<div class="summaryTableDescription">[override] 
+		 The concatenated nameList, with each name separated by
+		 spaces.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#nameList" class="signatureLink">nameList</a> : <a href="../../../feathers/core/TokenList.html">TokenList</a><div class="summaryTableDescription">[read-only] 
+		 Contains a list of all "names" assigned to this control.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#nextTabFocus" class="signatureLink">nextTabFocus</a> : <a href="../../../feathers/core/IFocusDisplayObject.html">IFocusDisplayObject</a><div class="summaryTableDescription">
+		 The next object that will receive focus when the tab key is pressed.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#owner" class="signatureLink">owner</a> : <a href="../../../feathers/controls/GroupedList.html">GroupedList</a><div class="summaryTableDescription">
+		 
+		 The grouped list that contains this header or footer renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#padding" class="signatureLink">padding</a> : Number<div class="summaryTableDescription">
+		 Quickly sets all padding properties to the same value.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#paddingBottom" class="signatureLink">paddingBottom</a> : Number<div class="summaryTableDescription">
+		 The minimum space, in pixels, between the component's bottom edge
+		 and the component's content.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#paddingLeft" class="signatureLink">paddingLeft</a> : Number<div class="summaryTableDescription">
+		 The minimum space, in pixels, between the component's left edge
+		 and the component's content.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#paddingRight" class="signatureLink">paddingRight</a> : Number<div class="summaryTableDescription">
+		 The minimum space, in pixels, between the component's right edge
+		 and the component's content.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#paddingTop" class="signatureLink">paddingTop</a> : Number<div class="summaryTableDescription">
+		 The minimum space, in pixels, between the component's top edge and
+		 the component's content.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#previousTabFocus" class="signatureLink">previousTabFocus</a> : <a href="../../../feathers/core/IFocusDisplayObject.html">IFocusDisplayObject</a><div class="summaryTableDescription">
+		 The previous object that will receive focus when the tab key is
+		 pressed while holding shift.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#verticalAlign" class="signatureLink">verticalAlign</a> : String<div class="summaryTableDescription">
+		 The location where the renderer's content is aligned vertically (on
+		 the y-axis).</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#width" class="signatureLink">width</a> : Number<div class="summaryTableDescription">[override] 
+		 The width of the component, in pixels.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr></table></div><a name="protectedPropertySummary"></a><div class="summarySection"><div class="summaryTableTitle">Protected Properties</div><div class="showHideLinks"><div id="hideInheritedProtectedProperty" class="hideInheritedProtectedProperty"><a class="showHideLink" href="#protectedPropertySummary" onclick="javascript:setInheritedVisible(false,'ProtectedProperty');"><img class="showHideLinkImage" src="../../../images/expanded.gif"> Hide Inherited Protected Properties</a></div><div id="showInheritedProtectedProperty" class="showInheritedProtectedProperty"><a class="showHideLink" href="#protectedPropertySummary" onclick="javascript:setInheritedVisible(true,'ProtectedProperty');"><img class="showHideLinkImage" src="../../../images/collapsed.gif"> Show Inherited Protected Properties</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProtectedProperty"><tr><th>&nbsp;</th><th colspan="2">Property</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class="hideInheritedProtectedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#actualHeight" class="signatureLink">actualHeight</a> : Number = 0<div class="summaryTableDescription">
+		 The final height value that should be used for layout.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProtectedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#actualWidth" class="signatureLink">actualWidth</a> : Number = 0<div class="summaryTableDescription">
+		 The final width value that should be used for layout.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#contentLabelName" class="signatureLink">contentLabelName</a> : String = feathers-header-footer-renderer-content-label<div class="summaryTableDescription">
+		 The value added to the nameList of the content label.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedProtectedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#explicitHeight" class="signatureLink">explicitHeight</a> : Number = NaN<div class="summaryTableDescription">
+		 The height value explicitly set by calling the height setter or
+		 setSize().</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProtectedProperty"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#explicitWidth" class="signatureLink">explicitWidth</a> : Number = NaN<div class="summaryTableDescription">
+		 The width value explicitly set by calling the width setter or
+		 setSize().</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr></table></div><a name="methodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Methods </div><div class="showHideLinks"><div id="hideInheritedMethod" class="hideInheritedMethod"><a class="showHideLink" href="#methodSummary" onclick="javascript:setInheritedVisible(false,'Method');"><img class="showHideLinkImage" src="../../../images/expanded.gif"> Hide Inherited Public Methods</a></div><div id="showInheritedMethod" class="showInheritedMethod"><a class="showHideLink" href="#methodSummary" onclick="javascript:setInheritedVisible(true,'Method');"><img class="showHideLinkImage" src="../../../images/collapsed.gif"> Show Inherited Public Methods</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#DefaultGroupedListHeaderOrFooterRenderer()" class="signatureLink">DefaultGroupedListHeaderOrFooterRenderer</a>()</div><div class="summaryTableDescription">
+		 Constructor.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#hideFocus()" class="signatureLink">hideFocus</a>():void</div><div class="summaryTableDescription">
+		 If the visual indicator of focus has been displayed by
+		 showFocus(), call this function to hide it.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#invalidate()" class="signatureLink">invalidate</a>(flag:String):void</div><div class="summaryTableDescription">
+		 Call this function to tell the UI control that a redraw is pending.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#isInvalid()" class="signatureLink">isInvalid</a>(flag:String = null):Boolean</div><div class="summaryTableDescription">
+		 Indicates whether the control is pending validation or not.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#setSize()" class="signatureLink">setSize</a>(width:Number, height:Number):void</div><div class="summaryTableDescription">
+		 Sets both the width and the height of the control.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#showFocus()" class="signatureLink">showFocus</a>():void</div><div class="summaryTableDescription">
+		 If the object has focus, an additional visual indicator may
+		 optionally be displayed to highlight the object.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#validate()" class="signatureLink">validate</a>():void</div><div class="summaryTableDescription">
+		 Immediately validates the control, which triggers a redraw, if one
+		 is pending.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr></table></div><a name="methodSummary"></a><a name="protectedMethodSummary"></a><div class="summarySection"><div class="summaryTableTitle">Protected Methods </div><div class="showHideLinks"><div id="hideInheritedProtectedMethod" class="hideInheritedProtectedMethod"><a class="showHideLink" href="#protectedMethodSummary" onclick="javascript:setInheritedVisible(false,'ProtectedMethod');"><img class="showHideLinkImage" src="../../../images/expanded.gif"> Show Inherited Protected Methods</a></div><div id="showInheritedProtectedMethod" class="showInheritedProtectedMethod"><a class="showHideLink" href="#protectedMethodSummary" onclick="javascript:setInheritedVisible(true,'ProtectedMethod');"><img class="showHideLinkImage" src="../../../images/collapsed.gif"> Show Inherited Protected Methods</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableProtectedMethod"><tr><th>&nbsp;</th><th colspan="2">Method</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#autoSizeIfNeeded()" class="signatureLink">autoSizeIfNeeded</a>():Boolean</div><div class="summaryTableDescription">
+		 If the component's dimensions have not been set explicitly, it will
+		 measure its content and determine an ideal size for itself.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedProtectedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#clearInvalidationFlag()" class="signatureLink">clearInvalidationFlag</a>(flag:String):void</div><div class="summaryTableDescription">
+		 Clears an invalidation flag.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProtectedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#draw()" class="signatureLink">draw</a>():void</div><div class="summaryTableDescription">
+		 Override to customize layout and to adjust properties of children.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProtectedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#focusInHandler()" class="signatureLink">focusInHandler</a>(event:Event):void</div><div class="summaryTableDescription">
+		 Default event handler for FeathersEventType.FOCUS_IN
+		 that may be overridden in subclasses to perform additional actions
+		 when the component receives focus.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProtectedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#focusOutHandler()" class="signatureLink">focusOutHandler</a>(event:Event):void</div><div class="summaryTableDescription">
+		 Default event handler for FeathersEventType.FOCUS_OUT
+		 that may be overridden in subclasses to perform additional actions
+		 when the component loses focus.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProtectedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#initialize()" class="signatureLink">initialize</a>():void</div><div class="summaryTableDescription">
+		 Called the first time that the UI control is added to the stage, and
+		 you should override this function to customize the initialization
+		 process.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="#itemToContent()" class="signatureLink">itemToContent</a>(item:Object):DisplayObject</div><div class="summaryTableDescription">
+		 Uses the content fields and functions to generate content for a
+		 specific group header or footer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedProtectedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#refreshFocusIndicator()" class="signatureLink">refreshFocusIndicator</a>():void</div><div class="summaryTableDescription">
+		 Updates the focus indicator skin by showing or hiding it and
+		 adjusting its position and dimensions.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProtectedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#setInvalidationFlag()" class="signatureLink">setInvalidationFlag</a>(flag:String):void</div><div class="summaryTableDescription">
+		 Sets an invalidation flag.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedProtectedMethod"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#setSizeInternal()" class="signatureLink">setSizeInternal</a>(width:Number, height:Number, canInvalidate:Boolean):Boolean</div><div class="summaryTableDescription">
+		 Sets the width and height of the control, with the option of
+		 invalidating or not.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr></table></div><a name="eventSummary"></a><div class="summarySection"><div class="summaryTableTitle">Events</div><div class="showHideLinks"><div id="hideInheritedEvent" class="hideInheritedEvent"><a class="showHideLink" href="#eventSummary" onclick="javascript:setInheritedVisible(false,'Event');"><img class="showHideLinkImage" src="../../../images/expanded.gif"> Hide Inherited Events</a></div><div id="showInheritedEvent" class="showInheritedEvent"><a class="showHideLink" href="#eventSummary" onclick="javascript:setInheritedVisible(true,'Event');"><img class="showHideLinkImage" src="../../../images/collapsed.gif"> Show Inherited Events</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable hideInheritedEvent" id="summaryTableEvent"><tr><th>&nbsp;</th><th colspan="2">Event</th><th> Summary </th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class="hideInheritedEvent"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#event:creationComplete" class="signatureLink">creationComplete</a></div></td><td class="summaryTableDescription summaryTableCol">Dispatched after the component has validated for the first time.</td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedEvent"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#event:initialize" class="signatureLink">initialize</a></div></td><td class="summaryTableDescription summaryTableCol">Dispatched after initialize() has been called, but before the first time that draw() has been called.</td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedEvent"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><div class="summarySignature"><a href="../../../feathers/core/FeathersControl.html#event:resize" class="signatureLink">resize</a></div></td><td class="summaryTableDescription summaryTableCol">Dispatched when the width or height of the control changes.</td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr></table></div><a name="constantSummary"></a><div class="summarySection"><div class="summaryTableTitle">Public Constants</div><div class="showHideLinks"><div id="hideInheritedConstant" class="hideInheritedConstant"><a class="showHideLink" href="#constantSummary" onclick="javascript:setInheritedVisible(false,'Constant');"><img class="showHideLinkImage" src="../../../images/expanded.gif"> Hide Inherited Public Constants</a></div><div id="showInheritedConstant" class="showInheritedConstant"><a class="showHideLink" href="#constantSummary" onclick="javascript:setInheritedVisible(true,'Constant');"><img class="showHideLinkImage" src="../../../images/collapsed.gif"> Show Inherited Public Constants</a></div></div><table cellspacing="0" cellpadding="3" class="summaryTable " id="summaryTableConstant"><tr><th>&nbsp;</th><th colspan="2">Constant</th><th class="summaryTableOwnerCol">Defined By</th></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#DEFAULT_CHILD_NAME_CONTENT_LABEL" class="signatureLink">DEFAULT_CHILD_NAME_CONTENT_LABEL</a> : String = feathers-header-footer-renderer-content-label<div class="summaryTableDescription">[static] 
+		 The default value added to the nameList of the content
+		 label.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#HORIZONTAL_ALIGN_CENTER" class="signatureLink">HORIZONTAL_ALIGN_CENTER</a> : String = center<div class="summaryTableDescription">[static] 
+		 The content will be aligned horizontally to the center of the renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#HORIZONTAL_ALIGN_JUSTIFY" class="signatureLink">HORIZONTAL_ALIGN_JUSTIFY</a> : String = justify<div class="summaryTableDescription">[static] 
+		 The content will be justified horizontally, filling the entire width
+		 of the renderer, minus padding.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#HORIZONTAL_ALIGN_LEFT" class="signatureLink">HORIZONTAL_ALIGN_LEFT</a> : String = left<div class="summaryTableDescription">[static] 
+		 The content will be aligned horizontally to the left edge of the renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#HORIZONTAL_ALIGN_RIGHT" class="signatureLink">HORIZONTAL_ALIGN_RIGHT</a> : String = right<div class="summaryTableDescription">[static] 
+		 The content will be aligned horizontally to the right edge of the renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#INVALIDATION_FLAG_ALL" class="signatureLink">INVALIDATION_FLAG_ALL</a> : String = all<div class="summaryTableDescription">[static] 
+		 Flag to indicate that everything is invalid and should be redrawn.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#INVALIDATION_FLAG_DATA" class="signatureLink">INVALIDATION_FLAG_DATA</a> : String = data<div class="summaryTableDescription">[static] 
+		 Invalidation flag to indicate that the primary data displayed by the
+		 UI control has changed.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#INVALIDATION_FLAG_FOCUS" class="signatureLink">INVALIDATION_FLAG_FOCUS</a> : String = focus<div class="summaryTableDescription">[static] 
+		 Invalidation flag to indicate that the focus of the UI control has
+		 changed.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#INVALIDATION_FLAG_LAYOUT" class="signatureLink">INVALIDATION_FLAG_LAYOUT</a> : String = layout<div class="summaryTableDescription">[static] 
+		 Invalidation flag to indicate that the layout of the UI control has
+		 changed.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#INVALIDATION_FLAG_SCROLL" class="signatureLink">INVALIDATION_FLAG_SCROLL</a> : String = scroll<div class="summaryTableDescription">[static] 
+		 Invalidation flag to indicate that the scroll position of the UI
+		 control has changed.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#INVALIDATION_FLAG_SELECTED" class="signatureLink">INVALIDATION_FLAG_SELECTED</a> : String = selected<div class="summaryTableDescription">[static] 
+		 Invalidation flag to indicate that the selection of the UI control
+		 has changed.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#INVALIDATION_FLAG_SIZE" class="signatureLink">INVALIDATION_FLAG_SIZE</a> : String = size<div class="summaryTableDescription">[static] 
+		 Invalidation flag to indicate that the dimensions of the UI control
+		 have changed.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#INVALIDATION_FLAG_SKIN" class="signatureLink">INVALIDATION_FLAG_SKIN</a> : String = skin<div class="summaryTableDescription">[static] 
+		 Invalidation flag to indicate that the skin of the UI control has changed.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#INVALIDATION_FLAG_STATE" class="signatureLink">INVALIDATION_FLAG_STATE</a> : String = state<div class="summaryTableDescription">[static] 
+		 Invalidation flag to indicate that the state has changed.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class="hideInheritedConstant"><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol"><img src="../../../images/inheritedSummary.gif" alt="Inherited" title="Inherited" class="inheritedSummaryImage"></td><td class="summaryTableSignatureCol"><a href="../../../feathers/core/FeathersControl.html#INVALIDATION_FLAG_STYLES" class="signatureLink">INVALIDATION_FLAG_STYLES</a> : String = styles<div class="summaryTableDescription">[static] 
+		 Invalidation flag to indicate that the styles or visual appearance of
+		 the UI control has changed.</div></td><td class="summaryTableOwnerCol"><a href="../../../feathers/core/FeathersControl.html">FeathersControl</a></td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#VERTICAL_ALIGN_BOTTOM" class="signatureLink">VERTICAL_ALIGN_BOTTOM</a> : String = bottom<div class="summaryTableDescription">[static] 
+		 The content will be aligned vertically to the bottom edge of the renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#VERTICAL_ALIGN_JUSTIFY" class="signatureLink">VERTICAL_ALIGN_JUSTIFY</a> : String = justify<div class="summaryTableDescription">[static] 
+		 The content will be justified vertically, filling the entire height
+		 of the renderer, minus padding.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#VERTICAL_ALIGN_MIDDLE" class="signatureLink">VERTICAL_ALIGN_MIDDLE</a> : String = middle<div class="summaryTableDescription">[static] 
+		 The content will be aligned vertically to the middle of the renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr><tr class=""><td class="summaryTablePaddingCol">&nbsp;</td><td class="summaryTableInheritanceCol">&nbsp;</td><td class="summaryTableSignatureCol"><a href="#VERTICAL_ALIGN_TOP" class="signatureLink">VERTICAL_ALIGN_TOP</a> : String = top<div class="summaryTableDescription">[static] 
+		 The content will be aligned vertically to the top edge of the renderer.</div></td><td class="summaryTableOwnerCol">DefaultGroupedListHeaderOrFooterRenderer</td></tr></table></div><script language="javascript" type="text/javascript"><!--
+										showHideInherited();
+										--></script><div class="MainContent"><div class="detailSectionHeader">Property Detail</div><a name="propertyDetail"></a><a name="backgroundDisabledSkin"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">backgroundDisabledSkin</td><td class="detailHeaderType">property</td></tr></table><div class="detailBody"><code>backgroundDisabledSkin:DisplayObject</code><p></p><p></p><p>
+		 A background to display when the component is disabled.
+		 
+		 <p>In the following example, the header renderers is given a
+		 disabled background skin:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.backgroundDisabledSkin = new Image( texture );</pre></div>
+		 
+		 </p><p> The default value is <code>null</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get backgroundDisabledSkin():DisplayObject</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set backgroundDisabledSkin(value:DisplayObject):void</code><br/></div><a name="propertyDetail"></a><a name="backgroundSkin"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">backgroundSkin</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>backgroundSkin:DisplayObject</code><p></p><p></p><p>
+		 A background to behind the component's content.
+		 
+		 <p>In the following example, the header renderers is given a
+		 background skin:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.backgroundSkin = new Image( texture );</pre></div>
+		 
+		 </p><p> The default value is <code>null</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get backgroundSkin():DisplayObject</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set backgroundSkin(value:DisplayObject):void</code><br/></div><a name="propertyDetail"></a><a name="contentField"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">contentField</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>contentField:String</code><p></p><p></p><p>
+		 The field in the item that contains a display object to be positioned
+		 in the content position of the renderer. If you wish to display a
+		 texture in the content position, it's better for performance to use
+		 <code>contentSourceField</code> instead.
+		 
+		 <p>All of the content fields and functions, ordered by priority:</p>
+		 <ol>
+		     <li><code>contentSourceFunction</code></li>
+		     <li><code>contentSourceField</code></li>
+		     <li><code>contentLabelFunction</code></li>
+		     <li><code>contentLabelField</code></li>
+		     <li><code>contentFunction</code></li>
+		     <li><code>contentField</code></li>
+		 </ol>
+		 
+		 <p>In the following example, the content field is customized:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.contentField = "header";</pre></div>
+		 
+		 </p><p> The default value is <code>"content"</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get contentField():String</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set contentField(value:String):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceField" target="">contentSourceField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentFunction" target="">contentFunction</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceFunction" target="">contentSourceFunction</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField" target="">contentLabelField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFunction" target="">contentLabelFunction</a></div></div><a name="propertyDetail"></a><a name="contentFunction"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">contentFunction</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>contentFunction:Function</code><p></p><p></p><p>
+		 A function that returns a display object to be positioned in the
+		 content position of the renderer. If you wish to display a texture in
+		 the content position, it's better for performance to use
+		 <code>contentSourceFunction</code> instead.
+		 
+		 <p>The function is expected to have the following signature:</p>
+		 <pre>function( item:Object ):DisplayObject</pre>
+		 
+		 <p>All of the content fields and functions, ordered by priority:</p>
+		 <ol>
+		     <li><code>contentSourceFunction</code></li>
+		     <li><code>contentSourceField</code></li>
+		     <li><code>contentLabelFunction</code></li>
+		     <li><code>contentLabelField</code></li>
+		     <li><code>contentFunction</code></li>
+		     <li><code>contentField</code></li>
+		 </ol>
+		 
+		 <p>In the following example, the content function is customized:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.contentFunction = function( item:Object ):DisplayObject
+         {
+            if(item in cachedContent)
+            {
+                return cachedContent[item];
+            }
+            var content:DisplayObject = createContentForHeader( item );
+            cachedContent[item] = content;
+            return content;
+         };</pre></div>
+		 
+		 </p><p> The default value is <code>null</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get contentFunction():Function</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set contentFunction(value:Function):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentField" target="">contentField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceField" target="">contentSourceField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceFunction" target="">contentSourceFunction</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField" target="">contentLabelField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFunction" target="">contentLabelFunction</a></div></div><a name="propertyDetail"></a><a name="contentLabelFactory"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">contentLabelFactory</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>contentLabelFactory:Function</code><p></p><p></p><p>
+		 A function that generates an <code>ITextRenderer</code> that uses the result
+		 of <code>contentLabelField</code> or <code>contentLabelFunction</code>.
+		 Can be used to set properties on the <code>ITextRenderer</code>.
+		 
+		 <p>In the following example, a custom content label factory is passed
+		 to the renderer:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.contentLabelFactory = function():ITextRenderer
+         {
+             var renderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+             renderer.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+             renderer.embedFonts = true;
+             return renderer;
+         };</pre></div>
+		 
+		 </p><p> The default value is <code>null</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get contentLabelFactory():Function</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set contentLabelFactory(value:Function):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="../../../feathers/core/ITextRenderer.html" target="">feathers.core.ITextRenderer</a><br/><a href="../../../feathers/core/FeathersControl.html#defaultTextRendererFactory" target="">feathers.core.FeathersControl.defaultTextRendererFactory</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField" target="">contentLabelField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFunction" target="">contentLabelFunction</a></div></div><a name="propertyDetail"></a><a name="contentLabelField"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">contentLabelField</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>contentLabelField:String</code><p></p><p></p><p>
+		 The field in the item that contains a string to be displayed in a
+		 renderer-managed <code>Label</code> in the content position of the
+		 renderer. The renderer will automatically reuse an internal
+		 <code>Label</code> and swap the text when the data changes. This
+		 <code>Label</code> may be skinned by changing the
+		 <code>contentLabelFactory</code>.
+		 
+		 <p>Using an content label will result in better performance than
+		 passing in a <code>Label</code> through a <code>contentField</code>
+		 or <code>contentFunction</code> because the renderer can avoid
+		 costly display list manipulation.</p>
+		 
+		 <p>All of the content fields and functions, ordered by priority:</p>
+		 <ol>
+		     <li><code>contentTextureFunction</code></li>
+		     <li><code>contentTextureField</code></li>
+		     <li><code>contentLabelFunction</code></li>
+		     <li><code>contentLabelField</code></li>
+		     <li><code>contentFunction</code></li>
+		     <li><code>contentField</code></li>
+		 </ol>
+		 
+		 <p>In the following example, the content label field is customized:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.contentLabelField = "text";</pre></div>
+		 
+		 </p><p> The default value is <code>"label"</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get contentLabelField():String</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set contentLabelField(value:String):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFactory" target="">contentLabelFactory</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFunction" target="">contentLabelFunction</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentField" target="">contentField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentFunction" target="">contentFunction</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceField" target="">contentSourceField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceFunction" target="">contentSourceFunction</a></div></div><a name="propertyDetail"></a><a name="contentLabelFunction"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">contentLabelFunction</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>contentLabelFunction:Function</code><p></p><p></p><p>
+		 A function that returns a string to be displayed in a
+		 renderer-managed <code>Label</code> in the content position of the
+		 renderer. The renderer will automatically reuse an internal
+		 <code>Label</code> and swap the text when the data changes. This
+		 <code>Label</code> may be skinned by changing the
+		 <code>contentLabelFactory</code>.
+		 
+		 <p>Using an content label will result in better performance than
+		 passing in a <code>Label</code> through a <code>contentField</code>
+		 or <code>contentFunction</code> because the renderer can avoid
+		 costly display list manipulation.</p>
+		 
+		 <p>The function is expected to have the following signature:</p>
+		 <pre>function( item:Object ):String</pre>
+		 
+		 <p>All of the content fields and functions, ordered by priority:</p>
+		 <ol>
+		     <li><code>contentTextureFunction</code></li>
+		     <li><code>contentTextureField</code></li>
+		     <li><code>contentLabelFunction</code></li>
+		     <li><code>contentLabelField</code></li>
+		     <li><code>contentFunction</code></li>
+		     <li><code>contentField</code></li>
+		 </ol>
+		 
+		 <p>In the following example, the content label function is customized:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.contentLabelFunction = function( item:Object ):String
+         {
+            return item.category + " &gt; " + item.subCategory;
+         };</pre></div>
+		 
+		 </p><p> The default value is <code>null</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get contentLabelFunction():Function</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set contentLabelFunction(value:Function):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFactory" target="">contentLabelFactory</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField" target="">contentLabelField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentField" target="">contentField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentFunction" target="">contentFunction</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceField" target="">contentSourceField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceFunction" target="">contentSourceFunction</a></div></div><a name="propertyDetail"></a><a name="contentLabelName"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">contentLabelName</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>protected var contentLabelName:String = feathers-header-footer-renderer-content-label</code><p></p><p></p><p>
+		 The value added to the <code>nameList</code> of the content label.
+		 
+		 </p><p><span class="label">See also</span></p><div class="seeAlso"><a href="../../../feathers/core/IFeathersControl.html#nameList" target="">feathers.core.IFeathersControl.nameList</a></div></div><a name="propertyDetail"></a><a name="contentLabelProperties"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">contentLabelProperties</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>contentLabelProperties:Object</code><p></p><p></p><p>
+		 A set of key/value pairs to be passed down to a content label.
+		 
+		 <p>If the subcomponent has its own subcomponents, their properties
+		 can be set too, using attribute <code>@</code> notation. For example,
+		 to set the skin on the thumb of a <code>SimpleScrollBar</code>
+		 which is in a <code>Scroller</code> which is in a <code>List</code>,
+		 you can use the following syntax:</p>
+		 <pre>list.scrollerProperties.@verticalScrollBarProperties.@thumbProperties.defaultSkin = new Image(texture);</pre>
+		 
+		 <p>In the following example, a custom content label properties are
+		 customized:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.contentLabelProperties.textFormat = new TextFormat( "Source Sans Pro", 16, 0x333333 );
+         renderer.contentLabelProperties.embedFonts = true;</pre></div>
+		 
+		 </p><p> The default value is <code>null</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get contentLabelProperties():Object</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set contentLabelProperties(value:Object):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="../../../feathers/core/ITextRenderer.html" target="">feathers.core.ITextRenderer</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField" target="">contentLabelField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFunction" target="">contentLabelFunction</a></div></div><a name="propertyDetail"></a><a name="contentLoaderFactory"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">contentLoaderFactory</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>contentLoaderFactory:Function</code><p></p><p></p><p>
+		 A function that generates an <code>ImageLoader</code> that uses the result
+		 of <code>contentSourceField</code> or <code>contentSourceFunction</code>.
+		 Useful for transforming the <code>ImageLoader</code> in some way. For
+		 example, you might want to scale it for current DPI or apply pixel
+		 snapping.
+		 
+		 <p>In the following example, a custom content loader factory is passed
+		 to the renderer:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.contentLoaderFactory = function():ImageLoader
+         {
+             var loader:ImageLoader = new ImageLoader();
+             loader.snapToPixels = true;
+             return loader;
+         };</pre></div>
+		 
+		 </p><p> The default value is <code>function():ImageLoader { return new ImageLoader(); }</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get contentLoaderFactory():Function</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set contentLoaderFactory(value:Function):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="../../../feathers/controls/ImageLoader.html" target="">feathers.controls.ImageLoader</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceField" target="">contentSourceField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceFunction" target="">contentSourceFunction</a></div></div><a name="propertyDetail"></a><a name="contentSourceField"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">contentSourceField</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>contentSourceField:String</code><p></p><p></p><p>
+		 The field in the data that contains a <code>starling.textures.Texture</code>
+		 or a URL that points to a bitmap to be used as the renderer's
+		 content. The renderer will automatically manage and reuse an internal
+		 <code>ImageLoader</code> sub-component and this value will be passed
+		 to the <code>source</code> property. The <code>ImageLoader</code> may
+		 be customized by changing the <code>contentLoaderFactory</code>.
+		 
+		 <p>Using an content source will result in better performance than
+		 passing in an <code>ImageLoader</code> or <code>Image</code> through
+		 <code>contentField</code> or <code>contentFunction</code> because the
+		 renderer can avoid costly display list manipulation.</p>
+		 
+		 <p>All of the content fields and functions, ordered by priority:</p>
+		 <ol>
+		     <li><code>contentSourceFunction</code></li>
+		     <li><code>contentSourceField</code></li>
+		     <li><code>contentLabelFunction</code></li>
+		     <li><code>contentLabelField</code></li>
+		     <li><code>contentFunction</code></li>
+		     <li><code>contentField</code></li>
+		 </ol>
+		 
+		 <p>In the following example, the content source field is customized:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.contentSourceField = "texture";</pre></div>
+		 
+		 </p><p> The default value is <code>"source"</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get contentSourceField():String</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set contentSourceField(value:String):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="../../../feathers/controls/ImageLoader.html#source" target="">feathers.controls.ImageLoader.source</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLoaderFactory" target="">contentLoaderFactory</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceFunction" target="">contentSourceFunction</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentField" target="">contentField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentFunction" target="">contentFunction</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField" target="">contentLabelField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFunction" target="">contentLabelFunction</a></div></div><a name="propertyDetail"></a><a name="contentSourceFunction"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">contentSourceFunction</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>contentSourceFunction:Function</code><p></p><p></p><p>
+		 A function used to generate a <code>starling.textures.Texture</code>
+		 or a URL that points to a bitmap to be used as the renderer's
+		 content. The renderer will automatically manage and reuse an internal
+		 <code>ImageLoader</code> sub-component and this value will be passed
+		 to the <code>source</code> property. The <code>ImageLoader</code> may
+		 be customized by changing the <code>contentLoaderFactory</code>.
+		 
+		 <p>Using an content source will result in better performance than
+		 passing in an <code>ImageLoader</code> or <code>Image</code> through
+		 <code>contentField</code> or <code>contentFunction</code> because the
+		 renderer can avoid costly display list manipulation.</p>
+		 
+		 <p>The function is expected to have the following signature:</p>
+		 <pre>function( item:Object ):Object</pre>
+		 
+		 <p>The return value is a valid value for the <code>source</code>
+		 property of an <code>ImageLoader</code> component.</p>
+		 
+		 <p>All of the content fields and functions, ordered by priority:</p>
+		 <ol>
+		     <li><code>contentSourceFunction</code></li>
+		     <li><code>contentSourceField</code></li>
+		     <li><code>contentLabelFunction</code></li>
+		     <li><code>contentLabelField</code></li>
+		     <li><code>contentFunction</code></li>
+		     <li><code>contentField</code></li>
+		 </ol>
+		 
+		 <p>In the following example, the content source function is customized:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.contentSourceFunction = function( item:Object ):Object
+         {
+            return "http://www.example.com/thumbs/" + item.name + "-thumb.png";
+         };</pre></div>
+		 
+		 </p><p> The default value is <code>null</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get contentSourceFunction():Function</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set contentSourceFunction(value:Function):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="../../../feathers/controls/ImageLoader.html#source" target="">feathers.controls.ImageLoader.source</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLoaderFactory" target="">contentLoaderFactory</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentSourceField" target="">contentSourceField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentField" target="">contentField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentFunction" target="">contentFunction</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelField" target="">contentLabelField</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#contentLabelFunction" target="">contentLabelFunction</a></div></div><a name="propertyDetail"></a><a name="data"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">data</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>data:Object</code><p></p><p></p><p>
+		 
+		 Data for a header or footer from the grouped list's data provider.
+		 The data may change if this renderer is reused for a new header or
+		 footer because it's no longer needed for the original data.
+		 
+		 <p>This property is set by the list, and should not be set manually.</p>
+		 </p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get data():Object</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set data(value:Object):void</code><br/></div><a name="propertyDetail"></a><a name="groupIndex"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">groupIndex</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>groupIndex:int</code><p></p><p></p><p>
+		 
+		 The index of the group within the data provider of the grouped list.
+		 
+		 <p>This property is set by the list, and should not be set manually.</p>
+		 </p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get groupIndex():int</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set groupIndex(value:int):void</code><br/></div><a name="propertyDetail"></a><a name="horizontalAlign"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">horizontalAlign</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>horizontalAlign:String</code><p></p><p></p><p>
+		 The location where the renderer's content is aligned horizontally
+		 (on the x-axis).
+		 
+		 <p>In the following example, the horizontal alignment is changed to
+		 right:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.horizontalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_RIGHT;</pre></div>
+		 
+		 </p><p> The default value is <code>DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_LEFT</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get horizontalAlign():String</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set horizontalAlign(value:String):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#HORIZONTAL_ALIGN_LEFT" target="">HORIZONTAL_ALIGN_LEFT</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#HORIZONTAL_ALIGN_CENTER" target="">HORIZONTAL_ALIGN_CENTER</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#HORIZONTAL_ALIGN_RIGHT" target="">HORIZONTAL_ALIGN_RIGHT</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#HORIZONTAL_ALIGN_JUSTIFY" target="">HORIZONTAL_ALIGN_JUSTIFY</a></div></div><a name="propertyDetail"></a><a name="layoutIndex"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">layoutIndex</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>layoutIndex:int</code><p></p><p></p><p>
+		 
+		 The index of the item within the layout.
+		 
+		 <p>This property is set by the list, and should not be set manually.</p>
+		 </p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get layoutIndex():int</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set layoutIndex(value:int):void</code><br/></div><a name="propertyDetail"></a><a name="owner"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">owner</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>owner:<a href="../../../feathers/controls/GroupedList.html">GroupedList</a></code><p></p><p></p><p>
+		 
+		 The grouped list that contains this header or footer renderer.
+		 
+		 <p>This property is set by the list, and should not be set manually.</p>
+		 </p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get owner():<a href="../../../feathers/controls/GroupedList.html">GroupedList</a></code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set owner(value:<a href="../../../feathers/controls/GroupedList.html">GroupedList</a>):void</code><br/></div><a name="propertyDetail"></a><a name="padding"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">padding</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>padding:Number</code><p></p><p></p><p>
+		 Quickly sets all padding properties to the same value. The
+		 <code>padding</code> getter always returns the value of
+		 <code>paddingTop</code>, but the other padding values may be
+		 different.
+		 
+		 <p>In the following example, the padding is set to 20 pixels:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.padding = 20;</pre></div>
+		 
+		 </p><p> The default value is <code>0</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get padding():Number</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set padding(value:Number):void</code><br/></div><a name="propertyDetail"></a><a name="paddingBottom"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">paddingBottom</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>paddingBottom:Number</code><p></p><p></p><p>
+		 The minimum space, in pixels, between the component's bottom edge
+		 and the component's content.
+		 
+		 <p>In the following example, the bottom padding is set to 20 pixels:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.paddingBottom = 20;</pre></div>
+		 
+		 </p><p> The default value is <code>0</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get paddingBottom():Number</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set paddingBottom(value:Number):void</code><br/></div><a name="propertyDetail"></a><a name="paddingLeft"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">paddingLeft</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>paddingLeft:Number</code><p></p><p></p><p>
+		 The minimum space, in pixels, between the component's left edge
+		 and the component's content.
+		 
+		 <p>In the following example, the left padding is set to 20 pixels:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.paddingLeft = 20;</pre></div>
+		 
+		 </p><p> The default value is <code>0</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get paddingLeft():Number</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set paddingLeft(value:Number):void</code><br/></div><a name="propertyDetail"></a><a name="paddingRight"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">paddingRight</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>paddingRight:Number</code><p></p><p></p><p>
+		 The minimum space, in pixels, between the component's right edge
+		 and the component's content.
+		 
+		 <p>In the following example, the right padding is set to 20 pixels:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.paddingRight = 20;</pre></div>
+		 
+		 </p><p> The default value is <code>0</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get paddingRight():Number</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set paddingRight(value:Number):void</code><br/></div><a name="propertyDetail"></a><a name="paddingTop"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">paddingTop</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>paddingTop:Number</code><p></p><p></p><p>
+		 The minimum space, in pixels, between the component's top edge and
+		 the component's content.
+		 
+		 <p>In the following example, the top padding is set to 20 pixels:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.paddingTop = 20;</pre></div>
+		 
+		 </p><p> The default value is <code>0</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get paddingTop():Number</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set paddingTop(value:Number):void</code><br/></div><a name="propertyDetail"></a><a name="verticalAlign"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">verticalAlign</td><td class="detailHeaderType">property</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>verticalAlign:String</code><p></p><p></p><p>
+		 The location where the renderer's content is aligned vertically (on
+		 the y-axis).
+		 
+		 <p>In the following example, the vertical alignment is changed to
+		 bottom:</p>
+		 
+		 <div class="listing" version="3.0"><pre>
+         renderer.verticalAlign = DefaultGroupedListHeaderOrFooterRenderer.HORIZONTAL_ALIGN_BOTTOM;</pre></div>
+		 
+		 </p><p> The default value is <code>DefaultGroupedListHeaderOrFooterRenderer.VERTICAL_ALIGN_MIDDLE</code>.</p><br/><span class="label"> Implementation </span><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function get verticalAlign():String</code><br/><code>&nbsp;&nbsp;&nbsp;&nbsp;public function set verticalAlign(value:String):void</code><br/><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#VERTICAL_ALIGN_TOP" target="">VERTICAL_ALIGN_TOP</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#VERTICAL_ALIGN_MIDDLE" target="">VERTICAL_ALIGN_MIDDLE</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#VERTICAL_ALIGN_BOTTOM" target="">VERTICAL_ALIGN_BOTTOM</a><br/><a href="DefaultGroupedListHeaderOrFooterRenderer.html#VERTICAL_ALIGN_JUSTIFY" target="">VERTICAL_ALIGN_JUSTIFY</a></div></div><a name="constructorDetail"></a><div class="detailSectionHeader">Constructor Detail</div><a name="DefaultGroupedListHeaderOrFooterRenderer()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">DefaultGroupedListHeaderOrFooterRenderer</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">Constructor</td></tr></table><div class="detailBody"><code>public function DefaultGroupedListHeaderOrFooterRenderer()</code><p></p><p>
+		 Constructor.
+		 </p></div><a name="methodDetail"></a><div class="detailSectionHeader">Method Detail</div><a name="autoSizeIfNeeded()"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">autoSizeIfNeeded</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td></tr></table><div class="detailBody"><code> protected function autoSizeIfNeeded():Boolean</code><p></p><p></p><p>
+		 If the component's dimensions have not been set explicitly, it will
+		 measure its content and determine an ideal size for itself. If the
+		 <code>explicitWidth</code> or <code>explicitHeight</code> member
+		 variables are set, those value will be used without additional
+		 measurement. If one is set, but not the other, the dimension with the
+		 explicit value will not be measured, but the other non-explicit
+		 dimension will still need measurement.
+		 
+		 <p>Calls <code>setSizeInternal()</code> to set up the
+		 <code>actualWidth</code> and <code>actualHeight</code> member
+		 variables used for layout.</p>
+		 
+		 <p>Meant for internal use, and subclasses may override this function
+		 with a custom implementation.</p>
+		 </p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>Boolean</code></td></tr></table></div><a name="itemToContent()"></a><a name="itemToContent(Object)"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">itemToContent</td><td class="detailHeaderParens">()</td><td class="detailHeaderType">method</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code> protected function itemToContent(item:Object):DisplayObject</code><p></p><p></p><p>
+		 Uses the content fields and functions to generate content for a
+		 specific group header or footer.
+		 
+		 <p>All of the content fields and functions, ordered by priority:</p>
+		 <ol>
+		     <li><code>contentTextureFunction</code></li>
+		     <li><code>contentTextureField</code></li>
+		     <li><code>contentLabelFunction</code></li>
+		     <li><code>contentLabelField</code></li>
+		     <li><code>contentFunction</code></li>
+		     <li><code>contentField</code></li>
+		 </ol>
+		 </p><p><span class="label"> Parameters </span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20px"></td><td><code><span class="label">item</span>:Object</code></td></tr></table></p><p></p><span class="label">Returns</span><table cellpadding="0" cellspacing="0" border="0"><tr><td width="20"></td><td><code>DisplayObject</code></td></tr></table></div><div class="detailSectionHeader">Constant Detail</div><a name="constantDetail"></a><a name="DEFAULT_CHILD_NAME_CONTENT_LABEL"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">DEFAULT_CHILD_NAME_CONTENT_LABEL</td><td class="detailHeaderType">Constant</td></tr></table><div class="detailBody"><code>public static const DEFAULT_CHILD_NAME_CONTENT_LABEL:String = feathers-header-footer-renderer-content-label</code><p></p><p></p><p>
+		 The default value added to the <code>nameList</code> of the content
+		 label.
+		 
+		 </p><p><span class="label">See also</span></p><div class="seeAlso"><a href="../../../feathers/core/IFeathersControl.html#nameList" target="">feathers.core.IFeathersControl.nameList</a></div></div><a name="constantDetail"></a><a name="HORIZONTAL_ALIGN_CENTER"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">HORIZONTAL_ALIGN_CENTER</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const HORIZONTAL_ALIGN_CENTER:String = center</code><p></p><p></p><p>
+		 The content will be aligned horizontally to the center of the renderer.
+		 
+		 </p><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#horizontalAlign" target="">horizontalAlign</a></div></div><a name="constantDetail"></a><a name="HORIZONTAL_ALIGN_JUSTIFY"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">HORIZONTAL_ALIGN_JUSTIFY</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const HORIZONTAL_ALIGN_JUSTIFY:String = justify</code><p></p><p></p><p>
+		 The content will be justified horizontally, filling the entire width
+		 of the renderer, minus padding.
+		 
+		 </p><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#horizontalAlign" target="">horizontalAlign</a></div></div><a name="constantDetail"></a><a name="HORIZONTAL_ALIGN_LEFT"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">HORIZONTAL_ALIGN_LEFT</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const HORIZONTAL_ALIGN_LEFT:String = left</code><p></p><p></p><p>
+		 The content will be aligned horizontally to the left edge of the renderer.
+		 
+		 </p><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#horizontalAlign" target="">horizontalAlign</a></div></div><a name="constantDetail"></a><a name="HORIZONTAL_ALIGN_RIGHT"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">HORIZONTAL_ALIGN_RIGHT</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const HORIZONTAL_ALIGN_RIGHT:String = right</code><p></p><p></p><p>
+		 The content will be aligned horizontally to the right edge of the renderer.
+		 
+		 </p><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#horizontalAlign" target="">horizontalAlign</a></div></div><a name="constantDetail"></a><a name="VERTICAL_ALIGN_BOTTOM"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">VERTICAL_ALIGN_BOTTOM</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const VERTICAL_ALIGN_BOTTOM:String = bottom</code><p></p><p></p><p>
+		 The content will be aligned vertically to the bottom edge of the renderer.
+		 
+		 </p><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#verticalAlign" target="">verticalAlign</a></div></div><a name="constantDetail"></a><a name="VERTICAL_ALIGN_JUSTIFY"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">VERTICAL_ALIGN_JUSTIFY</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const VERTICAL_ALIGN_JUSTIFY:String = justify</code><p></p><p></p><p>
+		 The content will be justified vertically, filling the entire height
+		 of the renderer, minus padding.
+		 
+		 </p><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#verticalAlign" target="">verticalAlign</a></div></div><a name="constantDetail"></a><a name="VERTICAL_ALIGN_MIDDLE"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">VERTICAL_ALIGN_MIDDLE</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const VERTICAL_ALIGN_MIDDLE:String = middle</code><p></p><p></p><p>
+		 The content will be aligned vertically to the middle of the renderer.
+		 
+		 </p><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#verticalAlign" target="">verticalAlign</a></div></div><a name="constantDetail"></a><a name="VERTICAL_ALIGN_TOP"></a><table class="detailHeader" cellpadding="0" cellspacing="0"><tr><td class="detailHeaderName">VERTICAL_ALIGN_TOP</td><td class="detailHeaderType">Constant</td><td class="detailHeaderRule">&nbsp;</td></tr></table><div class="detailBody"><code>public static const VERTICAL_ALIGN_TOP:String = top</code><p></p><p></p><p>
+		 The content will be aligned vertically to the top edge of the renderer.
+		 
+		 </p><p><span class="label">See also</span></p><div class="seeAlso"><a href="DefaultGroupedListHeaderOrFooterRenderer.html#verticalAlign" target="">verticalAlign</a></div></div><br/><br/><hr><br/><p></p><center class="copyright"><footer><a href="http://feathersui.com/" target="_top">Feathers Website</a> | <a href="http://wiki.starling-framework.org/feathers/start" target="_top">Feathers Documentation</a> | <a href="https://github.com/joshtynjala/feathers" target="_top">Github Project</a> | <a href="http://forum.starling-framework.org/forum/feathers" target="_top">Support Forum</a></footer><br/>Mon Nov 25 2013, 03:11 PM -08:00  </center></div></body></html><!--Feathers Website | Feathers Documentation | Github Project | Support Forum<br/>Mon Nov 25 2013, 03:11 PM -08:00  -->

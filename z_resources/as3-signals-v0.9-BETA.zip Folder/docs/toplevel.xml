@@ -1,0 +1,2331 @@
+<asdoc>
+
+<classRec name='SlotList' fullname='org.osflash.signals:SlotList' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\SlotList.as' namespace='org.osflash.signals' access='public' baseclass='Object' isFinal='true' isDynamic='false' >
+<description><![CDATA[
+
+	 The SlotList class represents an immutable list of Slot objects.
+
+	 
+	 ]]></description>
+<author><![CDATA[Joa Ebert
+
+	 ]]></author>
+<author><![CDATA[Robert Penner
+
+	 ]]></author>
+</classRec>
+<method name='SlotList' fullname='org.osflash.signals:SlotList/SlotList' isStatic='false' isFinal='false' isOverride='false'  param_names='head;tail' param_types='org.osflash.signals:ISlot;org.osflash.signals:SlotList' param_defaults='undefined;null' result_type='*'>
+<description><![CDATA[
+
+		 Creates and returns a new SlotList object.
+
+		 
+		 <p>A user never has to create a SlotList manually. 
+
+		 Use the <code>NIL</code> element to represent an empty list. 
+
+		 <code>NIL.prepend(value)</code> would create a list containing <code>value</code></p>.
+
+		 
+		 ]]></description>
+<param><![CDATA[head The first slot in the list.
+
+		 ]]></param>
+<param><![CDATA[tail A list containing all slots except head.
+
+		 ]]></param>
+</method>
+<method name='append' fullname='org.osflash.signals:SlotList/append' isStatic='false' isFinal='false' isOverride='false'  param_names='slot' param_types='org.osflash.signals:ISlot' param_defaults='undefined' result_type='org.osflash.signals:SlotList'>
+<description><![CDATA[
+
+		 Appends a slot to this list.
+
+		 Note: appending is O(n). Where possible, prepend which is O(1).
+
+		 In some cases, many list items must be cloned to 
+
+		 avoid changing existing lists.
+
+		 ]]></description>
+<param><![CDATA[slot The item to be appended.
+
+		 ]]></param>
+<return><![CDATA[A list consisting of all elements of this list followed by slot.
+
+		 ]]></return>
+</method>
+<method name='contains' fullname='org.osflash.signals:SlotList/contains' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='Boolean'>
+</method>
+<method name='filterNot' fullname='org.osflash.signals:SlotList/filterNot' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:SlotList'>
+<description><![CDATA[
+
+		 Returns the slots in this list that do not contain the supplied listener.
+
+		 Note: assumes the listener is not repeated within the list.
+
+		 ]]></description>
+<param><![CDATA[listener The function to remove.
+
+		 ]]></param>
+<return><![CDATA[A list consisting of all elements of this list that do not have listener.
+
+		 ]]></return>
+</method>
+<method name='find' fullname='org.osflash.signals:SlotList/find' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+</method>
+<method name='insertWithPriority' fullname='org.osflash.signals:SlotList/insertWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='slot' param_types='org.osflash.signals:ISlot' param_defaults='undefined' result_type='org.osflash.signals:SlotList'>
+</method>
+<method name='prepend' fullname='org.osflash.signals:SlotList/prepend' isStatic='false' isFinal='false' isOverride='false'  param_names='slot' param_types='org.osflash.signals:ISlot' param_defaults='undefined' result_type='org.osflash.signals:SlotList'>
+<description><![CDATA[
+
+		 Prepends a slot to this list.
+
+		 ]]></description>
+<param><![CDATA[slot The item to be prepended.
+
+		 ]]></param>
+<return><![CDATA[A list consisting of slot followed by all elements of this list.
+
+		 ]]></return>
+</method>
+<method name='toString' fullname='org.osflash.signals:SlotList/toString' isStatic='false' isFinal='false' isOverride='false'  result_type='String'>
+</method>
+<method name='length' fullname='org.osflash.signals:SlotList/length/get' isStatic='false' isFinal='false' isOverride='false'  result_type='uint'>
+<description><![CDATA[
+
+		 The number of slots in the list.
+
+		 ]]></description>
+</method>
+<field name='NIL' fullname='org.osflash.signals:SlotList/NIL' type='org.osflash.signals:SlotList' isStatic='true' isConst='true' defaultValue='unknown' >
+<description><![CDATA[
+
+		 Represents an empty list. Used as the list terminator.
+
+		 ]]></description>
+</field>
+<field name='head' fullname='org.osflash.signals:SlotList/head' type='org.osflash.signals:ISlot' isStatic='false' isConst='false' >
+</field>
+<field name='nonEmpty' fullname='org.osflash.signals:SlotList/nonEmpty' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<field name='tail' fullname='org.osflash.signals:SlotList/tail' type='org.osflash.signals:SlotList' isStatic='false' isConst='false' >
+</field>
+<interfaceRec name='IOnceSignal' fullname='org.osflash.signals:IOnceSignal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\IOnceSignal.as' namespace='org.osflash.signals' access='public' baseClasses='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 
+	 ]]></description>
+</interfaceRec>
+<method name='addOnce' fullname='org.osflash.signals:IOnceSignal/org.osflash.signals:IOnceSignal:addOnce' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[
+
+		 Subscribes a one-time listener for this signal.
+
+		 The signal will remove the listener automatically the first time it is called,
+
+		 after the dispatch to all listeners is complete.
+
+		 ]]></description>
+<param><![CDATA[listener A function with arguments
+
+		 that matches the value classes dispatched by the signal.
+
+		 If value classes are not specified (e.g. via Signal constructor), dispatch() can be called without arguments.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='dispatch' fullname='org.osflash.signals:IOnceSignal/org.osflash.signals:IOnceSignal:dispatch' isStatic='false' isFinal='false' isOverride='false'  param_names='valueObjects' param_types='restParam' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Dispatches an object to listeners.
+
+		 ]]></description>
+<param><![CDATA[valueObjects	Any number of parameters to send to listeners. Will be type-checked against valueClasses.
+
+		 ]]></param>
+<throws><![CDATA[ArgumentError	<code>ArgumentError</code>:	valueObjects are not compatible with valueClasses.
+
+		 ]]></throws>
+</method>
+<method name='removeAll' fullname='org.osflash.signals:IOnceSignal/org.osflash.signals:IOnceSignal:removeAll' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 Unsubscribes all listeners from the signal.
+
+		 ]]></description>
+</method>
+<method name='remove' fullname='org.osflash.signals:IOnceSignal/org.osflash.signals:IOnceSignal:remove' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[
+
+		 Unsubscribes a listener from the signal.
+
+		 ]]></description>
+<param><![CDATA[listener
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='numListeners' fullname='org.osflash.signals:IOnceSignal/org.osflash.signals:IOnceSignal:numListeners/get' isStatic='false' isFinal='false' isOverride='false'  result_type='uint'>
+<description><![CDATA[ The current number of listeners for the signal. ]]></description>
+</method>
+<method name='valueClasses' fullname='org.osflash.signals:IOnceSignal/org.osflash.signals:IOnceSignal:valueClasses/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Array'>
+<description><![CDATA[
+
+		 An optional array of classes defining the types of parameters sent to listeners.
+
+		 ]]></description>
+</method>
+<method name='valueClasses' fullname='org.osflash.signals:IOnceSignal/org.osflash.signals:IOnceSignal:valueClasses/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Array' param_defaults='undefined' result_type='void'>
+</method>
+<interfaceRec name='ISlot' fullname='org.osflash.signals:ISlot' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\ISlot.as' namespace='org.osflash.signals' access='public' baseClasses='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 The ISlot interface defines the basic properties of a
+
+	 listener associated with a Signal.
+
+	 
+	 ]]></description>
+<author><![CDATA[Joa Ebert
+
+	 ]]></author>
+<author><![CDATA[Robert Penner
+
+	 ]]></author>
+</interfaceRec>
+<method name='execute0' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:execute0' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 Executes a listener without arguments.
+
+		 Existing <code>params</code> are appended before the listener is called.
+
+		 ]]></description>
+</method>
+<method name='execute1' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:execute1' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Dispatches one argument to a listener.
+
+		 Existing <code>params</code> are appended before the listener is called.
+
+		 ]]></description>
+<param><![CDATA[value The argument for the listener.
+
+		 ]]></param>
+</method>
+<method name='execute' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:execute' isStatic='false' isFinal='false' isOverride='false'  param_names='valueObjects' param_types='Array' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 Executes a listener of arity <code>n</code> where <code>n</code> is
+
+		 <code>valueObjects.length</code>.
+
+		 Existing <code>params</code> are appended before the listener is called.
+
+		 ]]></description>
+<param><![CDATA[valueObjects The array of arguments to be applied to the listener.
+
+		 ]]></param>
+</method>
+<method name='remove' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:remove' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 Removes the slot from its signal.
+
+		 ]]></description>
+</method>
+<method name='enabled' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:enabled/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Boolean'>
+<description><![CDATA[
+
+		 Whether the listener is called on execution. Defaults to true.
+
+		 ]]></description>
+</method>
+<method name='listener' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:listener/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Function'>
+<description><![CDATA[
+
+		 The listener associated with this slot.
+
+		 ]]></description>
+</method>
+<method name='once' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:once/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Boolean'>
+<description><![CDATA[
+
+		 Whether this slot is automatically removed after it has been used once.
+
+		 ]]></description>
+</method>
+<method name='params' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:params/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Array'>
+<description><![CDATA[
+
+		 Allows the ISlot to inject parameters when dispatching. The params will be at 
+
+		 the tail of the arguments and the ISignal arguments will be at the head.
+
+		 
+
+		 var signal:ISignal = new Signal(String);
+
+		 signal.add(handler).params = [42];
+
+		 signal.dispatch('The Answer');
+
+		 function handler(name:String, num:int):void{}
+
+		 ]]></description>
+</method>
+<method name='priority' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:priority/get' isStatic='false' isFinal='false' isOverride='false'  result_type='int'>
+<description><![CDATA[
+
+		 The priority of this slot should be given in the execution order.
+
+		 An IPrioritySignal will call higher numbers before lower ones.
+
+		 Defaults to 0.
+
+		 ]]></description>
+</method>
+<method name='enabled' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:enabled/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Boolean' param_defaults='undefined' result_type='void'>
+</method>
+<method name='listener' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:listener/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Function' param_defaults='undefined' result_type='void'>
+</method>
+<method name='params' fullname='org.osflash.signals:ISlot/org.osflash.signals:ISlot:params/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Array' param_defaults='undefined' result_type='void'>
+</method>
+<classRec name='Slot' fullname='org.osflash.signals:Slot' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\Slot.as' namespace='org.osflash.signals' access='public' baseclass='Object' interfaces='org.osflash.signals:ISlot' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+     The Slot class represents a signal slot.
+
+     
+     ]]></description>
+<author><![CDATA[Robert Penner
+
+	 ]]></author>
+<author><![CDATA[Joa Ebert
+
+     ]]></author>
+</classRec>
+<method name='Slot' fullname='org.osflash.signals:Slot/Slot' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;signal;once;priority' param_types='Function;org.osflash.signals:IOnceSignal;Boolean;int' param_defaults='undefined;undefined;false;0' result_type='*'>
+<description><![CDATA[
+
+		 Creates and returns a new Slot object.
+
+		 
+		 ]]></description>
+<param><![CDATA[listener The listener associated with the slot.
+
+		 ]]></param>
+<param><![CDATA[once Whether or not the listener should be executed only once.
+
+		 ]]></param>
+<param><![CDATA[signal The signal associated with the slot.
+
+		 ]]></param>
+<param><![CDATA[priority The priority of the slot.
+
+		 
+		 ]]></param>
+<throws><![CDATA[ArgumentError An error is thrown if the given listener closure is <code>null</code>.
+
+		 ]]></throws>
+</method>
+<method name='execute0' fullname='org.osflash.signals:Slot/execute0' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Executes a listener without arguments.
+
+		 Existing <code>params</code> are appended before the listener is called.
+
+		 ]]></description>
+</method>
+<method name='execute1' fullname='org.osflash.signals:Slot/execute1' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Dispatches one argument to a listener.
+
+		 Existing <code>params</code> are appended before the listener is called.
+
+		 ]]></description>
+<param><![CDATA[value The argument for the listener.
+
+		 ]]></param>
+</method>
+<method name='execute' fullname='org.osflash.signals:Slot/execute' isStatic='false' isFinal='false' isOverride='false'  param_names='valueObjects' param_types='Array' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Executes a listener of arity <code>n</code> where <code>n</code> is
+
+		 <code>valueObjects.length</code>.
+
+		 Existing <code>params</code> are appended before the listener is called.
+
+		 ]]></description>
+<param><![CDATA[valueObjects The array of arguments to be applied to the listener.
+
+		 ]]></param>
+</method>
+<method name='remove' fullname='org.osflash.signals:Slot/remove' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Removes the slot from its signal.
+
+		 ]]></description>
+</method>
+<method name='toString' fullname='org.osflash.signals:Slot/toString' isStatic='false' isFinal='false' isOverride='false'  result_type='String'>
+<description><![CDATA[
+
+		 Creates and returns the string representation of the current object.
+
+		 
+		 ]]></description>
+<return><![CDATA[The string representation of the current object.
+
+		 ]]></return>
+</method>
+<method name='verifyListener' fullname='org.osflash.signals:Slot/protected:verifyListener' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='void'>
+</method>
+<method name='enabled' fullname='org.osflash.signals:Slot/enabled/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Boolean'>
+<description><![CDATA[
+
+		 
+
+		 Whether the listener is called on execution. Defaults to true.
+
+		 ]]></description>
+</method>
+<method name='listener' fullname='org.osflash.signals:Slot/listener/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Function'>
+<description><![CDATA[
+
+		 
+
+		 The listener associated with this slot.
+
+		 ]]></description>
+</method>
+<method name='once' fullname='org.osflash.signals:Slot/once/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Boolean'>
+<description><![CDATA[
+
+		 
+
+		 Whether this slot is automatically removed after it has been used once.
+
+		 ]]></description>
+</method>
+<method name='params' fullname='org.osflash.signals:Slot/params/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Array'>
+<description><![CDATA[
+
+		 
+
+		 Allows the ISlot to inject parameters when dispatching. The params will be at 
+
+		 the tail of the arguments and the ISignal arguments will be at the head.
+
+		 
+
+		 var signal:ISignal = new Signal(String);
+
+		 signal.add(handler).params = [42];
+
+		 signal.dispatch('The Answer');
+
+		 function handler(name:String, num:int):void{}
+
+		 ]]></description>
+</method>
+<method name='priority' fullname='org.osflash.signals:Slot/priority/get' isStatic='false' isFinal='false' isOverride='false'  result_type='int'>
+<description><![CDATA[
+
+		 
+
+		 The priority of this slot should be given in the execution order.
+
+		 An IPrioritySignal will call higher numbers before lower ones.
+
+		 Defaults to 0.
+
+		 ]]></description>
+</method>
+<method name='enabled' fullname='org.osflash.signals:Slot/enabled/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Boolean' param_defaults='undefined' result_type='void'>
+</method>
+<method name='listener' fullname='org.osflash.signals:Slot/listener/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Function' param_defaults='undefined' result_type='void'>
+</method>
+<method name='params' fullname='org.osflash.signals:Slot/params/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Array' param_defaults='undefined' result_type='void'>
+</method>
+<field name='_enabled' fullname='org.osflash.signals:Slot/protected:_enabled' type='Boolean' isStatic='false' isConst='false' defaultValue='true' >
+</field>
+<field name='_listener' fullname='org.osflash.signals:Slot/protected:_listener' type='Function' isStatic='false' isConst='false' >
+</field>
+<field name='_once' fullname='org.osflash.signals:Slot/protected:_once' type='Boolean' isStatic='false' isConst='false' defaultValue='false' >
+</field>
+<field name='_params' fullname='org.osflash.signals:Slot/protected:_params' type='Array' isStatic='false' isConst='false' >
+</field>
+<field name='_priority' fullname='org.osflash.signals:Slot/protected:_priority' type='int' isStatic='false' isConst='false' defaultValue='0' >
+</field>
+<field name='_signal' fullname='org.osflash.signals:Slot/protected:_signal' type='org.osflash.signals:IOnceSignal' isStatic='false' isConst='false' >
+</field>
+<interfaceRec name='ISignal' fullname='org.osflash.signals:ISignal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\ISignal.as' namespace='org.osflash.signals' access='public' baseClasses='org.osflash.signals:IOnceSignal' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 
+	 ]]></description>
+</interfaceRec>
+<method name='add' fullname='org.osflash.signals:ISignal/org.osflash.signals:ISignal:add' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[
+
+		 Subscribes a listener for the signal.
+
+		 ]]></description>
+<param><![CDATA[listener A function with arguments
+
+		 that matches the value classes dispatched by the signal.
+
+		 If value classes are not specified (e.g. via Signal constructor), dispatch() can be called without arguments.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<classRec name='OnceSignal' fullname='org.osflash.signals:OnceSignal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\OnceSignal.as' namespace='org.osflash.signals' access='public' baseclass='Object' interfaces='org.osflash.signals:IOnceSignal' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Signal dispatches events to multiple listeners.
+
+	 It is inspired by C# events and delegates, and by
+
+	 <a target="_top" href="http://en.wikipedia.org/wiki/Signals_and_slots">signals and slots</a>
+
+	 in Qt.
+
+	 A Signal adds event dispatching functionality through composition and interfaces,
+
+	 rather than inheriting from a dispatcher.
+
+	 <br/><br/>
+
+	 Project home: <a target="_top" href="http://github.com/robertpenner/as3-signals/">http://github.com/robertpenner/as3-signals/</a>
+
+	 ]]></description>
+<metadata>
+	<DefaultProperty owner='org.osflash.signals:OnceSignal' name='valueClasses' >
+	</DefaultProperty>
+</metadata>
+</classRec>
+<method name='OnceSignal' fullname='org.osflash.signals:OnceSignal/OnceSignal' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClasses' param_types='restParam' param_defaults='undefined' result_type='*'>
+<description><![CDATA[
+
+		 Creates a Signal instance to dispatch value objects.
+
+		 ]]></description>
+<param><![CDATA[valueClasses Any number of class references that enable type checks in dispatch().
+
+		 For example, new Signal(String, uint)
+
+		 would allow: signal.dispatch("the Answer", 42)
+
+		 but not: signal.dispatch(true, 42.5)
+
+		 nor: signal.dispatch()
+
+		 
+		 NOTE: In AS3, subclasses cannot call super.apply(null, valueClasses),
+
+		 but this constructor has logic to support super(valueClasses).
+
+		 ]]></param>
+</method>
+<method name='addOnce' fullname='org.osflash.signals:OnceSignal/addOnce' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a one-time listener for this signal.
+
+		 The signal will remove the listener automatically the first time it is called,
+
+		 after the dispatch to all listeners is complete.
+
+		 ]]></description>
+<param><![CDATA[listener A function with arguments
+
+		 that matches the value classes dispatched by the signal.
+
+		 If value classes are not specified (e.g. via Signal constructor), dispatch() can be called without arguments.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='dispatch' fullname='org.osflash.signals:OnceSignal/dispatch' isStatic='false' isFinal='false' isOverride='false'  param_names='valueObjects' param_types='restParam' param_defaults='undefined' result_type='void'>
+<description><![CDATA[ 
+
+		 Dispatches an object to listeners.
+
+		 ]]></description>
+<param><![CDATA[valueObjects	Any number of parameters to send to listeners. Will be type-checked against valueClasses.
+
+		 ]]></param>
+</method>
+<method name='registerListener' fullname='org.osflash.signals:OnceSignal/protected:registerListener' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;once' param_types='Function;Boolean' param_defaults='undefined;false' result_type='org.osflash.signals:ISlot'>
+</method>
+<method name='registrationPossible' fullname='org.osflash.signals:OnceSignal/protected:registrationPossible' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;once' param_types='Function;Boolean' param_defaults='undefined;undefined' result_type='Boolean'>
+</method>
+<method name='removeAll' fullname='org.osflash.signals:OnceSignal/removeAll' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[ 
+
+		 Unsubscribes all listeners from the signal.
+
+		 ]]></description>
+</method>
+<method name='remove' fullname='org.osflash.signals:OnceSignal/remove' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Unsubscribes a listener from the signal.
+
+		 ]]></description>
+<param><![CDATA[listener
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='numListeners' fullname='org.osflash.signals:OnceSignal/numListeners/get' isStatic='false' isFinal='false' isOverride='false'  result_type='uint'>
+<description><![CDATA[  The current number of listeners for the signal. ]]></description>
+</method>
+<method name='valueClasses' fullname='org.osflash.signals:OnceSignal/valueClasses/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Array'>
+<description><![CDATA[ 
+
+		 An optional array of classes defining the types of parameters sent to listeners.
+
+		 ]]></description>
+</method>
+<method name='valueClasses' fullname='org.osflash.signals:OnceSignal/valueClasses/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Array' param_defaults='undefined' result_type='void'>
+</method>
+<field name='_valueClasses' fullname='org.osflash.signals:OnceSignal/protected:_valueClasses' type='Array' isStatic='false' isConst='false' >
+</field>
+<field name='slots' fullname='org.osflash.signals:OnceSignal/protected:slots' type='org.osflash.signals:SlotList' isStatic='false' isConst='false' defaultValue='unknown' >
+</field>
+<interfaceRec name='IPrioritySignal' fullname='org.osflash.signals:IPrioritySignal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\IPrioritySignal.as' namespace='org.osflash.signals' access='public' baseClasses='org.osflash.signals:ISignal' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 
+	 ]]></description>
+</interfaceRec>
+<method name='addOnceWithPriority' fullname='org.osflash.signals:IPrioritySignal/org.osflash.signals:IPrioritySignal:addOnceWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;priority' param_types='Function;int' param_defaults='undefined;0' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[
+
+		 Subscribes a one-time listener for this signal.
+
+		 The signal will remove the listener automatically the first time it is called,
+
+		 after the dispatch to all listeners is complete.
+
+		 ]]></description>
+<param><![CDATA[listener A function with an argument
+
+		 that matches the type of event dispatched by the signal.
+
+		 If eventClass is not specified, the listener and dispatch() can be called without an argument.
+
+		 ]]></param>
+<param><![CDATA[priority The priority level of the event listener.
+
+		 The priority is designated by a signed 32-bit integer.
+
+		 The higher the number, the higher the priority.
+
+		 All listeners with priority n are processed before listeners of priority n-1.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+<see><![CDATA[ISlot
+
+		 ]]></see>
+</method>
+<method name='addWithPriority' fullname='org.osflash.signals:IPrioritySignal/org.osflash.signals:IPrioritySignal:addWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;priority' param_types='Function;int' param_defaults='undefined;0' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[
+
+		 Subscribes a listener for the signal.
+
+		 After you successfully register an event listener,
+
+		 you cannot change its priority through additional calls to add().
+
+		 To change a listener's priority, you must first call remove().
+
+		 Then you can register the listener again with the new priority level.
+
+		 ]]></description>
+<param><![CDATA[listener A function with an argument
+
+		 that matches the type of event dispatched by the signal.
+
+		 If eventClass is not specified, the listener and dispatch() can be called without an argument.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+<see><![CDATA[ISlot
+
+		 ]]></see>
+</method>
+<classRec name='MonoSignal' fullname='org.osflash.signals:MonoSignal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\MonoSignal.as' namespace='org.osflash.signals' access='public' baseclass='Object' interfaces='org.osflash.signals:ISignal' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A MonoSignal can have only one listener.
+
+	 ]]></description>
+<metadata>
+	<DefaultProperty owner='org.osflash.signals:MonoSignal' name='valueClasses' >
+	</DefaultProperty>
+</metadata>
+</classRec>
+<method name='MonoSignal' fullname='org.osflash.signals:MonoSignal/MonoSignal' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClasses' param_types='restParam' param_defaults='undefined' result_type='*'>
+<description><![CDATA[
+
+		 Creates a MonoSignal instance to dispatch value objects.
+
+		 ]]></description>
+<param><![CDATA[valueClasses Any number of class references that enable type checks in dispatch().
+
+		 For example, new Signal(String, uint)
+
+		 would allow: signal.dispatch("the Answer", 42)
+
+		 but not: signal.dispatch(true, 42.5)
+
+		 nor: signal.dispatch()
+
+		 
+		 NOTE: Subclasses cannot call super.apply(null, valueClasses),
+
+		 but this constructor has logic to support super(valueClasses).
+
+		 ]]></param>
+</method>
+<method name='addOnce' fullname='org.osflash.signals:MonoSignal/addOnce' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a one-time listener for this signal.
+
+		 The signal will remove the listener automatically the first time it is called,
+
+		 after the dispatch to all listeners is complete.
+
+		 ]]></description>
+<param><![CDATA[listener A function with arguments
+
+		 that matches the value classes dispatched by the signal.
+
+		 If value classes are not specified (e.g. via Signal constructor), dispatch() can be called without arguments.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='add' fullname='org.osflash.signals:MonoSignal/add' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a listener for the signal.
+
+		 ]]></description>
+<param><![CDATA[listener A function with arguments
+
+		 that matches the value classes dispatched by the signal.
+
+		 If value classes are not specified (e.g. via Signal constructor), dispatch() can be called without arguments.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='dispatch' fullname='org.osflash.signals:MonoSignal/dispatch' isStatic='false' isFinal='false' isOverride='false'  param_names='valueObjects' param_types='restParam' param_defaults='undefined' result_type='void'>
+<description><![CDATA[ 
+
+		 Dispatches an object to listeners.
+
+		 ]]></description>
+<param><![CDATA[valueObjects	Any number of parameters to send to listeners. Will be type-checked against valueClasses.
+
+		 ]]></param>
+</method>
+<method name='registerListener' fullname='org.osflash.signals:MonoSignal/protected:registerListener' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;once' param_types='Function;Boolean' param_defaults='undefined;false' result_type='org.osflash.signals:ISlot'>
+</method>
+<method name='removeAll' fullname='org.osflash.signals:MonoSignal/removeAll' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[ 
+
+		 Unsubscribes all listeners from the signal.
+
+		 ]]></description>
+</method>
+<method name='remove' fullname='org.osflash.signals:MonoSignal/remove' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Unsubscribes a listener from the signal.
+
+		 ]]></description>
+<param><![CDATA[listener
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='numListeners' fullname='org.osflash.signals:MonoSignal/numListeners/get' isStatic='false' isFinal='false' isOverride='false'  result_type='uint'>
+<description><![CDATA[  The current number of listeners for the signal. ]]></description>
+</method>
+<method name='valueClasses' fullname='org.osflash.signals:MonoSignal/valueClasses/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Array'>
+<description><![CDATA[ 
+
+		 An optional array of classes defining the types of parameters sent to listeners.
+
+		 ]]></description>
+</method>
+<method name='valueClasses' fullname='org.osflash.signals:MonoSignal/valueClasses/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Array' param_defaults='undefined' result_type='void'>
+</method>
+<field name='_valueClasses' fullname='org.osflash.signals:MonoSignal/protected:_valueClasses' type='Array' isStatic='false' isConst='false' >
+</field>
+<field name='slot' fullname='org.osflash.signals:MonoSignal/protected:slot' type='org.osflash.signals:Slot' isStatic='false' isConst='false' >
+</field>
+<classRec name='Signal' fullname='org.osflash.signals:Signal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\Signal.as' namespace='org.osflash.signals' access='public' baseclass='org.osflash.signals:OnceSignal' interfaces='org.osflash.signals:ISignal' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Signal dispatches events to multiple listeners.
+
+	 It is inspired by C# events and delegates, and by
+
+	 <a target="_top" href="http://en.wikipedia.org/wiki/Signals_and_slots">signals and slots</a>
+
+	 in Qt.
+
+	 A Signal adds event dispatching functionality through composition and interfaces,
+
+	 rather than inheriting from a dispatcher.
+
+	 <br/><br/>
+
+	 Project home: <a target="_top" href="http://github.com/robertpenner/as3-signals/">http://github.com/robertpenner/as3-signals/</a>
+
+	 ]]></description>
+<metadata>
+	<DefaultProperty owner='org.osflash.signals:Signal' name='valueClasses' >
+	</DefaultProperty>
+</metadata>
+</classRec>
+<method name='Signal' fullname='org.osflash.signals:Signal/Signal' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClasses' param_types='restParam' param_defaults='undefined' result_type='*'>
+<description><![CDATA[
+
+		 Creates a Signal instance to dispatch value objects.
+
+		 ]]></description>
+<param><![CDATA[valueClasses Any number of class references that enable type checks in dispatch().
+
+		 For example, new Signal(String, uint)
+
+		 would allow: signal.dispatch("the Answer", 42)
+
+		 but not: signal.dispatch(true, 42.5)
+
+		 nor: signal.dispatch()
+
+		 
+		 NOTE: In AS3, subclasses cannot call super.apply(null, valueClasses),
+
+		 but this constructor has logic to support super(valueClasses).
+
+		 ]]></param>
+</method>
+<method name='add' fullname='org.osflash.signals:Signal/add' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a listener for the signal.
+
+		 ]]></description>
+<param><![CDATA[listener A function with arguments
+
+		 that matches the value classes dispatched by the signal.
+
+		 If value classes are not specified (e.g. via Signal constructor), dispatch() can be called without arguments.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<classRec name='PrioritySignal' fullname='org.osflash.signals:PrioritySignal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\PrioritySignal.as' namespace='org.osflash.signals' access='public' baseclass='org.osflash.signals:Signal' interfaces='org.osflash.signals:IPrioritySignal' isFinal='false' isDynamic='false' >
+<metadata>
+	<DefaultProperty owner='org.osflash.signals:PrioritySignal' name='valueClasses' >
+	</DefaultProperty>
+</metadata>
+</classRec>
+<method name='PrioritySignal' fullname='org.osflash.signals:PrioritySignal/PrioritySignal' isStatic='false' isFinal='false' isOverride='false'  param_names='valueClasses' param_types='restParam' param_defaults='undefined' result_type='*'>
+</method>
+<method name='addOnceWithPriority' fullname='org.osflash.signals:PrioritySignal/addOnceWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;priority' param_types='Function;int' param_defaults='undefined;0' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a one-time listener for this signal.
+
+		 The signal will remove the listener automatically the first time it is called,
+
+		 after the dispatch to all listeners is complete.
+
+		 ]]></description>
+<param><![CDATA[listener A function with an argument
+
+		 that matches the type of event dispatched by the signal.
+
+		 If eventClass is not specified, the listener and dispatch() can be called without an argument.
+
+		 ]]></param>
+<param><![CDATA[priority The priority level of the event listener.
+
+		 The priority is designated by a signed 32-bit integer.
+
+		 The higher the number, the higher the priority.
+
+		 All listeners with priority n are processed before listeners of priority n-1.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='addWithPriority' fullname='org.osflash.signals:PrioritySignal/addWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;priority' param_types='Function;int' param_defaults='undefined;0' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a listener for the signal.
+
+		 After you successfully register an event listener,
+
+		 you cannot change its priority through additional calls to add().
+
+		 To change a listener's priority, you must first call remove().
+
+		 Then you can register the listener again with the new priority level.
+
+		 ]]></description>
+<param><![CDATA[listener A function with an argument
+
+		 that matches the type of event dispatched by the signal.
+
+		 If eventClass is not specified, the listener and dispatch() can be called without an argument.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='registerListenerWithPriority' fullname='org.osflash.signals:PrioritySignal/protected:registerListenerWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;once;priority' param_types='Function;Boolean;int' param_defaults='undefined;false;0' result_type='org.osflash.signals:ISlot'>
+</method>
+<method name='registerListener' fullname='org.osflash.signals:PrioritySignal/protected:registerListener' isStatic='false' isFinal='false' isOverride='true'  param_names='listener;once' param_types='Function;Boolean' param_defaults='undefined;false' result_type='org.osflash.signals:ISlot'>
+</method>
+<classRec name='DeluxeSignal' fullname='org.osflash.signals:DeluxeSignal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\DeluxeSignal.as' namespace='org.osflash.signals' access='public' baseclass='org.osflash.signals:PrioritySignal' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Signal dispatches events to multiple listeners.
+
+	 It is inspired by C# events and delegates, and by
+
+	 <a target="_top" href="http://en.wikipedia.org/wiki/Signals_and_slots">signals and slots</a>
+
+	 in Qt.
+
+	 A Signal adds event dispatching functionality through composition and interfaces,
+
+	 rather than inheriting from a dispatcher.
+
+	 <br/><br/>
+
+	 Project home: <a target="_top" href="http://github.com/robertpenner/as3-signals/">http://github.com/robertpenner/as3-signals/</a>
+
+	 ]]></description>
+<metadata>
+	<DefaultProperty owner='org.osflash.signals:DeluxeSignal' name='valueClasses' >
+	</DefaultProperty>
+</metadata>
+</classRec>
+<method name='DeluxeSignal' fullname='org.osflash.signals:DeluxeSignal/DeluxeSignal' isStatic='false' isFinal='false' isOverride='false'  param_names='target;valueClasses' param_types='Object;restParam' param_defaults='null;undefined' result_type='*'>
+<description><![CDATA[
+
+		 Creates a DeluxeSignal instance to dispatch events on behalf of a target object.
+
+		 ]]></description>
+<param><![CDATA[target The object the signal is dispatching events on behalf of.
+
+		 ]]></param>
+<param><![CDATA[valueClasses Any number of class references that enable type checks in dispatch().
+
+		 For example, new DeluxeSignal(this, String, uint)
+
+		 would allow: signal.dispatch("the Answer", 42)
+
+		 but not: signal.dispatch(true, 42.5)
+
+		 nor: signal.dispatch()
+
+		 
+		 NOTE: Subclasses cannot call super.apply(null, valueClasses),
+
+		 but this constructor has logic to support super(valueClasses).
+
+		 ]]></param>
+</method>
+<method name='dispatch' fullname='org.osflash.signals:DeluxeSignal/dispatch' isStatic='false' isFinal='false' isOverride='true'  param_names='valueObjects' param_types='restParam' param_defaults='undefined' result_type='void'>
+<description><![CDATA[ 
+
+		 Dispatches an object to listeners.
+
+		 ]]></description>
+<param><![CDATA[valueObjects	Any number of parameters to send to listeners. Will be type-checked against valueClasses.
+
+		 ]]></param>
+</method>
+<method name='target' fullname='org.osflash.signals:DeluxeSignal/target/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Object'>
+<description><![CDATA[ ]]></description>
+<inheritDoc><![CDATA[]]></inheritDoc>
+</method>
+<method name='target' fullname='org.osflash.signals:DeluxeSignal/target/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+</method>
+<field name='_target' fullname='org.osflash.signals:DeluxeSignal/protected:_target' type='Object' isStatic='false' isConst='false' >
+</field>
+<interfaceRec name='IEvent' fullname='org.osflash.signals.events:IEvent' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\events\IEvent.as' namespace='org.osflash.signals.events' access='public' baseClasses='Object' isFinal='false' isDynamic='false' >
+</interfaceRec>
+<method name='clone' fullname='org.osflash.signals.events:IEvent/org.osflash.signals.events:IEvent:clone' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.events:IEvent'>
+<description><![CDATA[ Returns a new copy of the instance. ]]></description>
+</method>
+<method name='bubbles' fullname='org.osflash.signals.events:IEvent/org.osflash.signals.events:IEvent:bubbles/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Boolean'>
+<description><![CDATA[ Indicates whether the event is a bubbling event. ]]></description>
+</method>
+<method name='currentTarget' fullname='org.osflash.signals.events:IEvent/org.osflash.signals.events:IEvent:currentTarget/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Object'>
+<description><![CDATA[ The object that added the listener for the event. ]]></description>
+</method>
+<method name='signal' fullname='org.osflash.signals.events:IEvent/org.osflash.signals.events:IEvent:signal/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals:IPrioritySignal'>
+<description><![CDATA[ The signal that dispatched the event. ]]></description>
+</method>
+<method name='target' fullname='org.osflash.signals.events:IEvent/org.osflash.signals.events:IEvent:target/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Object'>
+<description><![CDATA[ The object that originally dispatched the event.
+
+		  When dispatched from an signal, the target is the object containing the signal. ]]></description>
+</method>
+<method name='bubbles' fullname='org.osflash.signals.events:IEvent/org.osflash.signals.events:IEvent:bubbles/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Boolean' param_defaults='undefined' result_type='void'>
+</method>
+<method name='currentTarget' fullname='org.osflash.signals.events:IEvent/org.osflash.signals.events:IEvent:currentTarget/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+</method>
+<method name='signal' fullname='org.osflash.signals.events:IEvent/org.osflash.signals.events:IEvent:signal/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='org.osflash.signals:IPrioritySignal' param_defaults='undefined' result_type='void'>
+</method>
+<method name='target' fullname='org.osflash.signals.events:IEvent/org.osflash.signals.events:IEvent:target/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+</method>
+<interfaceRec name='IBubbleEventHandler' fullname='org.osflash.signals.events:IBubbleEventHandler' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\events\IBubbleEventHandler.as' namespace='org.osflash.signals.events' access='public' baseClasses='Object' isFinal='false' isDynamic='false' >
+</interfaceRec>
+<method name='onEventBubbled' fullname='org.osflash.signals.events:IBubbleEventHandler/org.osflash.signals.events:IBubbleEventHandler:onEventBubbled' isStatic='false' isFinal='false' isOverride='false'  param_names='event' param_types='org.osflash.signals.events:IEvent' param_defaults='undefined' result_type='Boolean'>
+<description><![CDATA[
+
+		 Handler for event bubbling.
+
+		 It's left to the IBubbleEventHandler to decide what to do with the event.
+
+		 ]]></description>
+<param><![CDATA[event The event that bubbled up.
+
+		 ]]></param>
+<return><![CDATA[whether to continue bubbling this event
+
+		 ]]></return>
+</method>
+<classRec name='GenericEvent' fullname='org.osflash.signals.events:GenericEvent' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\events\GenericEvent.as' namespace='org.osflash.signals.events' access='public' baseclass='Object' interfaces='org.osflash.signals.events:IEvent' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 
+	 ]]></description>
+<see><![CDATA[org.osflash.signals.events.IEvent
+
+	 Documentation for the event interface being maintained in IEvent to avoid duplication for now.
+
+	 ]]></see>
+</classRec>
+<method name='GenericEvent' fullname='org.osflash.signals.events:GenericEvent/GenericEvent' isStatic='false' isFinal='false' isOverride='false'  param_names='bubbles' param_types='Boolean' param_defaults='false' result_type='*'>
+</method>
+<method name='clone' fullname='org.osflash.signals.events:GenericEvent/clone' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.events:IEvent'>
+<description><![CDATA[  Returns a new copy of the instance. ]]></description>
+</method>
+<method name='bubbles' fullname='org.osflash.signals.events:GenericEvent/bubbles/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Boolean'>
+<description><![CDATA[  Indicates whether the event is a bubbling event. ]]></description>
+</method>
+<method name='currentTarget' fullname='org.osflash.signals.events:GenericEvent/currentTarget/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Object'>
+<description><![CDATA[  The object that added the listener for the event. ]]></description>
+</method>
+<method name='signal' fullname='org.osflash.signals.events:GenericEvent/signal/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals:IPrioritySignal'>
+<description><![CDATA[  The signal that dispatched the event. ]]></description>
+</method>
+<method name='target' fullname='org.osflash.signals.events:GenericEvent/target/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Object'>
+<description><![CDATA[  The object that originally dispatched the event.
+
+		  When dispatched from an signal, the target is the object containing the signal. ]]></description>
+</method>
+<method name='bubbles' fullname='org.osflash.signals.events:GenericEvent/bubbles/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Boolean' param_defaults='undefined' result_type='void'>
+</method>
+<method name='currentTarget' fullname='org.osflash.signals.events:GenericEvent/currentTarget/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+</method>
+<method name='signal' fullname='org.osflash.signals.events:GenericEvent/signal/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='org.osflash.signals:IPrioritySignal' param_defaults='undefined' result_type='void'>
+</method>
+<method name='target' fullname='org.osflash.signals.events:GenericEvent/target/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Object' param_defaults='undefined' result_type='void'>
+</method>
+<field name='_bubbles' fullname='org.osflash.signals.events:GenericEvent/protected:_bubbles' type='Boolean' isStatic='false' isConst='false' >
+</field>
+<field name='_currentTarget' fullname='org.osflash.signals.events:GenericEvent/protected:_currentTarget' type='Object' isStatic='false' isConst='false' >
+</field>
+<field name='_signal' fullname='org.osflash.signals.events:GenericEvent/protected:_signal' type='org.osflash.signals:IPrioritySignal' isStatic='false' isConst='false' >
+</field>
+<field name='_target' fullname='org.osflash.signals.events:GenericEvent/protected:_target' type='Object' isStatic='false' isConst='false' >
+</field>
+<classRec name='NativeSignalSet' fullname='org.osflash.signals.natives.sets:NativeSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\NativeSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='Object' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 A convenient way to access a logical set of signals.
+
+	 
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 
+
+	 ]]></author>
+<example><![CDATA[SignalSets allow you to get predefined signals for many built in events
+
+	 <listing version="3.0" >
+
+		package {
+
+			import org.osflash.signals.natives.sets.InteractiveObjectSignalSet;
+
+		
+
+			import flash.display.Sprite;
+
+			import flash.events.Event;
+
+		
+
+			public class Example extends Sprite {
+
+		
+
+				private var button:Sprite;
+
+				private var buttonSignals:InteractiveObjectSignalSet;
+
+		
+
+				public function Main() {
+
+					button = new Sprite();
+
+					button.graphics.beginFill(0xff0000);
+
+					button.graphics.drawRect(0, 0, 100, 100);
+
+					button.graphics.endFill();
+
+					
+
+					buttonSignals = new InteractiveObjectSignalSet(button);
+
+					buttonSignals.click.add(handler);
+
+					buttonSignals.addedToStage.add(handler);
+
+					buttonSignals.enterFrame.addOnce(handler);
+
+					
+
+					addChild(button);
+
+				}
+
+		
+
+				private function handler(event:Event):void {
+
+					trace(event.target, "fired", event.type);
+
+				}
+
+			}
+
+		}
+
+	 </listing>
+
+	 ]]></example>
+</classRec>
+<method name='NativeSignalSet' fullname='org.osflash.signals.natives.sets:NativeSignalSet/NativeSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.events:IEventDispatcher' param_defaults='undefined' result_type='*'>
+</method>
+<method name='getNativeSignal' fullname='org.osflash.signals.natives.sets:NativeSignalSet/getNativeSignal' isStatic='false' isFinal='false' isOverride='false'  param_names='eventType;eventClass' param_types='String;Class' param_defaults='undefined;null' result_type='org.osflash.signals.natives:NativeSignal'>
+<description><![CDATA[
+
+		 Lazily instantiates a NativeSignal
+
+		 ]]></description>
+</method>
+<method name='removeAll' fullname='org.osflash.signals.natives.sets:NativeSignalSet/removeAll' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[
+
+		 Unsubscribes all listeners from all signals in the set.
+
+		 ]]></description>
+</method>
+<method name='numListeners' fullname='org.osflash.signals.natives.sets:NativeSignalSet/numListeners/get' isStatic='false' isFinal='false' isOverride='false'  result_type='int'>
+<description><![CDATA[
+
+		 The current number of listeners for the signal.
+
+		 ]]></description>
+</method>
+<method name='signals' fullname='org.osflash.signals.natives.sets:NativeSignalSet/signals/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Array'>
+<description><![CDATA[
+
+		 The signals in the SignalSet as an Array.
+
+		 ]]></description>
+</method>
+<field name='_signals' fullname='org.osflash.signals.natives.sets:NativeSignalSet/protected:_signals' type='flash.utils:Dictionary' isStatic='false' isConst='true' defaultValue='unknown' >
+</field>
+<field name='target' fullname='org.osflash.signals.natives.sets:NativeSignalSet/protected:target' type='flash.events:IEventDispatcher' isStatic='false' isConst='false' >
+</field>
+<classRec name='EventDispatcherSignalSet' fullname='org.osflash.signals.natives.sets:EventDispatcherSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\EventDispatcherSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:NativeSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='EventDispatcherSignalSet' fullname='org.osflash.signals.natives.sets:EventDispatcherSignalSet/EventDispatcherSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.events:EventDispatcher' param_defaults='undefined' result_type='*'>
+</method>
+<method name='activate' fullname='org.osflash.signals.natives.sets:EventDispatcherSignalSet/activate/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='deactivate' fullname='org.osflash.signals.natives.sets:EventDispatcherSignalSet/deactivate/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='TimerSignalSet' fullname='org.osflash.signals.natives.sets:TimerSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\TimerSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='TimerSignalSet' fullname='org.osflash.signals.natives.sets:TimerSignalSet/TimerSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.utils:Timer' param_defaults='undefined' result_type='*'>
+</method>
+<method name='timerComplete' fullname='org.osflash.signals.natives.sets:TimerSignalSet/timerComplete/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='timer' fullname='org.osflash.signals.natives.sets:TimerSignalSet/timer/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='FileReferenceSignalSet' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\FileReferenceSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='FileReferenceSignalSet' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet/FileReferenceSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.net:FileReference' param_defaults='undefined' result_type='*'>
+</method>
+<method name='cancel' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet/cancel/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='complete' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet/complete/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='httpStatus' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet/httpStatus/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='ioError' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet/ioError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='open' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet/open/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='progress' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet/progress/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='securityError' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet/securityError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='select' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet/select/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='uploadCompleteData' fullname='org.osflash.signals.natives.sets:FileReferenceSignalSet/uploadCompleteData/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='SocketSignalSet' fullname='org.osflash.signals.natives.sets:SocketSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\SocketSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='SocketSignalSet' fullname='org.osflash.signals.natives.sets:SocketSignalSet/SocketSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.net:Socket' param_defaults='undefined' result_type='*'>
+</method>
+<method name='close' fullname='org.osflash.signals.natives.sets:SocketSignalSet/close/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='connect' fullname='org.osflash.signals.natives.sets:SocketSignalSet/connect/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='ioError' fullname='org.osflash.signals.natives.sets:SocketSignalSet/ioError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='securityError' fullname='org.osflash.signals.natives.sets:SocketSignalSet/securityError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='socketData' fullname='org.osflash.signals.natives.sets:SocketSignalSet/socketData/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='URLLoaderSignalSet' fullname='org.osflash.signals.natives.sets:URLLoaderSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\URLLoaderSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='URLLoaderSignalSet' fullname='org.osflash.signals.natives.sets:URLLoaderSignalSet/URLLoaderSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.net:URLLoader' param_defaults='undefined' result_type='*'>
+</method>
+<method name='complete' fullname='org.osflash.signals.natives.sets:URLLoaderSignalSet/complete/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='httpStatus' fullname='org.osflash.signals.natives.sets:URLLoaderSignalSet/httpStatus/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='ioError' fullname='org.osflash.signals.natives.sets:URLLoaderSignalSet/ioError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='open' fullname='org.osflash.signals.natives.sets:URLLoaderSignalSet/open/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='progress' fullname='org.osflash.signals.natives.sets:URLLoaderSignalSet/progress/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='securityError' fullname='org.osflash.signals.natives.sets:URLLoaderSignalSet/securityError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='NetConnectionSignalSet' fullname='org.osflash.signals.natives.sets:NetConnectionSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\NetConnectionSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='NetConnectionSignalSet' fullname='org.osflash.signals.natives.sets:NetConnectionSignalSet/NetConnectionSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.net:NetConnection' param_defaults='undefined' result_type='*'>
+</method>
+<method name='asyncError' fullname='org.osflash.signals.natives.sets:NetConnectionSignalSet/asyncError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='ioError' fullname='org.osflash.signals.natives.sets:NetConnectionSignalSet/ioError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='netStatus' fullname='org.osflash.signals.natives.sets:NetConnectionSignalSet/netStatus/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='securityError' fullname='org.osflash.signals.natives.sets:NetConnectionSignalSet/securityError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='SoundChannelSignalSet' fullname='org.osflash.signals.natives.sets:SoundChannelSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\SoundChannelSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='SoundChannelSignalSet' fullname='org.osflash.signals.natives.sets:SoundChannelSignalSet/SoundChannelSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.media:SoundChannel' param_defaults='undefined' result_type='*'>
+</method>
+<method name='soundComplete' fullname='org.osflash.signals.natives.sets:SoundChannelSignalSet/soundComplete/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='FileReferenceListSignalSet' fullname='org.osflash.signals.natives.sets:FileReferenceListSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\FileReferenceListSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='FileReferenceListSignalSet' fullname='org.osflash.signals.natives.sets:FileReferenceListSignalSet/FileReferenceListSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.net:FileReference' param_defaults='undefined' result_type='*'>
+</method>
+<method name='cancel' fullname='org.osflash.signals.natives.sets:FileReferenceListSignalSet/cancel/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='select' fullname='org.osflash.signals.natives.sets:FileReferenceListSignalSet/select/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='XMLSocketSignalSet' fullname='org.osflash.signals.natives.sets:XMLSocketSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\XMLSocketSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='XMLSocketSignalSet' fullname='org.osflash.signals.natives.sets:XMLSocketSignalSet/XMLSocketSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.net:XMLSocket' param_defaults='undefined' result_type='*'>
+</method>
+<method name='close' fullname='org.osflash.signals.natives.sets:XMLSocketSignalSet/close/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='connect' fullname='org.osflash.signals.natives.sets:XMLSocketSignalSet/connect/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='data' fullname='org.osflash.signals.natives.sets:XMLSocketSignalSet/data/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='ioError' fullname='org.osflash.signals.natives.sets:XMLSocketSignalSet/ioError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='securityError' fullname='org.osflash.signals.natives.sets:XMLSocketSignalSet/securityError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='SharedObjectSignalSet' fullname='org.osflash.signals.natives.sets:SharedObjectSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\SharedObjectSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='SharedObjectSignalSet' fullname='org.osflash.signals.natives.sets:SharedObjectSignalSet/SharedObjectSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.net:SharedObject' param_defaults='undefined' result_type='*'>
+</method>
+<method name='asyncError' fullname='org.osflash.signals.natives.sets:SharedObjectSignalSet/asyncError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='netStatus' fullname='org.osflash.signals.natives.sets:SharedObjectSignalSet/netStatus/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='sync' fullname='org.osflash.signals.natives.sets:SharedObjectSignalSet/sync/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='DisplayObjectSignalSet' fullname='org.osflash.signals.natives.sets:DisplayObjectSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\DisplayObjectSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='DisplayObjectSignalSet' fullname='org.osflash.signals.natives.sets:DisplayObjectSignalSet/DisplayObjectSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.display:DisplayObject' param_defaults='undefined' result_type='*'>
+</method>
+<method name='addedToStage' fullname='org.osflash.signals.natives.sets:DisplayObjectSignalSet/addedToStage/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='added' fullname='org.osflash.signals.natives.sets:DisplayObjectSignalSet/added/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='enterFrame' fullname='org.osflash.signals.natives.sets:DisplayObjectSignalSet/enterFrame/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='exitFrame' fullname='org.osflash.signals.natives.sets:DisplayObjectSignalSet/exitFrame/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='frameConstructed' fullname='org.osflash.signals.natives.sets:DisplayObjectSignalSet/frameConstructed/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='removedFromStage' fullname='org.osflash.signals.natives.sets:DisplayObjectSignalSet/removedFromStage/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='removed' fullname='org.osflash.signals.natives.sets:DisplayObjectSignalSet/removed/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='render' fullname='org.osflash.signals.natives.sets:DisplayObjectSignalSet/render/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='URLStreamSignalSet' fullname='org.osflash.signals.natives.sets:URLStreamSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\URLStreamSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='URLStreamSignalSet' fullname='org.osflash.signals.natives.sets:URLStreamSignalSet/URLStreamSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.net:URLStream' param_defaults='undefined' result_type='*'>
+</method>
+<method name='complete' fullname='org.osflash.signals.natives.sets:URLStreamSignalSet/complete/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='httpStatus' fullname='org.osflash.signals.natives.sets:URLStreamSignalSet/httpStatus/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='ioError' fullname='org.osflash.signals.natives.sets:URLStreamSignalSet/ioError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='open' fullname='org.osflash.signals.natives.sets:URLStreamSignalSet/open/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='progress' fullname='org.osflash.signals.natives.sets:URLStreamSignalSet/progress/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='securityError' fullname='org.osflash.signals.natives.sets:URLStreamSignalSet/securityError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='MicrophoneSignalSet' fullname='org.osflash.signals.natives.sets:MicrophoneSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\MicrophoneSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='MicrophoneSignalSet' fullname='org.osflash.signals.natives.sets:MicrophoneSignalSet/MicrophoneSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.media:Microphone' param_defaults='undefined' result_type='*'>
+</method>
+<method name='activity' fullname='org.osflash.signals.natives.sets:MicrophoneSignalSet/activity/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='status' fullname='org.osflash.signals.natives.sets:MicrophoneSignalSet/status/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='NetStreamSignalSet' fullname='org.osflash.signals.natives.sets:NetStreamSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\NetStreamSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='NetStreamSignalSet' fullname='org.osflash.signals.natives.sets:NetStreamSignalSet/NetStreamSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.net:NetStream' param_defaults='undefined' result_type='*'>
+</method>
+<method name='asyncError' fullname='org.osflash.signals.natives.sets:NetStreamSignalSet/asyncError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='ioError' fullname='org.osflash.signals.natives.sets:NetStreamSignalSet/ioError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='netStatus' fullname='org.osflash.signals.natives.sets:NetStreamSignalSet/netStatus/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='LoaderInfoSignalSet' fullname='org.osflash.signals.natives.sets:LoaderInfoSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\LoaderInfoSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='LoaderInfoSignalSet' fullname='org.osflash.signals.natives.sets:LoaderInfoSignalSet/LoaderInfoSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.display:LoaderInfo' param_defaults='undefined' result_type='*'>
+</method>
+<method name='complete' fullname='org.osflash.signals.natives.sets:LoaderInfoSignalSet/complete/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='httpStatus' fullname='org.osflash.signals.natives.sets:LoaderInfoSignalSet/httpStatus/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='init' fullname='org.osflash.signals.natives.sets:LoaderInfoSignalSet/init/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='ioError' fullname='org.osflash.signals.natives.sets:LoaderInfoSignalSet/ioError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='open' fullname='org.osflash.signals.natives.sets:LoaderInfoSignalSet/open/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='progress' fullname='org.osflash.signals.natives.sets:LoaderInfoSignalSet/progress/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='unload' fullname='org.osflash.signals.natives.sets:LoaderInfoSignalSet/unload/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='SoundSignalSet' fullname='org.osflash.signals.natives.sets:SoundSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\SoundSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:EventDispatcherSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='SoundSignalSet' fullname='org.osflash.signals.natives.sets:SoundSignalSet/SoundSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.media:Sound' param_defaults='undefined' result_type='*'>
+</method>
+<method name='complete' fullname='org.osflash.signals.natives.sets:SoundSignalSet/complete/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='id3' fullname='org.osflash.signals.natives.sets:SoundSignalSet/id3/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='ioError' fullname='org.osflash.signals.natives.sets:SoundSignalSet/ioError/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='open' fullname='org.osflash.signals.natives.sets:SoundSignalSet/open/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='progress' fullname='org.osflash.signals.natives.sets:SoundSignalSet/progress/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='InteractiveObjectSignalSet' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\InteractiveObjectSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:DisplayObjectSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='InteractiveObjectSignalSet' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/InteractiveObjectSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.display:InteractiveObject' param_defaults='undefined' result_type='*'>
+</method>
+<method name='click' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/click/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='doubleClick' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/doubleClick/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='focusIn' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/focusIn/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='focusOut' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/focusOut/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='keyDown' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/keyDown/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='keyFocusChange' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/keyFocusChange/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='keyUp' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/keyUp/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='mouseDown' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/mouseDown/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='mouseFocusChange' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/mouseFocusChange/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='mouseMove' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/mouseMove/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='mouseOut' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/mouseOut/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='mouseOver' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/mouseOver/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='mouseUp' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/mouseUp/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='mouseWheel' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/mouseWheel/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='rollOut' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/rollOut/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='rollOver' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/rollOver/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='tabChildrenChange' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/tabChildrenChange/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='tabEnabledChange' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/tabEnabledChange/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='tabIndexChange' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/tabIndexChange/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='textInput' fullname='org.osflash.signals.natives.sets:InteractiveObjectSignalSet/textInput/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='TextFieldSignalSet' fullname='org.osflash.signals.natives.sets:TextFieldSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\TextFieldSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:InteractiveObjectSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='TextFieldSignalSet' fullname='org.osflash.signals.natives.sets:TextFieldSignalSet/TextFieldSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.text:TextField' param_defaults='undefined' result_type='*'>
+</method>
+<method name='change' fullname='org.osflash.signals.natives.sets:TextFieldSignalSet/change/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='link' fullname='org.osflash.signals.natives.sets:TextFieldSignalSet/link/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<classRec name='StageSignalSet' fullname='org.osflash.signals.natives.sets:StageSignalSet' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\sets\StageSignalSet.as' namespace='org.osflash.signals.natives.sets' access='public' baseclass='org.osflash.signals.natives.sets:InteractiveObjectSignalSet' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Jon Adams
+
+	 ]]></author>
+</classRec>
+<method name='StageSignalSet' fullname='org.osflash.signals.natives.sets:StageSignalSet/StageSignalSet' isStatic='false' isFinal='false' isOverride='false'  param_names='target' param_types='flash.display:Stage' param_defaults='undefined' result_type='*'>
+</method>
+<method name='fullScreen' fullname='org.osflash.signals.natives.sets:StageSignalSet/fullScreen/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='mouseLeave' fullname='org.osflash.signals.natives.sets:StageSignalSet/mouseLeave/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<method name='resize' fullname='org.osflash.signals.natives.sets:StageSignalSet/resize/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives:NativeSignal'>
+</method>
+<interfaceRec name='INativeDispatcher' fullname='org.osflash.signals.natives:INativeDispatcher' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\INativeDispatcher.as' namespace='org.osflash.signals.natives' access='public' baseClasses='org.osflash.signals:IPrioritySignal' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 Similar to IDispatcher but using strong types specific to Flash's native event system.
+
+	 ]]></description>
+</interfaceRec>
+<method name='dispatchEvent' fullname='org.osflash.signals.natives:INativeDispatcher/org.osflash.signals.natives:INativeDispatcher:dispatchEvent' isStatic='false' isFinal='false' isOverride='false'  param_names='event' param_types='flash.events:Event' param_defaults='undefined' result_type='Boolean'>
+<description><![CDATA[
+
+		 Dispatches an event to listeners.
+
+		 ]]></description>
+<param><![CDATA[event			An instance of a class that is or extends flash.events.Event.
+
+		 ]]></param>
+<throws><![CDATA[ArgumentError	<code>ArgumentError</code>: Event object is <code>null</code>.
+
+		 ]]></throws>
+<throws><![CDATA[ArgumentError	<code>ArgumentError</code>:	Event object [event] is not an instance of [eventClass].
+
+		 ]]></throws>
+<throws><![CDATA[ArgumentError	<code>ArgumentError</code>:	Event object has incorrect type. Expected [eventType] but was [event.type].
+
+		 ]]></throws>
+</method>
+<method name='eventClass' fullname='org.osflash.signals.natives:INativeDispatcher/org.osflash.signals.natives:INativeDispatcher:eventClass/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Class'>
+<description><![CDATA[
+
+		 The class of event permitted to be dispatched. Will be flash.events.Event or a subclass.
+
+		 ]]></description>
+</method>
+<method name='eventType' fullname='org.osflash.signals.natives:INativeDispatcher/org.osflash.signals.natives:INativeDispatcher:eventType/get' isStatic='false' isFinal='false' isOverride='false'  result_type='String'>
+<description><![CDATA[
+
+		 The type of event permitted to be dispatched. Corresponds to flash.events.Event.type.
+
+		 ]]></description>
+</method>
+<method name='target' fullname='org.osflash.signals.natives:INativeDispatcher/org.osflash.signals.natives:INativeDispatcher:target/get' isStatic='false' isFinal='false' isOverride='false'  result_type='flash.events:IEventDispatcher'>
+<description><![CDATA[
+
+		 The object considered the source of the dispatched events.
+
+		 ]]></description>
+</method>
+<method name='target' fullname='org.osflash.signals.natives:INativeDispatcher/org.osflash.signals.natives:INativeDispatcher:target/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='flash.events:IEventDispatcher' param_defaults='undefined' result_type='void'>
+</method>
+<classRec name='NativeRelaySignal' fullname='org.osflash.signals.natives:NativeRelaySignal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\NativeRelaySignal.as' namespace='org.osflash.signals.natives' access='public' baseclass='org.osflash.signals:Signal' interfaces='org.osflash.signals.natives:INativeDispatcher' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 The NativeRelaySignal class is used to relay events from an IEventDispatcher
+
+	 to listeners.
+
+	 The difference as compared to NativeSignal is that
+
+	 NativeRelaySignal has its own dispatching code,
+
+	 whereas NativeSignal uses the IEventDispatcher to dispatch.
+
+	 ]]></description>
+<metadata>
+	<DefaultProperty owner='org.osflash.signals.natives:NativeRelaySignal' name='valueClasses' >
+	</DefaultProperty>
+</metadata>
+</classRec>
+<method name='NativeRelaySignal' fullname='org.osflash.signals.natives:NativeRelaySignal/NativeRelaySignal' isStatic='false' isFinal='false' isOverride='false'  param_names='target;eventType;eventClass' param_types='flash.events:IEventDispatcher;String;Class' param_defaults='undefined;undefined;null' result_type='*'>
+<description><![CDATA[
+
+		 Creates a new NativeRelaySignal instance to relay events from an IEventDispatcher.
+
+		 ]]></description>
+<param><![CDATA[target	An object that implements the flash.events.IEventDispatcher interface.
+
+		 ]]></param>
+<param><![CDATA[eventType	The event string name that would normally be passed to IEventDispatcher.addEventListener().
+
+		 ]]></param>
+<param><![CDATA[eventClass An optional class reference that enables an event type check in dispatch().
+
+		 Because the target is an IEventDispatcher,
+
+		 eventClass needs to be flash.events.Event or a subclass of it.
+
+		 ]]></param>
+</method>
+<method name='addOnceWithPriority' fullname='org.osflash.signals.natives:NativeRelaySignal/addOnceWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;priority' param_types='Function;int' param_defaults='undefined;0' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a one-time listener for this signal.
+
+		 The signal will remove the listener automatically the first time it is called,
+
+		 after the dispatch to all listeners is complete.
+
+		 ]]></description>
+<param><![CDATA[listener A function with an argument
+
+		 that matches the type of event dispatched by the signal.
+
+		 If eventClass is not specified, the listener and dispatch() can be called without an argument.
+
+		 ]]></param>
+<param><![CDATA[priority The priority level of the event listener.
+
+		 The priority is designated by a signed 32-bit integer.
+
+		 The higher the number, the higher the priority.
+
+		 All listeners with priority n are processed before listeners of priority n-1.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='addOnce' fullname='org.osflash.signals.natives:NativeRelaySignal/addOnce' isStatic='false' isFinal='false' isOverride='true'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+</method>
+<method name='addWithPriority' fullname='org.osflash.signals.natives:NativeRelaySignal/addWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;priority' param_types='Function;int' param_defaults='undefined;0' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a listener for the signal.
+
+		 After you successfully register an event listener,
+
+		 you cannot change its priority through additional calls to add().
+
+		 To change a listener's priority, you must first call remove().
+
+		 Then you can register the listener again with the new priority level.
+
+		 ]]></description>
+<param><![CDATA[listener A function with an argument
+
+		 that matches the type of event dispatched by the signal.
+
+		 If eventClass is not specified, the listener and dispatch() can be called without an argument.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='add' fullname='org.osflash.signals.natives:NativeRelaySignal/add' isStatic='false' isFinal='false' isOverride='true'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+</method>
+<method name='dispatchEvent' fullname='org.osflash.signals.natives:NativeRelaySignal/dispatchEvent' isStatic='false' isFinal='false' isOverride='false'  param_names='event' param_types='flash.events:Event' param_defaults='undefined' result_type='Boolean'>
+<description><![CDATA[
+
+		 Unlike other signals, NativeRelaySignal does not dispatch null
+
+		 because it causes an exception in EventDispatcher.
+
+		 
+
+		 Dispatches an event to listeners.
+
+		 ]]></description>
+<param><![CDATA[event			An instance of a class that is or extends flash.events.Event.
+
+		 ]]></param>
+</method>
+<method name='dispatch' fullname='org.osflash.signals.natives:NativeRelaySignal/dispatch' isStatic='false' isFinal='false' isOverride='true'  param_names='valueObjects' param_types='restParam' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Dispatches an object to listeners.
+
+		 ]]></description>
+<param><![CDATA[valueObjects	Any number of parameters to send to listeners. Will be type-checked against valueClasses.
+
+		 ]]></param>
+</method>
+<method name='onNativeEvent' fullname='org.osflash.signals.natives:NativeRelaySignal/protected:onNativeEvent' isStatic='false' isFinal='false' isOverride='false'  param_names='event' param_types='flash.events:Event' param_defaults='undefined' result_type='void'>
+</method>
+<method name='registerListenerWithPriority' fullname='org.osflash.signals.natives:NativeRelaySignal/protected:registerListenerWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;once;priority' param_types='Function;Boolean;int' param_defaults='undefined;false;0' result_type='org.osflash.signals:ISlot'>
+</method>
+<method name='removeAll' fullname='org.osflash.signals.natives:NativeRelaySignal/removeAll' isStatic='false' isFinal='false' isOverride='true'  result_type='void'>
+<description><![CDATA[
+
+		 
+
+		 Unsubscribes all listeners from the signal.
+
+		 ]]></description>
+</method>
+<method name='remove' fullname='org.osflash.signals.natives:NativeRelaySignal/remove' isStatic='false' isFinal='false' isOverride='true'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Unsubscribes a listener from the signal.
+
+		 ]]></description>
+<param><![CDATA[listener
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='eventClass' fullname='org.osflash.signals.natives:NativeRelaySignal/eventClass/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Class'>
+<description><![CDATA[ 
+
+		 The class of event permitted to be dispatched. Will be flash.events.Event or a subclass.
+
+		 ]]></description>
+</method>
+<method name='eventType' fullname='org.osflash.signals.natives:NativeRelaySignal/eventType/get' isStatic='false' isFinal='false' isOverride='false'  result_type='String'>
+<description><![CDATA[ 
+
+		 The type of event permitted to be dispatched. Corresponds to flash.events.Event.type.
+
+		 ]]></description>
+</method>
+<method name='target' fullname='org.osflash.signals.natives:NativeRelaySignal/target/get' isStatic='false' isFinal='false' isOverride='false'  result_type='flash.events:IEventDispatcher'>
+<description><![CDATA[ 
+
+		 The object considered the source of the dispatched events.
+
+		 ]]></description>
+</method>
+<method name='eventClass' fullname='org.osflash.signals.natives:NativeRelaySignal/eventClass/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Class' param_defaults='undefined' result_type='void'>
+</method>
+<method name='eventType' fullname='org.osflash.signals.natives:NativeRelaySignal/eventType/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='String' param_defaults='undefined' result_type='void'>
+</method>
+<method name='target' fullname='org.osflash.signals.natives:NativeRelaySignal/target/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='flash.events:IEventDispatcher' param_defaults='undefined' result_type='void'>
+</method>
+<method name='valueClasses' fullname='org.osflash.signals.natives:NativeRelaySignal/valueClasses/set' isStatic='false' isFinal='false' isOverride='true'  param_names='value' param_types='Array' param_defaults='undefined' result_type='void'>
+</method>
+<field name='_eventClass' fullname='org.osflash.signals.natives:NativeRelaySignal/protected:_eventClass' type='Class' isStatic='false' isConst='false' >
+</field>
+<field name='_eventType' fullname='org.osflash.signals.natives:NativeRelaySignal/protected:_eventType' type='String' isStatic='false' isConst='false' >
+</field>
+<field name='_target' fullname='org.osflash.signals.natives:NativeRelaySignal/protected:_target' type='flash.events:IEventDispatcher' isStatic='false' isConst='false' >
+</field>
+<classRec name='NativeSignal' fullname='org.osflash.signals.natives:NativeSignal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\NativeSignal.as' namespace='org.osflash.signals.natives' access='public' baseclass='Object' interfaces='org.osflash.signals.natives:INativeDispatcher' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 The NativeSignal class provides a strongly-typed facade for an IEventDispatcher.
+
+	 A NativeSignal is essentially a mini-dispatcher locked to a specific event type and class.
+
+	 It can become part of an interface.
+
+	 ]]></description>
+<metadata>
+	<DefaultProperty owner='org.osflash.signals.natives:NativeSignal' name='eventClass' >
+	</DefaultProperty>
+</metadata>
+</classRec>
+<method name='NativeSignal' fullname='org.osflash.signals.natives:NativeSignal/NativeSignal' isStatic='false' isFinal='false' isOverride='false'  param_names='target;eventType;eventClass' param_types='flash.events:IEventDispatcher;String;Class' param_defaults='null;;null' result_type='*'>
+<description><![CDATA[
+
+		 Creates a NativeSignal instance to dispatch events on behalf of a target object.
+
+		 ]]></description>
+<param><![CDATA[target The object on whose behalf the signal is dispatching events.
+
+		 ]]></param>
+<param><![CDATA[eventType The type of Event permitted to be dispatched from this signal. Corresponds to Event.type.
+
+		 ]]></param>
+<param><![CDATA[eventClass An optional class reference that enables an event type check in dispatch(). Defaults to flash.events.Event if omitted.
+
+		 ]]></param>
+</method>
+<method name='addOnceWithPriority' fullname='org.osflash.signals.natives:NativeSignal/addOnceWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;priority' param_types='Function;int' param_defaults='undefined;0' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a one-time listener for this signal.
+
+		 The signal will remove the listener automatically the first time it is called,
+
+		 after the dispatch to all listeners is complete.
+
+		 ]]></description>
+<param><![CDATA[listener A function with an argument
+
+		 that matches the type of event dispatched by the signal.
+
+		 If eventClass is not specified, the listener and dispatch() can be called without an argument.
+
+		 ]]></param>
+<param><![CDATA[priority The priority level of the event listener.
+
+		 The priority is designated by a signed 32-bit integer.
+
+		 The higher the number, the higher the priority.
+
+		 All listeners with priority n are processed before listeners of priority n-1.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='addOnce' fullname='org.osflash.signals.natives:NativeSignal/addOnce' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a one-time listener for this signal.
+
+		 The signal will remove the listener automatically the first time it is called,
+
+		 after the dispatch to all listeners is complete.
+
+		 ]]></description>
+<param><![CDATA[listener A function with arguments
+
+		 that matches the value classes dispatched by the signal.
+
+		 If value classes are not specified (e.g. via Signal constructor), dispatch() can be called without arguments.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='addWithPriority' fullname='org.osflash.signals.natives:NativeSignal/addWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;priority' param_types='Function;int' param_defaults='undefined;0' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a listener for the signal.
+
+		 After you successfully register an event listener,
+
+		 you cannot change its priority through additional calls to add().
+
+		 To change a listener's priority, you must first call remove().
+
+		 Then you can register the listener again with the new priority level.
+
+		 ]]></description>
+<param><![CDATA[listener A function with an argument
+
+		 that matches the type of event dispatched by the signal.
+
+		 If eventClass is not specified, the listener and dispatch() can be called without an argument.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='add' fullname='org.osflash.signals.natives:NativeSignal/add' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Subscribes a listener for the signal.
+
+		 ]]></description>
+<param><![CDATA[listener A function with arguments
+
+		 that matches the value classes dispatched by the signal.
+
+		 If value classes are not specified (e.g. via Signal constructor), dispatch() can be called without arguments.
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='dispatchEvent' fullname='org.osflash.signals.natives:NativeSignal/dispatchEvent' isStatic='false' isFinal='false' isOverride='false'  param_names='event' param_types='flash.events:Event' param_defaults='undefined' result_type='Boolean'>
+<description><![CDATA[
+
+		 Unlike other signals, NativeSignal does not dispatch null
+
+		 because it causes an exception in EventDispatcher.
+
+		 
+
+		 Dispatches an event to listeners.
+
+		 ]]></description>
+<param><![CDATA[event			An instance of a class that is or extends flash.events.Event.
+
+		 ]]></param>
+</method>
+<method name='dispatch' fullname='org.osflash.signals.natives:NativeSignal/dispatch' isStatic='false' isFinal='false' isOverride='false'  param_names='valueObjects' param_types='restParam' param_defaults='undefined' result_type='void'>
+<description><![CDATA[ 
+
+		 Dispatches an object to listeners.
+
+		 ]]></description>
+<param><![CDATA[valueObjects	Any number of parameters to send to listeners. Will be type-checked against valueClasses.
+
+		 ]]></param>
+</method>
+<method name='registerListenerWithPriority' fullname='org.osflash.signals.natives:NativeSignal/protected:registerListenerWithPriority' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;once;priority' param_types='Function;Boolean;int' param_defaults='undefined;false;0' result_type='org.osflash.signals:ISlot'>
+</method>
+<method name='registrationPossible' fullname='org.osflash.signals.natives:NativeSignal/protected:registrationPossible' isStatic='false' isFinal='false' isOverride='false'  param_names='listener;once' param_types='Function;Boolean' param_defaults='undefined;undefined' result_type='Boolean'>
+</method>
+<method name='removeAll' fullname='org.osflash.signals.natives:NativeSignal/removeAll' isStatic='false' isFinal='false' isOverride='false'  result_type='void'>
+<description><![CDATA[ 
+
+		 Unsubscribes all listeners from the signal.
+
+		 ]]></description>
+</method>
+<method name='remove' fullname='org.osflash.signals.natives:NativeSignal/remove' isStatic='false' isFinal='false' isOverride='false'  param_names='listener' param_types='Function' param_defaults='undefined' result_type='org.osflash.signals:ISlot'>
+<description><![CDATA[ 
+
+		 Unsubscribes a listener from the signal.
+
+		 ]]></description>
+<param><![CDATA[listener
+
+		 ]]></param>
+<return><![CDATA[a ISlot, which contains the Function passed as the parameter
+
+		 ]]></return>
+</method>
+<method name='eventClass' fullname='org.osflash.signals.natives:NativeSignal/eventClass/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Class'>
+<description><![CDATA[ 
+
+		 The class of event permitted to be dispatched. Will be flash.events.Event or a subclass.
+
+		 ]]></description>
+</method>
+<method name='eventType' fullname='org.osflash.signals.natives:NativeSignal/eventType/get' isStatic='false' isFinal='false' isOverride='false'  result_type='String'>
+<description><![CDATA[ 
+
+		 The type of event permitted to be dispatched. Corresponds to flash.events.Event.type.
+
+		 ]]></description>
+</method>
+<method name='numListeners' fullname='org.osflash.signals.natives:NativeSignal/numListeners/get' isStatic='false' isFinal='false' isOverride='false'  result_type='uint'>
+<description><![CDATA[  The current number of listeners for the signal. ]]></description>
+</method>
+<method name='target' fullname='org.osflash.signals.natives:NativeSignal/target/get' isStatic='false' isFinal='false' isOverride='false'  result_type='flash.events:IEventDispatcher'>
+<description><![CDATA[ 
+
+		 The object considered the source of the dispatched events.
+
+		 ]]></description>
+</method>
+<method name='valueClasses' fullname='org.osflash.signals.natives:NativeSignal/valueClasses/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Array'>
+<description><![CDATA[ 
+
+		 An optional array of classes defining the types of parameters sent to listeners.
+
+		 ]]></description>
+</method>
+<method name='eventClass' fullname='org.osflash.signals.natives:NativeSignal/eventClass/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Class' param_defaults='undefined' result_type='void'>
+</method>
+<method name='eventType' fullname='org.osflash.signals.natives:NativeSignal/eventType/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='String' param_defaults='undefined' result_type='void'>
+</method>
+<method name='target' fullname='org.osflash.signals.natives:NativeSignal/target/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='flash.events:IEventDispatcher' param_defaults='undefined' result_type='void'>
+</method>
+<method name='valueClasses' fullname='org.osflash.signals.natives:NativeSignal/valueClasses/set' isStatic='false' isFinal='false' isOverride='false'  param_names='value' param_types='Array' param_defaults='undefined' result_type='void'>
+</method>
+<field name='_eventClass' fullname='org.osflash.signals.natives:NativeSignal/protected:_eventClass' type='Class' isStatic='false' isConst='false' >
+</field>
+<field name='_eventType' fullname='org.osflash.signals.natives:NativeSignal/protected:_eventType' type='String' isStatic='false' isConst='false' >
+</field>
+<field name='_target' fullname='org.osflash.signals.natives:NativeSignal/protected:_target' type='flash.events:IEventDispatcher' isStatic='false' isConst='false' >
+</field>
+<field name='_valueClasses' fullname='org.osflash.signals.natives:NativeSignal/protected:_valueClasses' type='Array' isStatic='false' isConst='false' >
+</field>
+<field name='slots' fullname='org.osflash.signals.natives:NativeSignal/protected:slots' type='org.osflash.signals:SlotList' isStatic='false' isConst='false' >
+</field>
+<classRec name='NativeMappedSignal' fullname='org.osflash.signals.natives:NativeMappedSignal' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\NativeMappedSignal.as' namespace='org.osflash.signals.natives' access='public' baseclass='org.osflash.signals.natives:NativeRelaySignal' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 <p>
+
+	 The NativeMappedSignal class is used to map/transform a native Event, 
+
+	 relayed from an IEventDispatcher, into other forms of data, 
+
+	 which are dispatched to all listeners.
+
+	 </p>
+
+	 <p>This can be used to form a border where native flash Events do not cross.</p>
+
+	 ]]></description>
+<metadata>
+	<DefaultProperty owner='org.osflash.signals.natives:NativeMappedSignal' name='valueClasses' >
+	</DefaultProperty>
+</metadata>
+</classRec>
+<method name='NativeMappedSignal' fullname='org.osflash.signals.natives:NativeMappedSignal/NativeMappedSignal' isStatic='false' isFinal='false' isOverride='false'  param_names='target;eventType;eventClass;mappedTypes' param_types='flash.events:IEventDispatcher;String;Class;restParam' param_defaults='undefined;undefined;null;undefined' result_type='*'>
+<description><![CDATA[
+
+		 Creates a new NativeMappedSignal instance to map/transform a native Event, 
+
+	 	 relayed from an IEventDispatcher, into other forms of data, 
+
+	 	 which are dispatched to all listeners.
+
+		 
+
+		 ]]></description>
+<param><![CDATA[target	An object that implements the flash.events.IEventDispatcher interface.
+
+		 ]]></param>
+<param><![CDATA[eventType The event string name that would normally be passed to IEventDispatcher.addEventListener().
+
+		 ]]></param>
+<param><![CDATA[eventClass An optional class reference that enables an event type check in dispatch().
+
+		 ]]></param>
+<param><![CDATA[mappedTypes an optional list of types that enables the checking of the types mapped from an Event. 
+
+		 ]]></param>
+</method>
+<method name='dispatchEvent' fullname='org.osflash.signals.natives:NativeMappedSignal/dispatchEvent' isStatic='false' isFinal='false' isOverride='true'  param_names='event' param_types='flash.events:Event' param_defaults='undefined' result_type='Boolean'>
+</method>
+<method name='mapEvent' fullname='org.osflash.signals.natives:NativeMappedSignal/protected:mapEvent' isStatic='false' isFinal='false' isOverride='false'  param_names='eventFromTarget' param_types='flash.events:Event' param_defaults='undefined' result_type='Object'>
+<description><![CDATA[
+
+		 For usage without extension, instances of <code>NativeMappedSignal</code> that are dispatching any values ( <code>valueClasses.length > 0</code> ),
+
+		 needs to be provided with a either a mapping function or a list of object literals.
+
+		 See <code>mapTo</code> for more info.
+
+		 
+
+		 Subclasses could override this one instead of letting the environment set the mapTo,
+
+		 MAKE SURE to also override <code>mapTo(...)</code> if it should not be allowed.
+
+		 
+		 ]]></description>
+<return><![CDATA[An object or Array of objects mapped from an Event. The mapping of Event to data will be performed by the mapping function
+
+		 if it is set. A list of object literals can also be supplied in place of the mapping function.
+
+		 If no mapping function or object literals are supplied then an empty Array is returned or
+
+		 if <code>valueClasses.length > 0</code> an ArgumentError is thrown.
+
+		 
+		 ]]></return>
+<see><![CDATA[#mapTo()
+
+		 ]]></see>
+<parameter><![CDATA[eventFromTarget the event that was dispatched from target.
+
+		 ]]></parameter>
+</method>
+<method name='mapTo' fullname='org.osflash.signals.natives:NativeMappedSignal/mapTo' isStatic='false' isFinal='false' isOverride='false'  param_names='objectListOrFunction' param_types='restParam' param_defaults='undefined' result_type='org.osflash.signals.natives:NativeMappedSignal'>
+<description><![CDATA[
+
+		 Sets the mapping function or literal object list.
+
+		 If the argument is a list of object literals then this list is dispatched to listeners.
+
+		 
+
+		 <listing version="3.0">
+
+		  signal = new NativeMappedSignal(button, MouseEvent.CLICK, MouseEvent, String).mapTo("ping")
+
+		  signal.add(function(arg:String):void { trace(arg) }) // prints "ping"
+
+		 </listing>
+
+		 
+
+		 And an example passing a list of literals:
+
+		 
+
+		 <listing version="3.0">
+
+		  signal = new NativeMappedSignal(button, MouseEvent.CLICK, MouseEvent, String, int, Number).mapTo("ping", 3, 3.1415)
+
+		  signal.add(function(arg1:String, arg2:int, arg3:Number):void { trace(arg1, arg2, arg3) }) // prints "ping", 3, 3.1415
+
+		 </listing>
+
+		 
+
+		 If the argument is a function then it is called when the event this NativeMappedSignal is listening for is dispatched.
+
+		 The function should return an Array or a single object. The data returned from the function is passed along as arguments in the Signal dispatch.
+
+		 Lets look at some examples of mapping functions and the function that is called back:
+
+		 
+
+		 <listing version="3.0">
+
+		  signal = new NativeMappedSignal(button, MouseEvent.CLICK, MouseEvent, String).mapTo(function():void { 
+
+		    return "ping"
+
+		  })
+
+		  signal.add(function(arg:String):void { trace(arg) }) // prints "ping"
+
+		 </listing>
+
+		 
+
+		 and here's an example using a list of arguments:
+
+		 
+
+		 <listing version="3.0">
+
+		  signal = new NativeMappedSignal(button, MouseEvent.CLICK, MouseEvent, String, int, Number).mapTo(function():void { 
+
+		    return ["ping", 3, 3.1415] 
+
+		  })
+
+		 	signal.add(function(arg1:String, arg2:int, arg3:Number):void { trace(arg1, arg2, arg3) }) // prints "ping", 3, 3.1415
+
+		 </listing>
+
+		 
+
+		 You can also state your wish to receive the native Event in th mapping function by simply including an argument of type Event:
+
+		 
+
+		 <listing version="3.0">
+
+		  signal = new NativeMappedSignal(button, MouseEvent.CLICK, MouseEvent, Point).mapTo(function(event:MouseEvent):void { 
+
+		    return new Point(event.localX, event.localY)
+
+		  })
+
+		  signal.add(function(arg:Point):void { trace(arg) }) // prints "(x=128, y=256)"
+
+		 </listing> 
+
+		 
+
+		 ]]></description>
+<param><![CDATA[objectListOrFunction This can either be a list of object literals or a function that returns list of objects. 
+
+		 ]]></param>
+<return><![CDATA[The NativeMappedSignal object this method was called on. This allows the Signal to be defined and mapped in one statement.
+
+		 ]]></return>
+</method>
+<method name='onNativeEvent' fullname='org.osflash.signals.natives:NativeMappedSignal/protected:onNativeEvent' isStatic='false' isFinal='false' isOverride='true'  param_names='event' param_types='flash.events:Event' param_defaults='undefined' result_type='void'>
+</method>
+<method name='eventClass' fullname='org.osflash.signals.natives:NativeMappedSignal/eventClass/get' isStatic='false' isFinal='false' isOverride='true'  result_type='Class'>
+<description><![CDATA[
+
+		  
+
+		 The class of event permitted to be dispatched. Will be flash.events.Event or a subclass.
+
+		 ]]></description>
+</method>
+<method name='mappingFunction' fullname='org.osflash.signals.natives:NativeMappedSignal/protected:mappingFunction/get' isStatic='false' isFinal='false' isOverride='false'  result_type='Function'>
+</method>
+<method name='eventClass' fullname='org.osflash.signals.natives:NativeMappedSignal/eventClass/set' isStatic='false' isFinal='false' isOverride='true'  param_names='value' param_types='Class' param_defaults='undefined' result_type='void'>
+</method>
+<method name='valueClasses' fullname='org.osflash.signals.natives:NativeMappedSignal/valueClasses/set' isStatic='false' isFinal='false' isOverride='true'  param_names='value' param_types='Array' param_defaults='undefined' result_type='void'>
+<description><![CDATA[
+
+		 ]]></description>
+</method>
+<field name='_mappingFunction' fullname='org.osflash.signals.natives:NativeMappedSignal/private:_mappingFunction' type='Function' isStatic='false' isConst='false' defaultValue='null' >
+<description><![CDATA[
+
+		 ]]></description>
+<default><![CDATA[is null, no mapping will occur 
+
+		 ]]></default>
+</field>
+<classRec name='SignalTimer' fullname='org.osflash.signals.natives.base:SignalTimer' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\base\SignalTimer.as' namespace='org.osflash.signals.natives.base' access='public' baseclass='flash.utils:Timer' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='SignalTimer' fullname='org.osflash.signals.natives.base:SignalTimer/SignalTimer' isStatic='false' isFinal='false' isOverride='false'  param_names='delay;repeatCount' param_types='Number;int' param_defaults='undefined;0' result_type='*'>
+</method>
+<method name='signals' fullname='org.osflash.signals.natives.base:SignalTimer/signals/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives.sets:TimerSignalSet'>
+</method>
+<field name='_signals' fullname='org.osflash.signals.natives.base:SignalTimer/private:_signals' type='org.osflash.signals.natives.sets:TimerSignalSet' isStatic='false' isConst='false' >
+</field>
+<classRec name='SignalXMLSocket' fullname='org.osflash.signals.natives.base:SignalXMLSocket' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\base\SignalXMLSocket.as' namespace='org.osflash.signals.natives.base' access='public' baseclass='flash.net:XMLSocket' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='signals' fullname='org.osflash.signals.natives.base:SignalXMLSocket/signals/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives.sets:XMLSocketSignalSet'>
+</method>
+<field name='_signals' fullname='org.osflash.signals.natives.base:SignalXMLSocket/private:_signals' type='org.osflash.signals.natives.sets:XMLSocketSignalSet' isStatic='false' isConst='false' >
+</field>
+<classRec name='SignalSocket' fullname='org.osflash.signals.natives.base:SignalSocket' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\base\SignalSocket.as' namespace='org.osflash.signals.natives.base' access='public' baseclass='flash.net:Socket' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='signals' fullname='org.osflash.signals.natives.base:SignalSocket/signals/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives.sets:SocketSignalSet'>
+</method>
+<field name='_signals' fullname='org.osflash.signals.natives.base:SignalSocket/private:_signals' type='org.osflash.signals.natives.sets:SocketSignalSet' isStatic='false' isConst='false' >
+</field>
+<classRec name='SignalURLLoader' fullname='org.osflash.signals.natives.base:SignalURLLoader' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\base\SignalURLLoader.as' namespace='org.osflash.signals.natives.base' access='public' baseclass='flash.net:URLLoader' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='signals' fullname='org.osflash.signals.natives.base:SignalURLLoader/signals/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives.sets:URLLoaderSignalSet'>
+</method>
+<field name='_signals' fullname='org.osflash.signals.natives.base:SignalURLLoader/private:_signals' type='org.osflash.signals.natives.sets:URLLoaderSignalSet' isStatic='false' isConst='false' >
+</field>
+<classRec name='SignalBitmap' fullname='org.osflash.signals.natives.base:SignalBitmap' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\base\SignalBitmap.as' namespace='org.osflash.signals.natives.base' access='public' baseclass='flash.display:Bitmap' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Simon Richardson - me]]></author>
+<simonrichardson.info><![CDATA[
+	 ]]></simonrichardson.info>
+</classRec>
+<method name='signals' fullname='org.osflash.signals.natives.base:SignalBitmap/signals/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives.sets:DisplayObjectSignalSet'>
+</method>
+<field name='_signals' fullname='org.osflash.signals.natives.base:SignalBitmap/private:_signals' type='org.osflash.signals.natives.sets:DisplayObjectSignalSet' isStatic='false' isConst='false' >
+</field>
+<classRec name='SignalShape' fullname='org.osflash.signals.natives.base:SignalShape' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\base\SignalShape.as' namespace='org.osflash.signals.natives.base' access='public' baseclass='flash.display:Shape' isFinal='false' isDynamic='false' >
+<description><![CDATA[
+
+	 ]]></description>
+<author><![CDATA[Simon Richardson - me]]></author>
+<simonrichardson.info><![CDATA[
+	 ]]></simonrichardson.info>
+</classRec>
+<method name='signals' fullname='org.osflash.signals.natives.base:SignalShape/signals/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives.sets:DisplayObjectSignalSet'>
+</method>
+<field name='_signals' fullname='org.osflash.signals.natives.base:SignalShape/private:_signals' type='org.osflash.signals.natives.sets:DisplayObjectSignalSet' isStatic='false' isConst='false' >
+</field>
+<classRec name='SignalTextField' fullname='org.osflash.signals.natives.base:SignalTextField' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\base\SignalTextField.as' namespace='org.osflash.signals.natives.base' access='public' baseclass='flash.text:TextField' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='signals' fullname='org.osflash.signals.natives.base:SignalTextField/signals/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives.sets:TextFieldSignalSet'>
+</method>
+<field name='_signals' fullname='org.osflash.signals.natives.base:SignalTextField/private:_signals' type='org.osflash.signals.natives.sets:TextFieldSignalSet' isStatic='false' isConst='false' >
+</field>
+<classRec name='SignalSprite' fullname='org.osflash.signals.natives.base:SignalSprite' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\base\SignalSprite.as' namespace='org.osflash.signals.natives.base' access='public' baseclass='flash.display:Sprite' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='signals' fullname='org.osflash.signals.natives.base:SignalSprite/signals/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives.sets:InteractiveObjectSignalSet'>
+</method>
+<field name='_signals' fullname='org.osflash.signals.natives.base:SignalSprite/private:_signals' type='org.osflash.signals.natives.sets:InteractiveObjectSignalSet' isStatic='false' isConst='false' >
+</field>
+<classRec name='SignalMovieClip' fullname='org.osflash.signals.natives.base:SignalMovieClip' sourcefile='C:\Users\Robert\Documents\Flash\OSFlash\signals\as3-signals\src\org\osflash\signals\natives\base\SignalMovieClip.as' namespace='org.osflash.signals.natives.base' access='public' baseclass='flash.display:MovieClip' isFinal='false' isDynamic='false' >
+</classRec>
+<method name='signals' fullname='org.osflash.signals.natives.base:SignalMovieClip/signals/get' isStatic='false' isFinal='false' isOverride='false'  result_type='org.osflash.signals.natives.sets:InteractiveObjectSignalSet'>
+</method>
+<field name='_signals' fullname='org.osflash.signals.natives.base:SignalMovieClip/private:_signals' type='org.osflash.signals.natives.sets:InteractiveObjectSignalSet' isStatic='false' isConst='false' >
+</field>
+</asdoc>
