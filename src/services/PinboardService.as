@@ -1,7 +1,7 @@
 package services
 {
-	import REST.RESTClient;
-	import REST.RESTRequest;
+	import nl.powergeek.REST.RESTClient;
+	import nl.powergeek.REST.RESTRequest;
 	
 	import flash.events.Event;
 	import flash.net.URLVariables;

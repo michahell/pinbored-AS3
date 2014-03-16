@@ -1,4 +1,4 @@
-package REST
+package nl.powergeek.REST
 {
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
@@ -66,10 +66,10 @@ package REST
 			restrequest.build();
 			
 			// echo request
-			trace('requesting:\n',
-				restrequest.type, '\n',
-				restrequest.payload.url, '\n'
-			);
+//			trace('requesting:\n',
+//				restrequest.type, '\n',
+//				restrequest.payload.url, '\n'
+//			);
 			
 			// send the request
 			if(dryRun == false)
@@ -89,7 +89,7 @@ package REST
 		
 		protected function httpStatusHandler(event:HTTPStatusEvent):void
 		{
-			trace('RESTClient STATUS: ' + event.status, event.responseURL);
+//			trace('RESTClient STATUS: ' + event.status, event.responseURL);
 		}
 	}
 }

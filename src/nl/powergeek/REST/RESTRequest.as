@@ -1,4 +1,4 @@
-package REST
+package nl.powergeek.REST
 {
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
@@ -65,7 +65,7 @@ package REST
 					break;
 			}
 			
-			trace('payload url: ' + payload.url);
+//			trace('payload url: ' + payload.url);
 			
 			// return the request
 			return payload;

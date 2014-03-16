@@ -1,8 +1,5 @@
 package screens
 {
-	import REST.RESTClient;
-	import REST.RESTRequest;
-	
 	import feathers.controls.Button;
 	import feathers.controls.Callout;
 	import feathers.controls.Header;
@@ -20,6 +17,10 @@ package screens
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
+	
+	import nl.powergeek.REST.RESTClient;
+	import nl.powergeek.REST.RESTRequest;
+	import nl.powergeek.feathers.components.PinboardLayoutGroupItemRenderer;
 	
 	import org.osflash.signals.Signal;
 	
@@ -95,14 +96,14 @@ package screens
 					
 					// if bookmark is stale...
 					bm.staleConfirmed.addOnce(function():void {
-						if(bookmarkList.contains(bm)) {
-							bookmarkList.getItemAt(bookmarkList.getItemIndex(bm));
-						}
+						trace('getting signal..');
+						list.invalidate(INVALIDATION_FLAG_ALL);
 					});
 					
 					// if bookmark is stale...
 					bm.notStaleConfirmed.addOnce(function():void {
-						
+						trace('getting signal..');
+						list.invalidate(INVALIDATION_FLAG_ALL);
 					});
 					
 					bookmarkList.addItem(bm);
@@ -145,11 +146,7 @@ package screens
 			list.itemRendererProperties.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
 			list.itemRendererProperties.iconPosition = Button.ICON_POSITION_LEFT;
 			list.itemRendererProperties.gap = 10;
-//			
-//			list.itemRendererProperties.accessoryField = "accessory";
-//			list.itemRendererProperties.accessoryGap = Number.POSITIVE_INFINITY;
-//			list.itemRendererProperties.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-//			list.isSelectable = false;
+			list.isSelectable = false;
 			
 			// add list to panel
 			this.panel.addChild( list );

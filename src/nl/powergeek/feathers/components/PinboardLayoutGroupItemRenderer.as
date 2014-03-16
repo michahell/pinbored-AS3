@@ -1,4 +1,4 @@
-package 
+package nl.powergeek.feathers.components 
 {
 	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
@@ -28,6 +28,7 @@ package
 			_label:Label,
 			_href:Label,
 			_accessory:LayoutGroup,
+			_icons:LayoutGroup,
 			_padding:Number = 0,
 			_currentState:String = STATE_UP,
 			_backgroundSkin:DisplayObject,
@@ -187,7 +188,10 @@ package
 					this._href.text = '[ no link ]';
 				
 				if(this._data.hasOwnProperty("accessory"))
-					this.accessory = this._data.accessory;	
+					this.accessory = this._data.accessory;
+				
+				if(this._data.hasOwnProperty("icons"))
+					this.icons = this._data.icons;
 			}
 		}
 		
@@ -278,6 +282,42 @@ package
 			
 			this.invalidate( INVALIDATION_FLAG_STATE );
 		}
+
+		public function get icons():LayoutGroup
+		{
+			return _icons;
+		}
+
+		public function set icons(value:LayoutGroup):void
+		{
+			if(this._icons == value)
+			{
+				return;
+			}
+			
+			if(this._icons)
+			{
+				this.removeChild(this._icons, true);
+			}
+			
+			this._icons = value;
+			
+			if(this._icons)
+			{
+				var iconLayoutData:AnchorLayoutData = new AnchorLayoutData();
+				
+				iconLayoutData.top = this._padding;
+				iconLayoutData.rightAnchorDisplayObject = this._accessory;
+				iconLayoutData.bottom = this._padding;
+				
+				this._icons.layoutData = iconLayoutData;
+				
+				this.addChild(this._icons);
+			}
+			
+			this.invalidate( INVALIDATION_FLAG_STATE );
+		}
+
 
 	}
 }

@@ -39,6 +39,8 @@ package
 			trace('request completed successfully.');
 			if(status == 200)
 				this.callback(false);
+			else
+				this.callback(true);
 		}
 		
 		protected function ioErrorHandler(event:IOErrorEvent):void
