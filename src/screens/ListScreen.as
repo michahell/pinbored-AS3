@@ -63,6 +63,24 @@ package screens
 			// create GUI
 			createGUI();
 			
+			// mockup list for custom item renderer testing
+//			list.dataProvider = new ListCollection(
+//			[
+//				{ label: "One", href:"http://blabla/nl/sec" },
+//				{ label: "Two", href:"http://blabla/nl/sec" },
+//				{ label: "Three", href:"http://blabla/nl/sec" },
+//				{ label: "Four", href:"http://blabla/nl/sec" },
+//				{ label: "Five", href:"http://blabla/nl/sec" },
+//				{ label: "One", href:"http://blabla/nl/sec" },
+//				{ label: "Two", href:"http://blabla/nl/sec" },
+//				{ label: "Three", href:"http://blabla/nl/sec" },
+//				{ label: "Four", href:"http://blabla/nl/sec" },
+//				{ label: "Five", href:"http://blabla/nl/sec" }
+//			]);
+			
+//			list.itemRendererProperties.labelField = "text";
+			
+			
 			// throw all bookmarks into a list
 			PinboardService.allBookmarksReceived.addOnce(function(event:Event):void {
 				// get request data
@@ -90,9 +108,8 @@ package screens
 					bookmarkList.addItem(bm);
 				});
 				
-				
 				list.dataProvider = bookmarkList;
-				list.itemRendererProperties.labelField = "href";
+//				list.itemRendererProperties.labelField = "href";
 				
 			});
 			
@@ -120,7 +137,7 @@ package screens
 			list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:PinboardLayoutGroupItemRenderer = new PinboardLayoutGroupItemRenderer();
-				renderer.padding = 10;
+				renderer.padding = 5;
 				return renderer;
 			};
 			
@@ -128,11 +145,11 @@ package screens
 			list.itemRendererProperties.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
 			list.itemRendererProperties.iconPosition = Button.ICON_POSITION_LEFT;
 			list.itemRendererProperties.gap = 10;
-			
-			list.itemRendererProperties.accessoryField = "accessory";
-			list.itemRendererProperties.accessoryGap = Number.POSITIVE_INFINITY;
-			list.itemRendererProperties.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
-			list.isSelectable = false;
+//			
+//			list.itemRendererProperties.accessoryField = "accessory";
+//			list.itemRendererProperties.accessoryGap = Number.POSITIVE_INFINITY;
+//			list.itemRendererProperties.accessoryPosition = BaseDefaultItemRenderer.ACCESSORY_POSITION_RIGHT;
+//			list.isSelectable = false;
 			
 			// add list to panel
 			this.panel.addChild( list );

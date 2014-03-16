@@ -16,6 +16,9 @@ package
 		public var
 			bookmarkData: Object,
 			href:String,
+			description:String,
+			extended:String,
+			tags:Vector.<String>,
 			accessory: LayoutGroup,
 			staleConfirmed:Signal = new Signal(),
 			notStaleConfirmed:Signal = new Signal();
@@ -26,6 +29,9 @@ package
 		{
 			this.bookmarkData = bookmarkData;
 			this.href = bookmarkData.href;
+			this.description = bookmarkData.description;
+			this.extended = bookmarkData.extended;
+			this.tags = Vector.<String>(String(bookmarkData.tags).split(" "));
 			
 			accessory = new LayoutGroup();
 			var layout:HorizontalLayout = new HorizontalLayout();
