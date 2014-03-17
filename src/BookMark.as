@@ -48,6 +48,7 @@ package
 		
 		
 		private var
+			icons:LayoutGroup = new LayoutGroup(),
 			iconCheckmark:Icon,
 			iconTags:Icon,
 			iconHeart:Icon,
@@ -61,7 +62,6 @@ package
 			extended:String,
 			tags:Vector.<String>,
 			accessory: LayoutGroup,
-			icons: LayoutGroup,
 			staleConfirmed:Signal = new Signal(),
 			notStaleConfirmed:Signal = new Signal();
 			
@@ -73,6 +73,8 @@ package
 			this.description = bookmarkData.description;
 			this.extended = bookmarkData.extended;
 			this.tags = Vector.<String>(String(bookmarkData.tags).split(" "));
+			
+			this.icons.layout = new HorizontalLayout();
 			
 			accessory = new LayoutGroup();
 			var layout:HorizontalLayout = new HorizontalLayout();
@@ -106,16 +108,10 @@ package
 			};
 			iconCross = new Icon(crossParams, true, 0.27);
 			
-			icons = new LayoutGroup();
-			var iconlayout:HorizontalLayout = new HorizontalLayout();
-			iconlayout.gap = 5;
-			iconlayout.padding = 5;
-			icons.layout = iconlayout;
+			//		icons.addChild(iconTags);
+			//		icons.addChild(iconHeart);
 			
-			icons.addChild(iconCheckmark);
-			icons.addChild(iconTags);
-			icons.addChild(iconHeart);
-			icons.addChild(iconCross);
+			accessory.addChild(icons);
 				
 			var editButton:Button = new Button();
 			editButton.nameList.add(Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON);
@@ -134,13 +130,15 @@ package
 			dangerButton.label = "delete";
 			dangerButton.addEventListener( Event.TRIGGERED, removeTriggeredHandler );
 			accessory.addChild(dangerButton);
-			
 		}
 		
 		private function editTriggeredHandler(event:Event):void
 		{
 			const button:Button = Button(event.currentTarget);
 			trace(button.label + " triggered.");
+			
+			icons.addChild(iconTags);
+			iconTags.setActive();
 		}
 		
 		private function staleTriggeredHandler(event:Event):void
@@ -152,12 +150,14 @@ package
 			var bookmark:BookMark = this;
 			
 			urlChecker.check(this.href, function(stale:Boolean):void{
-				trace('is bookmark stale: ' + stale);
+				
 				if(stale) {
 					bookmark.staleConfirmed.dispatch();
+					icons.addChild(iconCross);
 					iconCross.setActive();
 				} else {
 					bookmark.notStaleConfirmed.dispatch();
+					icons.addChild(iconCheckmark);
 					iconCheckmark.setActive();
 				}
 				
@@ -170,6 +170,9 @@ package
 		{
 			const button:Button = Button(event.currentTarget);
 			trace(button.label + " triggered.");
+			
+			icons.addChild(iconHeart);
+			iconHeart.setActive();
 		}
 		
 		public function removeUrlChecker():void

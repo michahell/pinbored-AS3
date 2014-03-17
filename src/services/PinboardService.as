@@ -20,11 +20,11 @@ package services
 			var variables:URLVariables = new URLVariables();
 			
 			tags.forEach(function(tag:String, index:int, array:Array):void {
-				trace('adding tag to variables: ' + tag);
+//				trace('adding tag to variables: ' + tag);
 				variables.tag = tag;
 			});
 			
-			trace('urlencoded vars: ' + variables.toString());
+//			trace('urlencoded vars: ' + variables.toString());
 			
 			var params:Object = {
 				type:		'get',

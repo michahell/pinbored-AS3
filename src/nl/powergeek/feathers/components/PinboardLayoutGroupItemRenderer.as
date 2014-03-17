@@ -189,9 +189,6 @@ package nl.powergeek.feathers.components
 				
 				if(this._data.hasOwnProperty("accessory"))
 					this.accessory = this._data.accessory;
-				
-				if(this._data.hasOwnProperty("icons"))
-					this.icons = this._data.icons;
 			}
 		}
 		
@@ -278,41 +275,6 @@ package nl.powergeek.feathers.components
 				this._accessory.layoutData = accessoryLayoutData;
 					
 				this.addChild(this._accessory);
-			}
-			
-			this.invalidate( INVALIDATION_FLAG_STATE );
-		}
-
-		public function get icons():LayoutGroup
-		{
-			return _icons;
-		}
-
-		public function set icons(value:LayoutGroup):void
-		{
-			if(this._icons == value)
-			{
-				return;
-			}
-			
-			if(this._icons)
-			{
-				this.removeChild(this._icons, true);
-			}
-			
-			this._icons = value;
-			
-			if(this._icons)
-			{
-				var iconLayoutData:AnchorLayoutData = new AnchorLayoutData();
-				
-				iconLayoutData.top = this._padding;
-				iconLayoutData.rightAnchorDisplayObject = this._accessory;
-				iconLayoutData.bottom = this._padding;
-				
-				this._icons.layoutData = iconLayoutData;
-				
-				this.addChild(this._icons);
 			}
 			
 			this.invalidate( INVALIDATION_FLAG_STATE );

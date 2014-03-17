@@ -1,5 +1,8 @@
 package nl.powergeek.feathers.components
 {
+	import feathers.controls.LayoutGroup;
+	import feathers.layout.HorizontalLayout;
+	
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -46,7 +49,6 @@ package nl.powergeek.feathers.components
 			
 			// set the normal and invisible state by default
 			this.setNormal();
-//			this.setInvisible();
 			
 			// scale icon back a bit
 			this.scaleX = this.scaleY = scaleFix;
@@ -71,46 +73,27 @@ package nl.powergeek.feathers.components
 				this.removeChild(this.hoverState);
 		}
 		
-		private function setInvisible():void
-		{
-			if(this.normalState && this.contains(this.normalState))
-				this.normalState.visible = false;
-			
-			if(this.activeState && this.contains(this.activeState))
-				this.activeState.visible = false;
-			
-			if(this.inactiveState && this.contains(this.inactiveState))
-				this.inactiveState.visible = false;
-			
-			if(this.hoverState && this.contains(this.hoverState))
-				this.hoverState.visible = false;
-		}
-		
 		public function setNormal():void {
 			this.removeAll();
 			this.alpha = 0.1;
-			this.normalState.visible = true;
 			this.addChild(this.normalState);
 		}
 		
 		public function setActive():void {
 			this.removeAll();
 			this.alpha = 1;
-			this.activeState.visible = true;
 			this.addChild(this.activeState);
 		}
 		
 		public function setInactive():void {
 			this.removeAll();
 			this.alpha = 1;
-			this.inactiveState.visible = true;
 			this.addChild(this.inactiveState);
 		}
 		
 		public function setHover():void {
 			this.removeAll();
 			this.alpha = 1;
-			this.hoverState.visible = true;
 			this.addChild(this.hoverState);
 		}
 		

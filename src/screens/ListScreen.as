@@ -4,6 +4,7 @@ package screens
 	import feathers.controls.Callout;
 	import feathers.controls.Header;
 	import feathers.controls.Label;
+	import feathers.controls.LayoutGroup;
 	import feathers.controls.List;
 	import feathers.controls.Panel;
 	import feathers.controls.Screen;
@@ -13,6 +14,7 @@ package screens
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.VerticalLayout;
 	
 	import flash.events.Event;
 	import flash.net.URLRequest;
@@ -21,6 +23,8 @@ package screens
 	import nl.powergeek.REST.RESTClient;
 	import nl.powergeek.REST.RESTRequest;
 	import nl.powergeek.feathers.components.PinboardLayoutGroupItemRenderer;
+	import nl.powergeek.feathers.components.Tag;
+	import nl.powergeek.feathers.components.TagTextInput;
 	
 	import org.osflash.signals.Signal;
 	
@@ -34,15 +38,19 @@ package screens
 		// GUI related
 		private var 
 			panel:Panel = new Panel(),
+			screenGroup:LayoutGroup,
+			listScrollContainer:ScrollContainer,
 			searchBookmarks:TextInput,
-			list:List = new List();
+			searchTags:TagTextInput,
+			list:List = new List(),
+			button:Button;
 		
 		// REST related
 		private var
 			restClient:RESTClient;
-			
-		protected var 
-			button:Button,
+		
+		// signals
+		private var 
 			_onLoginScreenRequest:Signal = new Signal( LoginScreen );
 		
 		public function ListScreen()
@@ -63,24 +71,6 @@ package screens
 		{
 			// create GUI
 			createGUI();
-			
-			// mockup list for custom item renderer testing
-//			list.dataProvider = new ListCollection(
-//			[
-//				{ label: "One", href:"http://blabla/nl/sec" },
-//				{ label: "Two", href:"http://blabla/nl/sec" },
-//				{ label: "Three", href:"http://blabla/nl/sec" },
-//				{ label: "Four", href:"http://blabla/nl/sec" },
-//				{ label: "Five", href:"http://blabla/nl/sec" },
-//				{ label: "One", href:"http://blabla/nl/sec" },
-//				{ label: "Two", href:"http://blabla/nl/sec" },
-//				{ label: "Three", href:"http://blabla/nl/sec" },
-//				{ label: "Four", href:"http://blabla/nl/sec" },
-//				{ label: "Five", href:"http://blabla/nl/sec" }
-//			]);
-			
-//			list.itemRendererProperties.labelField = "text";
-			
 			
 			// throw all bookmarks into a list
 			PinboardService.allBookmarksReceived.addOnce(function(event:Event):void {
@@ -110,21 +100,22 @@ package screens
 				});
 				
 				list.dataProvider = bookmarkList;
-//				list.itemRendererProperties.labelField = "href";
-				
 			});
 			
 			var tags:Array = ['Webdevelopment'];
 			
 			// get some bookmarks
 			PinboardService.GetAllBookmarks(tags);
-			
 		}
 		
 		private function createGUI():void
 		{
-			this.addChild(panel);
+			// add a panel with a header, footer and no scroll shit
+//			this.panel.verticalScrollPolicy = Panel.SCROLL_POLICY_OFF;
+			this.panel.horizontalScrollPolicy = Panel.SCROLL_POLICY_OFF;
 			this.panel.headerFactory = customHeaderFactory;
+			
+			this.panel.padding = 0;
 			
 			this.panel.footerFactory = function():ScrollContainer
 			{
@@ -135,6 +126,26 @@ package screens
 				return container;
 			}
 				
+			this.addChild(panel);
+				
+			// create screen layout (vertical unit)
+			
+			var screenLayout:VerticalLayout = new VerticalLayout();
+			screenLayout.gap = 0;
+			screenLayout.padding = 0;
+			this.panel.layout = screenLayout;
+			
+			// add the tag search 'bar'
+			this.searchTags = new TagTextInput(this._dpiScale);
+			this.searchTags.width = this.width;
+			this.panel.addChild(this.searchTags);
+			
+			// add a scrollcontainer for the list
+			this.listScrollContainer = new ScrollContainer();
+			this.listScrollContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+			this.panel.addChild(this.listScrollContainer);
+				
+			// add a list for the bookmarks
 			list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:PinboardLayoutGroupItemRenderer = new PinboardLayoutGroupItemRenderer();
@@ -149,7 +160,7 @@ package screens
 			list.isSelectable = false;
 			
 			// add list to panel
-			this.panel.addChild( list );
+			this.listScrollContainer.addChild(list);
 		}
 		
 		private function customHeaderFactory():Header
@@ -183,12 +194,19 @@ package screens
 		
 		override protected function draw():void
 		{
-			//runs every time invalidate() is called
-			//a good place for measurement and layout
+			// commit 
 			
+			// measurement
 			panel.width = AppModel.starling.stage.stageWidth;
 			panel.height = AppModel.starling.stage.stageHeight;
+			
+			// update screengroup, searchtags, scrollcontainer, list width etc.
 			list.width = panel.width;
+//			screenGroup.width = panel.width;
+			listScrollContainer.width = panel.width;
+			searchTags.width = panel.width;
+			
+			// layout
 		}
 	}
 }
