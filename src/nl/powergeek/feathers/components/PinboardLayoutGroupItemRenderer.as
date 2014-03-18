@@ -11,6 +11,8 @@ package nl.powergeek.feathers.components
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
+	import nl.powergeek.feathers.themes.PinboredMobileTheme;
+	
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.events.Touch;
@@ -38,8 +40,13 @@ package nl.powergeek.feathers.components
 		
 		override protected function initialize():void
 		{
+			// add main layout
 			this.layout = new AnchorLayout();
-			this.backgroundSkin = new Quad(2, 2, 0x333333);
+			
+			// add background
+			var bg:Quad = new Quad(10, 10, 0x000000);
+			bg.alpha = 0.3;
+			this.backgroundSkin = bg;
 			this._label = new Label();
 			this._href = new Label();
 			
@@ -57,25 +64,25 @@ package nl.powergeek.feathers.components
 			this._label.layoutData = labelLayoutData;
 			this._label.nameList.add(Label.ALTERNATE_NAME_HEADING);
 				
-			this._label.textRendererFactory = function():ITextRenderer
-			{
-				var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
-				textRenderer.textFormat = new TextFormat("Arial", 24, 0xFF0000, true);
-				textRenderer.embedFonts = true;
-				textRenderer.isHTML = true;
-				return textRenderer;
-			}
+//			this._label.textRendererFactory = function():ITextRenderer
+//			{
+//				var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+//				textRenderer.textFormat = new TextFormat("Arial", 24, 0xFF0000, true);
+//				textRenderer.embedFonts = true;
+//				textRenderer.isHTML = false;
+//				return textRenderer;
+//			}
 			
 			this._href.layoutData = hrefLayoutData;
 			
-			this._href.textRendererFactory = function():ITextRenderer
-			{
-				var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
-				textRenderer.textFormat = new TextFormat("Arial", 16, 0x0000FF, false, false, true);
-				textRenderer.embedFonts = true;
-				textRenderer.isHTML = true;
-				return textRenderer;
-			}
+//			this._href.textRendererFactory = function():ITextRenderer
+//			{
+//				var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+//				textRenderer.textFormat = new TextFormat("Arial", 16, 0x0000FF, false, false, true);
+//				textRenderer.embedFonts = true;
+//				textRenderer.isHTML = false;
+//				return textRenderer;
+//			}
 			
 			this.addChild(this._label);
 			this.addChild(this._href);
@@ -214,10 +221,10 @@ package nl.powergeek.feathers.components
 				Quad(this.backgroundSkin).setVertexColor(3, 0x333333);
 			} else {
 				// item has uneven index
-				Quad(this.backgroundSkin).setVertexColor(0, 0x2D2D2D);
-				Quad(this.backgroundSkin).setVertexColor(1, 0x2D2D2D);
-				Quad(this.backgroundSkin).setVertexColor(2, 0x2D2D2D);
-				Quad(this.backgroundSkin).setVertexColor(3, 0x2D2D2D);
+				Quad(this.backgroundSkin).setVertexColor(0, 0x222222);
+				Quad(this.backgroundSkin).setVertexColor(1, 0x222222);
+				Quad(this.backgroundSkin).setVertexColor(2, 0x222222);
+				Quad(this.backgroundSkin).setVertexColor(3, 0x222222);
 			}
 			
 			this._label.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);

@@ -2,22 +2,34 @@
 pinbored
 ========
 
-TODO
-----
-*
+Why yet another bookmark manager?
+---------------------------------
+Because i was annoyed with the ~1300 bookmarks that i had on PinBoard, and NO free, open source application that i could use to quickly batch 'CRUD' them. Also, an excuse to create something with the amazing Starling [Feathers UI](https://github.com/joshtynjala/feathers).
 
+Big fat disclaimer
+------------------
+Everything is provided AS-IS. Use this project in any way you wish, just not to bother me :) If you have a question i will be happy to answer but i will not feel obliged in any way. Also, i probably violated several conventions of AS3 or the Feathers UI so do not expect perfect Feathers-compliant theming and components :)
+
+Todo
+----
+* independant scroll container list view
+* tag text input text renderer styling
+* delete request
+* edit request
+* animations
+* item renderer icon scale fix
+* item renderer icon horizontal layout fix
 
 libraries used
 --------------
-* Starling
-* Feathers UI
-* Signals AS3
-* Adobe AIR
-
+* [Starling](https://github.com/PrimaryFeather/Starling-Framework)
+* [Starling-Extension-Graphics](https://github.com/StarlingGraphics/Starling-Extension-Graphics/tree/master/examples)
+* [Feathers UI](https://github.com/joshtynjala/feathers)
+* [Signals AS3](https://github.com/robertpenner/as3-signals)
+* [Twitter Bootstrap](http://getbootstrap.com/css/#buttons), for the button colors used.
 
 credits
 -------
-
-
 * checkmark icon - http://www.flaticon.com/free-icon/check_1682
-* 
+
+

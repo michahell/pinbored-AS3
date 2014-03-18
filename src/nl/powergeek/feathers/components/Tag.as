@@ -6,6 +6,8 @@ package nl.powergeek.feathers.components
 	import feathers.layout.AnchorLayoutData;
 	import feathers.textures.Scale3Textures;
 	
+	import nl.powergeek.feathers.themes.PinboredMobileTheme;
+	
 	import org.osflash.signals.Signal;
 	
 	import starling.display.Image;
@@ -26,13 +28,10 @@ package nl.powergeek.feathers.components
 		[Embed(source="assets/images/pinbored/icon_cross_white.png")]
 		public static const CrossWhite:Class;
 		
-		[Embed(source="assets/images/pinbored/icon_cross_black.png")]
-		public static const CrossBlack:Class;
-		
 		private var
 			background:Scale3Image,
 			_label:Label = new Label(),
-			_closeIcon:Icon,
+			_closeIcon:InteractiveIcon,
 			_image:Scale3Image,
 			_color:uint,
 			_screenDPIscale:Number,
@@ -57,22 +56,27 @@ package nl.powergeek.feathers.components
 			const texture:Texture = Texture.fromBitmap(new SCALE_3_TEXTURE(), false);
 			const textures:Scale3Textures = new Scale3Textures(texture, 60, 80, Scale3Textures.DIRECTION_HORIZONTAL);
 			this._image = new Scale3Image(textures, this._screenDPIscale);
-			this._image.height = 33;
+			this._image.height = TagTextInput.TAG_HEIGHT;
 			this.addChild(this._image);
 			
 			// add the label
+			this._label.nameList.add(PinboredMobileTheme.LABEL_TAG_TEXTRENDERER);
 			this.addChild(this._label);
-			this._label.nameList.add(Label.ALTERNATE_NAME_HEADING);
 			
 			// add the delete icon
 			var closeIconParams:Object = {
 				normal: new Image(Texture.fromBitmap(new CrossWhite())),
-				active: new Image(Texture.fromBitmap(new CrossActive())),
-				hover: new Image(Texture.fromBitmap(new CrossBlack()))
+				active: new Image(Texture.fromBitmap(new CrossActive()))
 			};
-			_closeIcon = new Icon(closeIconParams, true, this._screenDPIscale, 0.3);
+			
+			_closeIcon = new InteractiveIcon(closeIconParams, false, this._screenDPIscale, 0.15);
 			_closeIcon.addEventListener(TouchEvent.TOUCH, onTouch);
 			this.addChild(this._closeIcon);
+			
+			// use hand cursor over tag
+			this.useHandCursor = true;
+			
+			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 		}
 		
 		private function onTouch(event:TouchEvent):void
@@ -92,7 +96,7 @@ package nl.powergeek.feathers.components
 			
 			// phase 2. measurement
 			// update the scale3 image to the label length. written 'verbosely' for clearness!
-			this._image.width = (this._screenDPIscale * this.padding * 2) + this._label.width + (this._screenDPIscale * this.padding * 4);
+			this._image.width = (this._screenDPIscale * this.padding) + this._label.width + (this._screenDPIscale * this.padding * 3);
 			
 			// update our width
 			this.actualWidth = this._image.width;
@@ -103,10 +107,10 @@ package nl.powergeek.feathers.components
 			this.height = this.actualHeight;
 			
 			// phase 3. layout
-			this._label.x = this._image.x + (this._screenDPIscale * this.padding  * 2);
+			this._label.x = this._image.x + (this._screenDPIscale * this.padding);
 			this._label.y = this._image.y + (this._image.height / 2) - (this._label.height / 2) - 1;
 			
-			this._closeIcon.x = this._image.x + this._image.width - this._closeIcon.width - this.padding;
+			this._closeIcon.x = this._image.x + this._image.width - this._closeIcon.width - (this.padding / 1.5);
 			this._closeIcon.y = this._image.y + (this._image.height / 2) - (this._closeIcon.height / 2);
 			
 		}

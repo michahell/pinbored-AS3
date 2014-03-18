@@ -1,0 +1,14 @@
+pinboard bookmark return JSON example:
+--------------------------------------
+
+  {
+        "href": "http://blog.revolunet.com/angular-for-mobile/#1",
+        "description": "AngularJS for mobile",
+        "extended": "Mobile development with angular JS, cordova and some other stuff.",
+        "meta": "1e0de9d50e0cfca62d3728d931ff9f7c",
+        "hash": "dd1132b56d2e0c33188d3e2b81e7ff66",
+        "time": "2014-02-17T02:07:50Z",
+        "shared": "yes",
+        "toread": "no",
+        "tags": "angular programming Webdevelopment mobiledevelopment"
+    },

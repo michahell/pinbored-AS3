@@ -9,7 +9,7 @@ package nl.powergeek.feathers.components
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	
-	public class Icon extends Sprite
+	public class InteractiveIcon extends Sprite
 	{
 		private var
 			normalState:Image = null,
@@ -23,7 +23,7 @@ package nl.powergeek.feathers.components
 		 * @param enableHover set this to true if you want to activate the hoverstate (mouse over or hover or touch tap! important difference). 
 		 * And of course you need to pass a hover image in the params.
 		 */		
-		public function Icon(params:Object, enableHover:Boolean = false, screenDPIscale:Number = 1, additionalScaleFix:Number = 0.5)
+		public function InteractiveIcon(params:Object, enableHover:Boolean = false, screenDPIscale:Number = 1, additionalScaleFix:Number = 0.5)
 		{
 			super();
 			

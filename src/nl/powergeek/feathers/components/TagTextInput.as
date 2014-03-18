@@ -17,6 +17,7 @@ package nl.powergeek.feathers.components
 	
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
+	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	
@@ -33,13 +34,20 @@ package nl.powergeek.feathers.components
 			_backgroundFactory:Function = defaultBackgroundFactory,
 			_tagFactory:Function = defaultTagFactory,
 			_background:DisplayObject,
+			_separatorFactory:Function = defaultSeparatorFactory,
+			separatorTop:DisplayObject,
+			separatorBottom:DisplayObject,
 			_searchButton:Button,
 			_screenDPIscale:Number,
 			_padding:Number = 10,
 			_tagNames:Vector.<String> = new Vector.<String>;
 		
-		public var
+		public const
 			searchTagsTriggered:Signal = new Signal(Vector.<String>);
+		
+		public static const
+			TAG_HEIGHT:uint = 28,
+			SEARCHBUTTON_HEIGHT:uint = TAG_HEIGHT + 6;
 
 		public function TagTextInput(screenDPIscale:Number)
 		{
@@ -55,6 +63,12 @@ package nl.powergeek.feathers.components
 			this._background = _backgroundFactory();
 			this.addChild(this._background);
 			
+			// create separators
+			separatorTop = _separatorFactory();
+			separatorBottom = _separatorFactory();
+			this.addChild(separatorTop);
+			this.addChild(separatorBottom);
+			
 			// add component layout
 			var componentLayoutData:AnchorLayout = new AnchorLayout();
 			_componentLayoutGroup.layout = componentLayoutData;
@@ -62,39 +76,40 @@ package nl.powergeek.feathers.components
 			
 			// create tags layoutgroup
 			var tagLayout:HorizontalLayout = new HorizontalLayout();
-			tagLayout.padding = 10;
-			tagLayout.gap = 10;
+			tagLayout.padding = this._padding;
+			tagLayout.gap = this._padding;
 			tagLayout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_LEFT;
-			tagLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_MIDDLE;
+			tagLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_JUSTIFY;
 			
 			// assign layout type and add the tags layoutGroup
 			_tags.layout = tagLayout;
 			
 			// create and add textinput
 			this._textInput.prompt = "add tags for filtering";
-			this._textInput.nameList.add(PinboredMobileTheme.ALTERNATE_NAME_SEARCH_TEXT_BACKGROUNDLESS_INPUT);
-			this._textInput.width = 200;
+			this._textInput.nameList.add(PinboredMobileTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+//			this._textInput.height = TAG_HEIGHT;
+//			this._textInput.padding = 0;
+//			this._textInput.width = 200;
 			
 			// add listeners
 			this._textInput.addEventListener(Event.CHANGE, textInputHandler);
 			this.addEventListener(KeyboardEvent.KEY_DOWN, keyInputHandler);
-			
 			this._tags.addChild(this._textInput);
 			
+			// add tag layout group
 			this._componentLayoutGroup.addChild(_tags);
 			this._tags.validate();
 			
 			// create searchbutton
 			_searchButton = new Button();
 			_searchButton.label = 'search & filter';
-			_searchButton.nameList.add(Button.ALTERNATE_NAME_FORWARD_BUTTON);
+			_searchButton.height = SEARCHBUTTON_HEIGHT;
+			_searchButton.nameList.add(PinboredMobileTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
 			_searchButton.addEventListener(Event.TRIGGERED, searchButtonTriggeredHandler); 
 				
 			var buttonLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			buttonLayoutData.bottom = this._padding;
+			buttonLayoutData.verticalCenter = 0;
 			buttonLayoutData.right = this._padding * 2;
-			buttonLayoutData.top = this._padding;
-			
 			_searchButton.layoutData = buttonLayoutData;
 			this._componentLayoutGroup.addChild(this._searchButton);
 		}
@@ -179,8 +194,6 @@ package nl.powergeek.feathers.components
 		
 		override protected function draw():void
 		{
-			trace('tag text input component draw called!');
-			
 			// phase 1 commit
 			_tags.validate();
 			
@@ -195,20 +208,33 @@ package nl.powergeek.feathers.components
 			this._textInput.validate();
 			
 			// phase 2 measurements
-			this.actualWidth = this._tags.width;
-			this.actualHeight = this._tags.height;
+			_componentLayoutGroup.width = this.width;
+			_componentLayoutGroup.height = this._tags.height;
+			
+			_background.width = _componentLayoutGroup.width;
+			_background.height = _componentLayoutGroup.height;
+			
+			// resize textinput to remaining width between tags and search button
+			this._textInput.width = _componentLayoutGroup.width - (_tags.width - _textInput.width) - _searchButton.width;
+			
+			// separators need to be on top and bottom
+			separatorTop.y = this.y;
+			separatorTop.width = _background.width;
+			
+			// content in between
+			_componentLayoutGroup.y = separatorTop.y + separatorTop.height;
+			_background.y = _componentLayoutGroup.y;
+			
+			// and bottom separator at the bottom
+			separatorBottom.y = _componentLayoutGroup.y + _componentLayoutGroup.height;
+			separatorBottom.width = _background.width;
 			
 			this.width = Math.max(this.actualWidth, this.width);
-			this.height = Math.max(this.actualHeight, this.height);
-			
-			_componentLayoutGroup.width = this.width;
-			_componentLayoutGroup.height = this.height;
-			
-			_background.width = this.width;
-			_background.height = this.height;
+			this.height = this.separatorTop.height + this._componentLayoutGroup.height + this.separatorBottom.height;
 			
 			// phase 3 layout
 			_searchButton.validate();
+			
 		}
 		
 		private function defaultTagFactory(text:String):Tag
@@ -228,7 +254,11 @@ package nl.powergeek.feathers.components
 		
 		private function defaultBackgroundFactory():DisplayObject
 		{
-			return new Quad(100, 100, 0x464646);
+//			return new Quad(100, 100, 0x464646);
+			
+			var bg:Quad = new Quad(10, 10, 0x000000);
+			bg.alpha = 0.2;
+			return bg;
 		}
 		
 		public function get backgroundFactory():Function
@@ -240,6 +270,24 @@ package nl.powergeek.feathers.components
 		{
 			_backgroundFactory = value;
 		}
+		
+		private function defaultSeparatorFactory():DisplayObject
+		{
+			var line:Quad = new Quad(5, 5, 0x000000);
+			line.alpha = 0.5;
+			return line;
+		}
+
+		public function get separatorFactory():Function
+		{
+			return _separatorFactory;
+		}
+
+		public function set separatorFactory(value:Function):void
+		{
+			_separatorFactory = value;
+		}
+
 
 	}
 }

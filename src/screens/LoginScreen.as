@@ -14,6 +14,8 @@ package screens
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.VerticalLayout;
 	
+	import nl.powergeek.feathers.themes.PinboredMobileTheme;
+	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
@@ -120,11 +122,9 @@ package screens
 			// login button
 			this.loginButton = new Button();
 			this.loginButton.label = "Login";
-			this.loginButton.nameList.add(Button.ALTERNATE_NAME_DANGER_BUTTON);
+			this.loginButton.nameList.add(PinboredMobileTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
 			this.loginButton.addEventListener( Event.TRIGGERED, loginTriggeredHandler );
 			this.loginBoxInner.addChild( loginButton );
-			
-			draw();
 		}
 		
 		override protected function draw():void
@@ -152,7 +152,7 @@ package screens
 		
 		protected function loginTriggeredHandler( event:Event ):void
 		{	
-//			this.onListScreenRequest.dispatch( this );
+			this.onListScreenRequest.dispatch( this );
 		}
 
 		public function get onListScreenRequest():ISignal

@@ -5,16 +5,17 @@ package
 	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
 	
-	import nl.powergeek.feathers.components.Icon;
+	import nl.powergeek.feathers.components.InteractiveIcon;
+	import nl.powergeek.feathers.themes.PinboredMobileTheme;
 	
 	import org.osflash.signals.Signal;
 	
+	import services.UrlChecker;
 	import services.UrlCheckerFactory;
 	
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
-	import services.UrlChecker;
 
 	public class BookMark
 	{
@@ -50,10 +51,10 @@ package
 		
 		private var
 			icons:LayoutGroup = new LayoutGroup(),
-			iconCheckmark:Icon,
-			iconTags:Icon,
-			iconHeart:Icon,
-			iconCross:Icon,
+			iconCheckmark:InteractiveIcon,
+			iconTags:InteractiveIcon,
+			iconHeart:InteractiveIcon,
+			iconCross:InteractiveIcon,
 			urlChecker:UrlChecker;
 			
 		public var
@@ -89,25 +90,25 @@ package
 				normal:new Image(Texture.fromBitmap(new CheckmarkWhite())),
 				active:new Image(Texture.fromBitmap(new CheckmarkActive()))
 			};
-			iconCheckmark = new Icon(checkmarkParams, true, 0.27);
+			iconCheckmark = new InteractiveIcon(checkmarkParams, true, 0.27);
 			
 			var tagsParams:Object = {
 				normal:new Image(Texture.fromBitmap(new TagWhite())),
 				active:new Image(Texture.fromBitmap(new TagActive()))
 			};
-			iconTags = new Icon(tagsParams, true, 0.27);
+			iconTags = new InteractiveIcon(tagsParams, true, 0.27);
 			
 			var heartParams:Object = {
 				normal:new Image(Texture.fromBitmap(new HeartWhite())),
 				active:new Image(Texture.fromBitmap(new HeartActive()))
 			};
-			iconHeart = new Icon(heartParams, true, 0.27);
+			iconHeart = new InteractiveIcon(heartParams, true, 0.27);
 			
 			var crossParams:Object = {
 				normal:new Image(Texture.fromBitmap(new CrossWhite())),
 				active:new Image(Texture.fromBitmap(new CrossActive()))
 			};
-			iconCross = new Icon(crossParams, true, 0.27);
+			iconCross = new InteractiveIcon(crossParams, true, 0.27);
 			
 			//		icons.addChild(iconTags);
 			//		icons.addChild(iconHeart);
@@ -115,22 +116,22 @@ package
 			accessory.addChild(icons);
 				
 			var editButton:Button = new Button();
-			editButton.nameList.add(Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON);
+			editButton.nameList.add(PinboredMobileTheme.BUTTON_QUAD_CONTEXT_SUCCESS);
 			editButton.label = "edit";
 			editButton.addEventListener( Event.TRIGGERED, editTriggeredHandler );
 			accessory.addChild(editButton);
 			
 			var staleButton:Button = new Button();
-			staleButton.nameList.add(Button.ALTERNATE_NAME_CALL_TO_ACTION_BUTTON);
+			staleButton.nameList.add(PinboredMobileTheme.BUTTON_QUAD_CONTEXT_ALTERNATIVE);
 			staleButton.label = "stale check";
 			staleButton.addEventListener( Event.TRIGGERED, staleTriggeredHandler );
 			accessory.addChild(staleButton);
 			
-			var dangerButton:Button = new Button();
-			dangerButton.nameList.add(Button.ALTERNATE_NAME_DANGER_BUTTON);
-			dangerButton.label = "delete";
-			dangerButton.addEventListener( Event.TRIGGERED, removeTriggeredHandler );
-			accessory.addChild(dangerButton);
+			var deleteButton:Button = new Button();
+			deleteButton.nameList.add(PinboredMobileTheme.BUTTON_QUAD_CONTEXT_DELETE);
+			deleteButton.label = "delete";
+			deleteButton.addEventListener( Event.TRIGGERED, removeTriggeredHandler );
+			accessory.addChild(deleteButton);
 		}
 		
 		private function editTriggeredHandler(event:Event):void

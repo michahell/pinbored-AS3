@@ -25,6 +25,7 @@ package screens
 	import nl.powergeek.feathers.components.PinboardLayoutGroupItemRenderer;
 	import nl.powergeek.feathers.components.Tag;
 	import nl.powergeek.feathers.components.TagTextInput;
+	import nl.powergeek.feathers.themes.PinboredMobileTheme;
 	import nl.powergeek.utils.ArrayCollectionPager;
 	
 	import org.osflash.signals.ISignal;
@@ -33,11 +34,17 @@ package screens
 	import services.PinboardService;
 	
 	import starling.display.DisplayObject;
+	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
+	import starling.textures.Texture;
 	
 	public class ListScreen extends Screen
 	{
+		[Embed(source="assets/images/pinbored/pinbored-background.jpg")]
+		public static const BACKGROUND:Class;
+		
 		// GUI related
 		private var 
 			panel:Panel = new Panel(),
@@ -46,7 +53,9 @@ package screens
 			searchBookmarks:TextInput,
 			searchTags:TagTextInput,
 			list:List = new List(),
-			button:Button;
+			button:Button,
+			_backgroundImage:Image = new Image(Texture.fromBitmap(new BACKGROUND(), false)),
+			_panelExcludedSpace:uint = 0;
 		
 		// REST related
 		private var
@@ -97,14 +106,20 @@ package screens
 				AppModel.rawBookmarkDataListFiltered = PinboardService.filterTags(AppModel.rawBookmarkDataList, tagNames);
 				trace('done filtering: ' + AppModel.rawBookmarkDataListFiltered.length);
 				
-				// first, page raw bookmark results (this list can be huge)
-				AppModel.rawBookmarkListCollectionPager = new ArrayCollectionPager(AppModel.rawBookmarkDataListFiltered, resultsPerPage);
-				var firstResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.first();
+				if(AppModel.rawBookmarkDataListFiltered.length > 0) {
+					// first, page raw bookmark results (this list can be huge)
+					AppModel.rawBookmarkListCollectionPager = new ArrayCollectionPager(AppModel.rawBookmarkDataListFiltered, resultsPerPage);
+					var firstResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.first();
+					
+					AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(firstResultPageCollection);
+					
+					list.dataProvider = null;
+					list.dataProvider = new ListCollection(AppModel.bookmarksList);
+				} else {
+					trace('no results after filtering...');
+					list.dataProvider = null;
+				}
 				
-				AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(firstResultPageCollection);
-				
-				//				list.dataProvider = null;
-				list.dataProvider = new ListCollection(AppModel.bookmarksList);
 			});
 			
 			// throw all bookmarks into a list
@@ -127,14 +142,19 @@ package screens
 			});
 			
 			// get all bookmarks
-			PinboardService.GetAllBookmarks();
+			// PinboardService.GetAllBookmarks();
+			PinboardService.GetAllBookmarks(new Vector.<String>(['programming', 'A.I.']));
 		}
 		
 		private function createGUI():void
 		{
+			// create nice background
+			this.addChild(_backgroundImage);
+			
 			// add a panel with a header, footer and no scroll shit
 			this.panel.verticalScrollPolicy = Panel.SCROLL_POLICY_OFF;
 			this.panel.horizontalScrollPolicy = Panel.SCROLL_POLICY_OFF;
+			this.panel.nameList.add(PinboredMobileTheme.PANEL_TRANSPARENT_BACKGROUND);
 			
 			this.panel.headerFactory = function():Header
 			{
@@ -156,6 +176,7 @@ package screens
 				}
 				
 				header.rightItems = new <DisplayObject>[this.searchBookmarks];
+				_panelExcludedSpace += header.height;
 				
 				return header;
 			}
@@ -166,6 +187,7 @@ package screens
 				container.nameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
 				container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
 				container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
+				_panelExcludedSpace += container.height;
 				return container;
 			}
 			
@@ -173,10 +195,10 @@ package screens
 			this.addChild(panel);
 				
 			// create screen layout (vertical unit)
-			var screenLayout:VerticalLayout = new VerticalLayout();
-			screenLayout.gap = 0;
-			screenLayout.padding = 0;
-			this.panel.layout = screenLayout;
+			var panelLayout:VerticalLayout = new VerticalLayout();
+			panelLayout.gap = 0;
+			panelLayout.padding = 0;
+			this.panel.layout = panelLayout;
 			
 			// add the tag search 'bar'
 			this.searchTags = new TagTextInput(this._dpiScale);
@@ -185,7 +207,11 @@ package screens
 			
 			// add a scrollcontainer for the list
 			this.listScrollContainer = new ScrollContainer();
-			this.listScrollContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_AUTO;
+			this.listScrollContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_ON;
+			
+			// update scrollcontainer height
+			this.listScrollContainer.height = panel.height - _panelExcludedSpace - searchTags.height - 100;
+			
 			this.panel.addChild(this.listScrollContainer);
 				
 			// add a list for the bookmarks
@@ -204,6 +230,9 @@ package screens
 			
 			// add list to panel
 			this.listScrollContainer.addChild(list);
+			var listBg:Quad = new Quad(50, 50, 0x000000);
+			listBg.alpha = 0.3;
+			this.list.backgroundSkin = this.list.backgroundDisabledSkin = listBg;
 		}
 		
 		private function input_enterHandler():void
@@ -219,11 +248,16 @@ package screens
 			panel.width = AppModel.starling.stage.stageWidth;
 			panel.height = AppModel.starling.stage.stageHeight;
 			
+			_backgroundImage.width = this.width;
+			_backgroundImage.height = this.height;
+			
 			// update screengroup, searchtags, scrollcontainer, list width etc.
 			list.width = panel.width;
-//			screenGroup.width = panel.width;
 			listScrollContainer.width = panel.width;
 			searchTags.width = panel.width;
+			
+			// update scrollcontainer height
+			this.listScrollContainer.height = panel.height - _panelExcludedSpace - searchTags.height - 100;
 			
 			// layout
 		}
