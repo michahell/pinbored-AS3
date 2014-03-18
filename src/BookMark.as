@@ -14,6 +14,7 @@ package
 	import starling.display.Image;
 	import starling.events.Event;
 	import starling.textures.Texture;
+	import services.UrlChecker;
 
 	public class BookMark
 	{
@@ -178,6 +179,10 @@ package
 		public function removeUrlChecker():void
 		{
 			this.urlChecker = null;
+		}
+		
+		public function toString():String {
+			return '' + this.href + ', ' + this.extended + ', ' + this.tags.toString();
 		}
 	}
 }

@@ -25,12 +25,15 @@ package screens
 	import nl.powergeek.feathers.components.PinboardLayoutGroupItemRenderer;
 	import nl.powergeek.feathers.components.Tag;
 	import nl.powergeek.feathers.components.TagTextInput;
+	import nl.powergeek.utils.ArrayCollectionPager;
 	
+	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
 	import services.PinboardService;
 	
 	import starling.display.DisplayObject;
+	import starling.events.Event;
 	import starling.events.ResizeEvent;
 	
 	public class ListScreen extends Screen
@@ -47,11 +50,12 @@ package screens
 		
 		// REST related
 		private var
-			restClient:RESTClient;
+			restClient:RESTClient,
+			resultsPerPage:Number = 25;
 		
 		// signals
 		private var 
-			_onLoginScreenRequest:Signal = new Signal( LoginScreen );
+			_onLoginScreenRequest:Signal = new Signal( ListScreen );
 		
 		public function ListScreen()
 		{
@@ -72,50 +76,89 @@ package screens
 			// create GUI
 			createGUI();
 			
-			// throw all bookmarks into a list
-			PinboardService.allBookmarksReceived.addOnce(function(event:Event):void {
-				// get request data
-				var jsonResponse:String = event.target.data as String;
-				var parsedResponse:Object = JSON.parse(jsonResponse);
+			// listen for transition complete
+			owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, onTransitionComplete);
+		}
+		
+		private function onTransitionComplete(event:starling.events.Event):void
+		{
+			// remove listener
+			owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, onTransitionComplete);
+			
+			// get all bookmarks and populate list control
+			getInitialData();
+		}
+		
+		private function getInitialData():void
+		{
+			// when searched for tags, update the bookmarks list
+			searchTags.searchTagsTriggered.add(function(tagNames:Vector.<String>):void {
 				
-				var bookmarkList:ListCollection = new ListCollection();
+				AppModel.rawBookmarkDataListFiltered = PinboardService.filterTags(AppModel.rawBookmarkDataList, tagNames);
+				trace('done filtering: ' + AppModel.rawBookmarkDataListFiltered.length);
 				
-				// add all bookmarks to 'the list'
-				parsedResponse.forEach(function(bookmark:Object, index:int, array:Array):void {
-					var bm:BookMark = new BookMark(bookmark);
-					
-					// if bookmark is stale...
-					bm.staleConfirmed.addOnce(function():void {
-						trace('getting signal..');
-						list.invalidate(INVALIDATION_FLAG_ALL);
-					});
-					
-					// if bookmark is stale...
-					bm.notStaleConfirmed.addOnce(function():void {
-						trace('getting signal..');
-						list.invalidate(INVALIDATION_FLAG_ALL);
-					});
-					
-					bookmarkList.addItem(bm);
-				});
+				// first, page raw bookmark results (this list can be huge)
+				AppModel.rawBookmarkListCollectionPager = new ArrayCollectionPager(AppModel.rawBookmarkDataListFiltered, resultsPerPage);
+				var firstResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.first();
 				
-				list.dataProvider = bookmarkList;
+				AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(firstResultPageCollection);
+				
+				//				list.dataProvider = null;
+				list.dataProvider = new ListCollection(AppModel.bookmarksList);
 			});
 			
-			var tags:Array = ['Webdevelopment'];
+			// throw all bookmarks into a list
+			PinboardService.allBookmarksReceived.add(function(event:flash.events.Event):void {
+				
+				var parsedResponse:Object = JSON.parse(event.target.data as String);
+				
+				parsedResponse.forEach(function(bookmark:Object, index:int, array:Array):void {
+					AppModel.rawBookmarkDataList.push(bookmark);
+				});
+				
+				// first, page raw bookmark results (this list can be huge)
+				AppModel.rawBookmarkListCollectionPager = new ArrayCollectionPager(AppModel.rawBookmarkDataList, resultsPerPage);
+				var firstResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.first();
+				
+				AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(firstResultPageCollection);
+				
+				//				list.dataProvider = null;
+				list.dataProvider = new ListCollection(AppModel.bookmarksList);
+			});
 			
-			// get some bookmarks
-			PinboardService.GetAllBookmarks(tags);
+			// get all bookmarks
+			PinboardService.GetAllBookmarks();
 		}
 		
 		private function createGUI():void
 		{
 			// add a panel with a header, footer and no scroll shit
-//			this.panel.verticalScrollPolicy = Panel.SCROLL_POLICY_OFF;
+			this.panel.verticalScrollPolicy = Panel.SCROLL_POLICY_OFF;
 			this.panel.horizontalScrollPolicy = Panel.SCROLL_POLICY_OFF;
-			this.panel.headerFactory = customHeaderFactory;
 			
-			this.panel.padding = 0;
+			this.panel.headerFactory = function():Header
+			{
+				const header:Header = new Header();
+				header.title = "Bookmarks list";
+				header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
+				
+				if(!this.searchBookmarks)
+				{
+					this.searchBookmarks = new TextInput();
+					this.searchBookmarks.width = 400;
+					this.searchBookmarks.prompt = "search keyword";
+					
+					//we can't get an enter key event without changing the returnKeyLabel
+					//not using ReturnKeyLabel.GO here so that it will build for web
+					this.searchBookmarks.textEditorProperties.returnKeyLabel = "go";
+					
+					this.searchBookmarks.addEventListener(FeathersEventType.ENTER, input_enterHandler);
+				}
+				
+				header.rightItems = new <DisplayObject>[this.searchBookmarks];
+				
+				return header;
+			}
 			
 			this.panel.footerFactory = function():ScrollContainer
 			{
@@ -125,11 +168,11 @@ package screens
 				container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
 				return container;
 			}
-				
+			
+			this.panel.padding = 0;
 			this.addChild(panel);
 				
 			// create screen layout (vertical unit)
-			
 			var screenLayout:VerticalLayout = new VerticalLayout();
 			screenLayout.gap = 0;
 			screenLayout.padding = 0;
@@ -163,30 +206,6 @@ package screens
 			this.listScrollContainer.addChild(list);
 		}
 		
-		private function customHeaderFactory():Header
-		{
-			const header:Header = new Header();
-			header.title = "Bookmarks list";
-			header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
-			
-			if(!this.searchBookmarks)
-			{
-				this.searchBookmarks = new TextInput();
-				this.searchBookmarks.width = 400;
-				this.searchBookmarks.prompt = "search keyword";
-				
-				//we can't get an enter key event without changing the returnKeyLabel
-				//not using ReturnKeyLabel.GO here so that it will build for web
-				this.searchBookmarks.textEditorProperties.returnKeyLabel = "go";
-				
-				this.searchBookmarks.addEventListener(FeathersEventType.ENTER, input_enterHandler);
-			}
-			
-			header.rightItems = new <DisplayObject>[this.searchBookmarks];
-			
-			return header;
-		}
-		
 		private function input_enterHandler():void
 		{
 			trace('entered search key word');
@@ -208,5 +227,11 @@ package screens
 			
 			// layout
 		}
+
+		public function get onLoginScreenRequest():ISignal
+		{
+			return _onLoginScreenRequest;
+		}
+
 	}
 }

@@ -66,10 +66,10 @@ package nl.powergeek.REST
 			restrequest.build();
 			
 			// echo request
-//			trace('requesting:\n',
-//				restrequest.type, '\n',
-//				restrequest.payload.url, '\n'
-//			);
+			trace('requesting:\n',
+				restrequest.type, '\n',
+				restrequest.payload.url, '\n'
+			);
 			
 			// send the request
 			if(dryRun == false)

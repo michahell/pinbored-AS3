@@ -6,6 +6,11 @@ package nl.powergeek.feathers.components
 	import feathers.layout.AnchorLayoutData;
 	import feathers.textures.Scale3Textures;
 	
+	import org.osflash.signals.Signal;
+	
+	import starling.display.Image;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	import starling.textures.Texture;
 	
 	public class Tag extends FeathersControl
@@ -14,9 +19,20 @@ package nl.powergeek.feathers.components
 		[Embed(source="assets/images/pinbored/scale3tag.png")]
 		private static const SCALE_3_TEXTURE:Class;
 		
+		// cross
+		[Embed(source="assets/images/pinbored/icon_cross_active.png")]
+		public static const CrossActive:Class;
+		
+		[Embed(source="assets/images/pinbored/icon_cross_white.png")]
+		public static const CrossWhite:Class;
+		
+		[Embed(source="assets/images/pinbored/icon_cross_black.png")]
+		public static const CrossBlack:Class;
+		
 		private var
 			background:Scale3Image,
 			_label:Label = new Label(),
+			_closeIcon:Icon,
 			_image:Scale3Image,
 			_color:uint,
 			_screenDPIscale:Number,
@@ -24,10 +40,13 @@ package nl.powergeek.feathers.components
 			_padding:Number = 20,
 			_text:String;
 			
+		public const
+			removed:Signal = new Signal();
+			
+			
 		public function Tag(screenDPIscale:Number, text:String)
 		{
-			trace('tag created: ' + text);
-			
+//			trace('tag created: ' + text);
 			this._screenDPIscale = screenDPIscale;
 			this._text = text;
 		}
@@ -44,11 +63,27 @@ package nl.powergeek.feathers.components
 			// add the label
 			this.addChild(this._label);
 			this._label.nameList.add(Label.ALTERNATE_NAME_HEADING);
+			
+			// add the delete icon
+			var closeIconParams:Object = {
+				normal: new Image(Texture.fromBitmap(new CrossWhite())),
+				active: new Image(Texture.fromBitmap(new CrossActive())),
+				hover: new Image(Texture.fromBitmap(new CrossBlack()))
+			};
+			_closeIcon = new Icon(closeIconParams, true, this._screenDPIscale, 0.3);
+			_closeIcon.addEventListener(TouchEvent.TOUCH, onTouch);
+			this.addChild(this._closeIcon);
+		}
+		
+		private function onTouch(event:TouchEvent):void
+		{
+			if (event.getTouch(this, TouchPhase.ENDED))
+			{
+				this.removed.dispatch();
+			}
 		}
 		
 		override protected function draw():void {
-			
-			trace('tag draw called!');
 			
 			// phase 1. commit
 			// we have no other data passed down to children except the label text, but this is all handled in the label component!
@@ -68,37 +103,40 @@ package nl.powergeek.feathers.components
 			this.height = this.actualHeight;
 			
 			// phase 3. layout
-			// update label position (who knows?)
 			this._label.x = this._image.x + (this._screenDPIscale * this.padding  * 2);
 			this._label.y = this._image.y + (this._image.height / 2) - (this._label.height / 2) - 1;
+			
+			this._closeIcon.x = this._image.x + this._image.width - this._closeIcon.width - this.padding;
+			this._closeIcon.y = this._image.y + (this._image.height / 2) - (this._closeIcon.height / 2);
+			
 		}
 		
-		public function getText():String {
-			return _label.text;
+		public function get text():String {
+			return this._text;
 		}
 		
-		public function setText(value:String):void {
-			_label.text = value;
+		public function set text(value:String):void {
+			this._text = value;
 			this.invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 		}
 
-		public function getColor():uint
+		public function get color():uint
 		{
 			return _color;
 		}
 
-		public function setColor(value:uint):void
+		public function set color(value:uint):void
 		{
 			_color = value;
 			this.invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 		}
 
-		public function getShape():String
+		public function get shape():String
 		{
 			return _shape;
 		}
 
-		public function setShape(value:String):void
+		public function set shape(value:String):void
 		{
 			_shape = value;
 			this.invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
@@ -113,7 +151,5 @@ package nl.powergeek.feathers.components
 		{
 			_padding = value;
 		}
-
-
 	}
 }

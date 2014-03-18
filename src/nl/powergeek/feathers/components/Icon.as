@@ -7,6 +7,7 @@ package nl.powergeek.feathers.components
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	
 	public class Icon extends Sprite
 	{
@@ -22,7 +23,7 @@ package nl.powergeek.feathers.components
 		 * @param enableHover set this to true if you want to activate the hoverstate (mouse over or hover or touch tap! important difference). 
 		 * And of course you need to pass a hover image in the params.
 		 */		
-		public function Icon(params:Object, enableHover:Boolean = false, scaleFix:Number = 1)
+		public function Icon(params:Object, enableHover:Boolean = false, screenDPIscale:Number = 1, additionalScaleFix:Number = 0.5)
 		{
 			super();
 			
@@ -44,6 +45,7 @@ package nl.powergeek.feathers.components
 			
 			// if hover is enabled, add a listener to detect hovers
 			if(enableHover == true && this.hoverState != null) {
+				this.useHandCursor = true;
 				this.addEventListener(TouchEvent.TOUCH, onTouch);
 			}
 			
@@ -51,12 +53,24 @@ package nl.powergeek.feathers.components
 			this.setNormal();
 			
 			// scale icon back a bit
-			this.scaleX = this.scaleY = scaleFix;
+			this.scaleX = this.scaleY = (screenDPIscale * additionalScaleFix);
 		}
 		
 		private function onTouch(event:TouchEvent):void
 		{
-			this.setActive();
+			if (event.getTouch(this, TouchPhase.HOVER))
+			{
+				this.setHover();
+			}
+			else
+			{
+				this.setNormal();
+			}
+			
+			if (event.getTouch(this, TouchPhase.ENDED))
+			{
+				this.setActive();
+			}
 		}
 		
 		private function removeAll():void {
@@ -75,25 +89,21 @@ package nl.powergeek.feathers.components
 		
 		public function setNormal():void {
 			this.removeAll();
-			this.alpha = 0.1;
 			this.addChild(this.normalState);
 		}
 		
 		public function setActive():void {
 			this.removeAll();
-			this.alpha = 1;
 			this.addChild(this.activeState);
 		}
 		
 		public function setInactive():void {
 			this.removeAll();
-			this.alpha = 1;
 			this.addChild(this.inactiveState);
 		}
 		
 		public function setHover():void {
 			this.removeAll();
-			this.alpha = 1;
 			this.addChild(this.hoverState);
 		}
 		
