@@ -30,14 +30,20 @@ package
 			this.mouseEnabled = this.mouseChildren = false;
 			
 			// pretends to be an iPhone Retina screen
-			DeviceCapabilities.dpi = 150;
+			DeviceCapabilities.dpi = Math.floor(326 / AppSettings.SCALE_DOWN_FACTOR);
 			DeviceCapabilities.screenPixelWidth = 1024;
 			DeviceCapabilities.screenPixelHeight = 768;
 			
 			// create starling instance
 			this._starling = new Starling(App, stage);
 			this._starling.showStats = true;
-			this._starling.showStatsAt(HAlign.LEFT, VAlign.BOTTOM);
+			if(AppSettings.SHOW_STATS)
+				this._starling.showStatsAt(HAlign.LEFT, VAlign.BOTTOM);
+			
+			// set starling properties
+			this._starling.antiAliasing = AppSettings.ANTI_ALIAS;
+			
+			// run starling
 			this._starling.start();
 			
 			// pass starling reference to appmodel

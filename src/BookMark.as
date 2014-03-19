@@ -20,35 +20,6 @@ package
 	public class BookMark
 	{
 		
-		// checkmark
-		[Embed(source="assets/images/pinbored/icon_checkmark_active.png")]
-		public static const CheckmarkActive:Class;
-		
-		[Embed(source="assets/images/pinbored/icon_checkmark_white.png")]
-		public static const CheckmarkWhite:Class;
-		
-		// cross
-		[Embed(source="assets/images/pinbored/icon_cross_active.png")]
-		public static const CrossActive:Class;
-		
-		[Embed(source="assets/images/pinbored/icon_cross_white.png")]
-		public static const CrossWhite:Class;
-		
-		// heart
-		[Embed(source="assets/images/pinbored/icon_heart_active.png")]
-		public static const HeartActive:Class;
-		
-		[Embed(source="assets/images/pinbored/icon_heart_white.png")]
-		public static const HeartWhite:Class;
-		
-		// tags
-		[Embed(source="assets/images/pinbored/icon_tags_active.png")]
-		public static const TagActive:Class;
-		
-		[Embed(source="assets/images/pinbored/icon_tags_white.png")]
-		public static const TagWhite:Class;
-		
-		
 		private var
 			icons:LayoutGroup = new LayoutGroup(),
 			iconCheckmark:InteractiveIcon,
@@ -87,26 +58,26 @@ package
 			// create icons from textures
 			
 			var checkmarkParams:Object = {
-				normal:new Image(Texture.fromBitmap(new CheckmarkWhite())),
-				active:new Image(Texture.fromBitmap(new CheckmarkActive()))
+				normal:new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_CHECKMARK_WHITE())),
+				active:new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_CHECKMARK_ACTIVE()))
 			};
 			iconCheckmark = new InteractiveIcon(checkmarkParams, true, 0.27);
 			
 			var tagsParams:Object = {
-				normal:new Image(Texture.fromBitmap(new TagWhite())),
-				active:new Image(Texture.fromBitmap(new TagActive()))
+				normal:new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_TAG_WHITE())),
+				active:new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_TAG_ACTIVE()))
 			};
 			iconTags = new InteractiveIcon(tagsParams, true, 0.27);
 			
 			var heartParams:Object = {
-				normal:new Image(Texture.fromBitmap(new HeartWhite())),
-				active:new Image(Texture.fromBitmap(new HeartActive()))
+				normal:new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_HEART_WHITE())),
+				active:new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_HEART_ACTIVE()))
 			};
 			iconHeart = new InteractiveIcon(heartParams, true, 0.27);
 			
 			var crossParams:Object = {
-				normal:new Image(Texture.fromBitmap(new CrossWhite())),
-				active:new Image(Texture.fromBitmap(new CrossActive()))
+				normal:new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_CROSS_WHITE())),
+				active:new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_CROSS_ACTIVE()))
 			};
 			iconCross = new InteractiveIcon(crossParams, true, 0.27);
 			

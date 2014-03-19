@@ -18,6 +18,7 @@ package nl.powergeek.feathers.components
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.display.graphics.RoundedRectangle;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
 	
@@ -28,7 +29,8 @@ package nl.powergeek.feathers.components
 		
 		private var
 			_tagCount:Number = 0,
-			_tags:LayoutGroup = new LayoutGroup(),
+			_tagContainer:LayoutGroup = new LayoutGroup(),
+			_tagsArray:Array = [],
 			_componentLayoutGroup:LayoutGroup = new LayoutGroup(),
 			_textInput:TextInput = new TextInput(),
 			_backgroundFactory:Function = defaultBackgroundFactory,
@@ -82,23 +84,21 @@ package nl.powergeek.feathers.components
 			tagLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_JUSTIFY;
 			
 			// assign layout type and add the tags layoutGroup
-			_tags.layout = tagLayout;
+			_tagContainer.layout = tagLayout;
 			
 			// create and add textinput
 			this._textInput.prompt = "add tags for filtering";
 			this._textInput.nameList.add(PinboredMobileTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
-//			this._textInput.height = TAG_HEIGHT;
-//			this._textInput.padding = 0;
-//			this._textInput.width = 200;
+			this._textInput.padding = this._padding / 2;
 			
 			// add listeners
 			this._textInput.addEventListener(Event.CHANGE, textInputHandler);
 			this.addEventListener(KeyboardEvent.KEY_DOWN, keyInputHandler);
-			this._tags.addChild(this._textInput);
+			this._tagContainer.addChild(this._textInput);
 			
 			// add tag layout group
-			this._componentLayoutGroup.addChild(_tags);
-			this._tags.validate();
+			this._componentLayoutGroup.addChild(_tagContainer);
+			this._tagContainer.validate();
 			
 			// create searchbutton
 			_searchButton = new Button();
@@ -124,10 +124,14 @@ package nl.powergeek.feathers.components
 		private function keyInputHandler(event:KeyboardEvent):void
 		{
 			if(event.keyCode == Keyboard.BACKSPACE) {
-				trace('backspace pressed!');
 				if(_textInput.text.length == 0) {
-					trace('TODO remove previous tag here.');
+					if(_tagNames.length > 0)
+						removeTag(_tagsArray[_tagsArray.length - 1]);
 				}
+			}
+			
+			if(event.keyCode == Keyboard.ENTER) {
+				searchTagsTriggered.dispatch(this._tagNames);
 			}
 		}
 		
@@ -160,22 +164,17 @@ package nl.powergeek.feathers.components
 					
 					// add listener to tag removed signal
 					tag.removed.addOnce(function():void {
-						_tags.removeChild(tag);
-						// decrement tagCount
-						_tagCount--;
-						// remove from tagNames
-						_tagNames.splice(_tagNames.indexOf(tag.text), 1);
-						// update shit
-						invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
+						removeTag(tag);
 					});
 					
 					// quickly remove the textInput, then add the tag, then re-add the textInput!
-					_tags.removeChild(this._textInput);
-					_tags.addChild(tag);
-					_tags.addChild(this._textInput);
+					_tagContainer.removeChild(this._textInput);
+					_tagContainer.addChild(tag);
+					_tagContainer.addChild(this._textInput);
 					
 					// add tag text to tagText array for quick access
 					_tagNames.push(tag.text);
+					_tagsArray.push(tag);
 					
 					// set focus back to textinput after removing and adding it to display list
 					_textInput.setFocus();
@@ -192,10 +191,23 @@ package nl.powergeek.feathers.components
 			}
 		}
 		
+		private function removeTag(tag:Tag):void {
+			// remove from display list
+			_tagContainer.removeChild(tag);
+			// remove from tags array
+			_tagsArray.splice(_tagsArray.indexOf(tag), 1);
+			// remove from tagNames
+			_tagNames.splice(_tagNames.indexOf(tag.text), 1);
+			// decrement tagCount
+			_tagCount--;
+			// update component
+			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
+		}
+		
 		override protected function draw():void
 		{
 			// phase 1 commit
-			_tags.validate();
+			_tagContainer.validate();
 			
 			// enable or disable tag input
 			if(this._tagCount < MAX_TAGS) {
@@ -209,13 +221,13 @@ package nl.powergeek.feathers.components
 			
 			// phase 2 measurements
 			_componentLayoutGroup.width = this.width;
-			_componentLayoutGroup.height = this._tags.height;
+			_componentLayoutGroup.height = this._tagContainer.height;
 			
 			_background.width = _componentLayoutGroup.width;
 			_background.height = _componentLayoutGroup.height;
 			
 			// resize textinput to remaining width between tags and search button
-			this._textInput.width = _componentLayoutGroup.width - (_tags.width - _textInput.width) - _searchButton.width;
+			this._textInput.width = _componentLayoutGroup.width - (_tagContainer.width - _textInput.width) - _searchButton.width;
 			
 			// separators need to be on top and bottom
 			separatorTop.y = this.y;

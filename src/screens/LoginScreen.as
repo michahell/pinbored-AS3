@@ -26,9 +26,7 @@ package screens
 	
 	public class LoginScreen extends Screen
 	{
-		[Embed(source="assets/images/pinbored/pinbored-background.jpg")]
-		public static const BACKGROUND:Class;
-		
+		// GUI related
 		private var 
 			mainContainer:LayoutGroup,
 			loginBoxOuter:LayoutGroup,
@@ -38,8 +36,9 @@ package screens
 			infoLabel:Label,
 			tokenInput:TextInput,
 			loginButton:Button,
-			_backgroundImage:Image = new Image(Texture.fromBitmap(new BACKGROUND(), false));
-			
+			_backgroundImage:Image = new Image(Texture.fromBitmap(new PinboredMobileTheme.BACKGROUND1(), false));
+		
+		// signals
 		private var
 			_onListScreenRequest:Signal = new Signal( LoginScreen );
 		

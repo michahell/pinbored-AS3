@@ -1,8 +1,10 @@
 package nl.powergeek.feathers.themes
 {
 	import feathers.controls.Button;
+	import feathers.controls.ImageLoader;
 	import feathers.controls.Label;
 	import feathers.controls.Panel;
+	import feathers.controls.ScrollContainer;
 	import feathers.controls.TextInput;
 	import feathers.controls.text.BitmapFontTextRenderer;
 	import feathers.controls.text.TextFieldTextEditor;
@@ -10,16 +12,26 @@ package nl.powergeek.feathers.themes
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.HorizontalLayout;
 	import feathers.themes.MetalWorksMobileTheme;
+	
+	import feathersx.controls.text.HyperlinkTextFieldTextRenderer;
 	
 	import flash.text.Font;
 	import flash.text.TextFormat;
+	import flash.text.TextFormatAlign;
 	
 	import nl.powergeek.feathers.components.TagTextInput;
 	
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Quad;
+	import starling.display.Shape;
+	import starling.display.Sprite;
+	import starling.display.graphics.RoundedRectangle;
+	import starling.display.materials.FlatColorMaterial;
+	import starling.display.materials.IMaterial;
 	
 	public class PinboredMobileTheme extends MetalWorksMobileTheme
 	{
@@ -40,15 +52,81 @@ package nl.powergeek.feathers.themes
 		private static const OpenSansBold:Class;
 		public static var OpenSansBoldFont:Font = new OpenSansBold();
 		
+		
+		// backgrounds
+		[Embed(source="assets/images/pinbored/backgrounds/background1.png")]
+		public static const BACKGROUND1:Class;
+		
+		[Embed(source="assets/images/pinbored/backgrounds/background2.png")]
+		public static const BACKGROUND2:Class;
+		
+
+		// logo
+		[Embed(source="assets/images/pinbored/logo/pinbored-logo-transparent-text.png")]
+		public static const LOGO_TRANSPARENT:Class;
+		
+		// user interface components or custom feather controls
+		
+		// tag scale 9 image
+		[Embed(source="assets/images/pinbored/ui/scale3tag.png")]
+		public static const SCALE_3_TAG_IMAGE:Class;
+		
+		
+		// icons
+
+		// checkmark
+		[Embed(source="assets/images/pinbored/icons/icon_checkmark_active.png")]
+		public static const ICON_CHECKMARK_ACTIVE:Class;
+		
+		[Embed(source="assets/images/pinbored/icons/icon_checkmark_white.png")]
+		public static const ICON_CHECKMARK_WHITE:Class;
+		
+		// cross
+		[Embed(source="assets/images/pinbored/icons/icon_cross_active.png")]
+		public static const ICON_CROSS_ACTIVE:Class;
+		
+		[Embed(source="assets/images/pinbored/icons/icon_cross_white.png")]
+		public static const ICON_CROSS_WHITE:Class;
+		
+		// heart
+		[Embed(source="assets/images/pinbored/icons/icon_heart_active.png")]
+		public static const ICON_HEART_ACTIVE:Class;
+		
+		[Embed(source="assets/images/pinbored/icons/icon_heart_white.png")]
+		public static const ICON_HEART_WHITE:Class;
+		
+		// tags
+		[Embed(source="assets/images/pinbored/icons/icon_tags_active.png")]
+		public static const ICON_TAG_ACTIVE:Class;
+		
+		[Embed(source="assets/images/pinbored/icons/icon_tags_white.png")]
+		public static const ICON_TAG_WHITE:Class;
+		
+		// starling
+		[Embed(source="assets/images/pinbored/icons/starling-logo.png")]
+		public static const ICON_STARLING:Class;
+		
+		// feathers :>
+		[Embed(source="assets/images/pinbored/icons/feathers-logo.png")]
+		public static const ICON_FEATHERS:Class;
+		
+		
 		// alternate skin names
 		public static const
-			TEXTINPUT_TRANSPARENT_BACKGROUND:String = 'feathers-textinput-transparent-background',
-			LABEL_TAG_TEXTRENDERER:String = 'feathers-tag-textrenderer',
-			PANEL_TRANSPARENT_BACKGROUND:String = 'feathers-panel-transparent-background',
-			BUTTON_QUAD_CONTEXT_PRIMARY:String = 'feathers-quad-context-edit-button',
-			BUTTON_QUAD_CONTEXT_DELETE:String = 'feathers-quad-context-delete-button',
-			BUTTON_QUAD_CONTEXT_SUCCESS:String = 'feathers-quad-context-secondary-button',
-			BUTTON_QUAD_CONTEXT_ALTERNATIVE:String = 'feathers-quad-context-ternary-button';
+			TEXTINPUT_TRANSPARENT_BACKGROUND:String = 'pinbored-textinput-transparent-background',
+			TEXTINPUT_SEARCH:String = 'pinbored-textinput-search',
+			
+			LABEL_TAG_TEXTRENDERER:String = 'pinbored-tag-textrenderer',
+			LABEL_DISCLAIMER:String = 'pinbored-disclaimer-textrenderer',
+			LABEL_AUTHOR_LINK:String = 'pinbored-authorlink-textrenderer',
+			LABEL_RIGHT_ALIGNED_TEXT:String = 'pinbored-right-aligned-textrenderer',
+			
+			PANEL_TRANSPARENT_BACKGROUND:String = 'pinbored-panel-transparent-background',
+			
+			BUTTON_QUAD_CONTEXT_PRIMARY:String = 'pinbored-quad-context-edit-button',
+			BUTTON_QUAD_CONTEXT_DELETE:String = 'pinbored-quad-context-delete-button',
+			BUTTON_QUAD_CONTEXT_SUCCESS:String = 'pinbored-quad-context-secondary-button',
+			BUTTON_QUAD_CONTEXT_ALTERNATIVE:String = 'pinbored-quad-context-ternary-button';
 			
 		// some static constants for 'internal' use
 		public static const
@@ -56,9 +134,12 @@ package nl.powergeek.feathers.themes
 			CONTEXT_BUTTON_DEFAULT_ALPHA:Number = 1;
 			
 		// textformats
-		public static const
-			TEXTFORMAT_TAG:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 14, 0xEEEEEE, true),
-			TEXTFORMAT_TAG_TEXT_INPUT_PROMPT:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 14, 0xAAAAAA, true);
+		public static var
+			TEXTFORMAT_TAG:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 14, 0xFFFFFF, true),
+			TEXTFORMAT_TAG_TEXT_INPUT_PROMPT:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 14, 0xDDDDDD, true),
+			TEXTFORMAT_DISCLAIMER:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xAAAAAA, false),
+			TEXTFORMAT_LINK:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0x0099FF, false, null, true),
+			TEXTFORMAT_SCREEN_TITLE:TextFormat = new TextFormat(OpenSansLightFont.fontName, 20, 0xEEEEEE, false);
 		
 		public function PinboredMobileTheme(container:DisplayObjectContainer=null, scaleToDPI:Boolean=true)
 		{
@@ -69,8 +150,9 @@ package nl.powergeek.feathers.themes
 		{
 			super.initialize();
 			
-			// set new initializers here
-			this.setInitializerForClass(TextInput, backgroundlessTextInputInitializer, TEXTINPUT_TRANSPARENT_BACKGROUND);
+			// custom text input skins
+			this.setInitializerForClass(TextInput, transparentTagTextInputInitializer, TEXTINPUT_TRANSPARENT_BACKGROUND);
+			this.setInitializerForClass(TextInput, pinboredSearchTextInputInitializer, TEXTINPUT_SEARCH);
 			
 			// custom quad buttons
 			this.setInitializerForClass(Button, quadContextPrimaryButtonInitializer, BUTTON_QUAD_CONTEXT_PRIMARY);
@@ -78,8 +160,136 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(Button, quadContextSuccessButtonInitializer, BUTTON_QUAD_CONTEXT_SUCCESS);
 			this.setInitializerForClass(Button, quadContextAlternativeButtonInitializer, BUTTON_QUAD_CONTEXT_ALTERNATIVE);
 			
+			// transparent panel
 			this.setInitializerForClass(Panel, transparentPanelInitializer, PANEL_TRANSPARENT_BACKGROUND);
+			
+			// some label styles
 			this.setInitializerForClass(Label, tagLabelInitializer, LABEL_TAG_TEXTRENDERER);
+			this.setInitializerForClass(Label, disclaimerLabelInitializer, LABEL_DISCLAIMER);
+			this.setInitializerForClass(Label, authorLinkLabelInitializer, LABEL_AUTHOR_LINK);
+			this.setInitializerForClass(Label, rightAlignedTextLabelInitializer, LABEL_RIGHT_ALIGNED_TEXT);
+			
+		}
+		
+		override protected function scrollContainerToolbarInitializer(container:ScrollContainer):void {
+			if(!container.layout)
+			{
+				container.layout = new AnchorLayout();
+			}
+			
+			container.minWidth = 50;
+			container.minHeight = 30;
+			
+			var bg:Quad = new Quad(10, 10, 0x000000);
+			bg.alpha = 0.3;
+			container.backgroundSkin = bg;
+		}
+		
+		private function rightAlignedTextLabelInitializer(label:Label):void
+		{
+			label.textRendererFactory = function():ITextRenderer {
+				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
+				TEXTFORMAT_DISCLAIMER.align = TextFormatAlign.RIGHT;
+				tr.textFormat = TEXTFORMAT_DISCLAIMER;
+//				tr.background = true;
+//				tr.backgroundColor = 0xFF0000;
+				return tr;
+			}
+		}
+		
+		private function authorLinkLabelInitializer(label:Label):void
+		{
+			label.textRendererFactory = function():ITextRenderer {
+				var tr:HyperlinkTextFieldTextRenderer = new HyperlinkTextFieldTextRenderer();
+				tr.isHTML = true;
+				tr.useHandCursor = true;
+				TEXTFORMAT_LINK.align = TextFormatAlign.RIGHT;
+				tr.textFormat = TEXTFORMAT_LINK;
+//				tr.background = true;
+//				tr.backgroundColor = 0xFF0000;
+				return tr;
+			}
+		}
+		
+		private function disclaimerLabelInitializer(label:Label):void
+		{
+			label.textRendererFactory = function():ITextRenderer {
+				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
+				tr.wordWrap = true;
+				TEXTFORMAT_DISCLAIMER.align = TextFormatAlign.LEFT;
+				tr.textFormat = TEXTFORMAT_DISCLAIMER;
+				return tr;
+			}
+		}
+		
+		private function pinboredSearchTextInputInitializer(input:TextInput):void
+		{
+			// background vars
+			var color:uint = 0x000000;
+			var endAlpha:Number = 0;
+			var triangleWidth:Number = 20;
+			var altitude:Number = 50;
+			
+			// define background
+			var backgroundSkin:Sprite = new Sprite();
+			
+			// draw quad
+			var quad:Quad = new Quad(300, altitude, color);
+			quad.setVertexAlpha(1, endAlpha);
+			quad.setVertexAlpha(3, endAlpha);
+			
+			// draw triangle
+			var triangle:Shape = new Shape();
+			triangle.graphics.beginFill(color);
+			triangle.graphics.moveTo(0, altitude / 2);
+			triangle.graphics.lineTo(triangleWidth, 0);
+			triangle.graphics.lineTo(triangleWidth, quad.height);
+			triangle.graphics.lineTo(0, altitude / 2);
+			triangle.graphics.endFill();
+			
+			// compose background of quad + triangle and set alpha
+			backgroundSkin.addChild(triangle);
+			quad.x = triangleWidth;
+			backgroundSkin.addChild(quad);
+			backgroundSkin.alpha = 0.3;
+			
+			// text input background
+			input.backgroundDisabledSkin = backgroundSkin;
+			input.backgroundEnabledSkin = backgroundSkin;
+			input.backgroundFocusedSkin = backgroundSkin;
+			input.backgroundSkin = backgroundSkin;
+			
+			
+			input.textEditorFactory = function():ITextEditor {
+				var tfte:TextFieldTextEditor = new TextFieldTextEditor();
+				tfte.width = input.width;
+				tfte.textFormat = TEXTFORMAT_TAG;
+				return tfte;
+			}
+			
+			input.promptFactory = function():ITextRenderer {
+				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
+				tr.width = input.width;
+				tr.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
+				return tr;
+			}
+			
+			// gap update
+			input.gap = 5;
+			
+			// add search icon
+			var searchIcon:ImageLoader = new ImageLoader();
+			searchIcon.source = this.searchIconTexture;
+			searchIcon.snapToPixels = true;
+			searchIcon.padding = 0;
+			searchIcon.paddingTop = 4;
+			searchIcon.paddingLeft = 10;
+			input.defaultIcon = searchIcon;
+			
+			// padding
+			input.paddingTop = altitude / 2 - 12;
+			input.paddingBottom = 0;
+			input.paddingLeft = input.paddingRight = searchIcon.paddingLeft + 8;
 		}
 		
 		private function tagLabelInitializer(label:Label):void
@@ -94,6 +304,8 @@ package nl.powergeek.feathers.themes
 		
 		private function quadContextAlternativeButtonInitializer(button:Button):void
 		{
+//			var defaultSkin:RoundedRectangle = new RoundedRectangle(10, 10, 3, 3, 3, 3);
+//			defaultSkin.material = new FlatColorMaterial(0xC7C7C7);
 			var defaultSkin:Quad = new Quad(10, 10, 0xC7C7C7);
 //			defaultSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.defaultSkin = defaultSkin;
@@ -126,26 +338,28 @@ package nl.powergeek.feathers.themes
 		
 		private function quadContextSuccessButtonInitializer(button:Button):void
 		{
+//			var defaultSkin:RoundedRectangle = new RoundedRectangle(10, 10, 3, 3, 3, 3);
+//			defaultSkin.material = new FlatColorMaterial(0x5CB85C);
 			var defaultSkin:Quad = new Quad(10, 10, 0x5CB85C);
 			defaultSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.defaultSkin = defaultSkin;
 			
 			var downSkin:Quad = new Quad(10, 10, 0x5CB85C);
-			downSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
+//			downSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.downSkin = downSkin;
 			
 			var hoverSkin:Quad = new Quad(10, 10, 0x5CB85C);
-			hoverSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
+//			hoverSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.hoverSkin = hoverSkin;
 			
 			var disabledSkin:Quad = new Quad(10, 10, 0xCCF5CE);
-			disabledSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
+//			disabledSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.disabledSkin = disabledSkin;
 			
 			button.padding = 5;
 			button.paddingLeft = button.paddingRight = 15;
 			
-//			button.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
+			button.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.defaultLabelProperties.embedFonts = true;
 			
 			button.defaultLabelProperties.textFormat = this.lightUITextFormat;
@@ -159,6 +373,8 @@ package nl.powergeek.feathers.themes
 		
 		private function quadContextDeleteButtonInitializer(button:Button):void
 		{
+//			var defaultSkin:RoundedRectangle = new RoundedRectangle(10, 10, 3, 3, 3, 3);
+//			defaultSkin.material = new FlatColorMaterial(0xCF4F4B);
 			var defaultSkin:Quad = new Quad(10, 10, 0xCF4F4B);
 //			defaultSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.defaultSkin = defaultSkin;
@@ -192,6 +408,8 @@ package nl.powergeek.feathers.themes
 		
 		private function quadContextPrimaryButtonInitializer(button:Button):void
 		{
+//			var defaultSkin:RoundedRectangle = new RoundedRectangle(10, 10, 3, 3, 3, 3);
+//			defaultSkin.material = new FlatColorMaterial(0x428BCA);
 			var defaultSkin:Quad = new Quad(10, 10, 0x428BCA);
 //			defaultSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.defaultSkin = defaultSkin;
@@ -226,12 +444,12 @@ package nl.powergeek.feathers.themes
 		private function transparentPanelInitializer(panel:Panel):void
 		{
 			var bg:Quad = new Quad(10, 10, 0x000000);
-			bg.alpha = 0.3;
+			bg.alpha = 0.15;
 			panel.backgroundSkin = bg;
 			panel.backgroundDisabledSkin = bg;
 		}
 		
-		private function backgroundlessTextInputInitializer(textInput:TextInput):void
+		private function transparentTagTextInputInitializer(textInput:TextInput):void
 		{
 			// define background
 			var backgroundSkin:Quad = new Quad(10, 10, 0xFFFFFF);

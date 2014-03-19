@@ -13,9 +13,7 @@ package
 	import feathers.layout.VerticalLayout;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.system.DeviceCapabilities;
-	import feathers.themes.AeonDesktopTheme;
 	import feathers.themes.MetalWorksMobileTheme;
-	import feathers.themes.MinimalMobileTheme;
 	
 	import nl.powergeek.feathers.themes.PinboredMobileTheme;
 	

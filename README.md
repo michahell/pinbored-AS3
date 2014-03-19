@@ -12,13 +12,11 @@ Everything is provided AS-IS. Use this project in any way you wish, just not to 
 
 Todo
 ----
-* independant scroll container list view
-* tag text input text renderer styling
 * delete request
+* item renderer icon horizontal layout includes editing capabilities
 * edit request
-* animations
 * item renderer icon scale fix
-* item renderer icon horizontal layout fix
+* animations?
 
 libraries used
 --------------
@@ -27,6 +25,10 @@ libraries used
 * [Feathers UI](https://github.com/joshtynjala/feathers)
 * [Signals AS3](https://github.com/robertpenner/as3-signals)
 * [Twitter Bootstrap](http://getbootstrap.com/css/#buttons), for the button colors used.
+
+gists used
+----------
+* Josh Tynjala's [HyperlinkTextFieldTextRenderer](https://gist.github.com/joshtynjala/7997065)
 
 credits
 -------

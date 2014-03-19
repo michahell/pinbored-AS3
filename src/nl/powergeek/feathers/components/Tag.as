@@ -17,17 +17,6 @@ package nl.powergeek.feathers.components
 	
 	public class Tag extends FeathersControl
 	{
-		// tag scale 9 image
-		[Embed(source="assets/images/pinbored/scale3tag.png")]
-		private static const SCALE_3_TEXTURE:Class;
-		
-		// cross
-		[Embed(source="assets/images/pinbored/icon_cross_active.png")]
-		public static const CrossActive:Class;
-		
-		[Embed(source="assets/images/pinbored/icon_cross_white.png")]
-		public static const CrossWhite:Class;
-		
 		private var
 			background:Scale3Image,
 			_label:Label = new Label(),
@@ -47,13 +36,14 @@ package nl.powergeek.feathers.components
 		{
 //			trace('tag created: ' + text);
 			this._screenDPIscale = screenDPIscale;
+			trace('dpi scaling: ' + screenDPIscale);
 			this._text = text;
 		}
 		
 		override protected function initialize():void {
 			
 			// add tag background (scale 3 image, pill shaped)
-			const texture:Texture = Texture.fromBitmap(new SCALE_3_TEXTURE(), false);
+			const texture:Texture = Texture.fromBitmap(new PinboredMobileTheme.SCALE_3_TAG_IMAGE(), false);
 			const textures:Scale3Textures = new Scale3Textures(texture, 60, 80, Scale3Textures.DIRECTION_HORIZONTAL);
 			this._image = new Scale3Image(textures, this._screenDPIscale);
 			this._image.height = TagTextInput.TAG_HEIGHT;
@@ -65,8 +55,8 @@ package nl.powergeek.feathers.components
 			
 			// add the delete icon
 			var closeIconParams:Object = {
-				normal: new Image(Texture.fromBitmap(new CrossWhite())),
-				active: new Image(Texture.fromBitmap(new CrossActive()))
+				normal: new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_CROSS_WHITE())),
+				active: new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_CROSS_ACTIVE()))
 			};
 			
 			_closeIcon = new InteractiveIcon(closeIconParams, false, this._screenDPIscale, 0.15);

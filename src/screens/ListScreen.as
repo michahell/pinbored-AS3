@@ -12,17 +12,23 @@ package screens
 	import feathers.controls.TextInput;
 	import feathers.controls.renderers.BaseDefaultItemRenderer;
 	import feathers.controls.renderers.IListItemRenderer;
+	import feathers.controls.text.TextFieldTextRenderer;
+	import feathers.core.ITextRenderer;
 	import feathers.data.ListCollection;
 	import feathers.events.FeathersEventType;
+	import feathers.layout.AnchorLayoutData;
+	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
 	
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
+	import flash.text.TextFormat;
 	
 	import nl.powergeek.REST.RESTClient;
 	import nl.powergeek.REST.RESTRequest;
 	import nl.powergeek.feathers.components.PinboardLayoutGroupItemRenderer;
+	import nl.powergeek.feathers.components.PinboredHeader;
 	import nl.powergeek.feathers.components.Tag;
 	import nl.powergeek.feathers.components.TagTextInput;
 	import nl.powergeek.feathers.themes.PinboredMobileTheme;
@@ -42,9 +48,6 @@ package screens
 	
 	public class ListScreen extends Screen
 	{
-		[Embed(source="assets/images/pinbored/pinbored-background.jpg")]
-		public static const BACKGROUND:Class;
-		
 		// GUI related
 		private var 
 			panel:Panel = new Panel(),
@@ -54,7 +57,7 @@ package screens
 			searchTags:TagTextInput,
 			list:List = new List(),
 			button:Button,
-			_backgroundImage:Image = new Image(Texture.fromBitmap(new BACKGROUND(), false)),
+			_backgroundImage:Image = new Image(Texture.fromBitmap(new PinboredMobileTheme.BACKGROUND2(), false)),
 			_panelExcludedSpace:uint = 0;
 		
 		// REST related
@@ -143,7 +146,7 @@ package screens
 			
 			// get all bookmarks
 			// PinboardService.GetAllBookmarks();
-			PinboardService.GetAllBookmarks(new Vector.<String>(['programming', 'A.I.']));
+			PinboardService.GetAllBookmarks(['programming']);
 		}
 		
 		private function createGUI():void
@@ -156,22 +159,33 @@ package screens
 			this.panel.horizontalScrollPolicy = Panel.SCROLL_POLICY_OFF;
 			this.panel.nameList.add(PinboredMobileTheme.PANEL_TRANSPARENT_BACKGROUND);
 			
-			this.panel.headerFactory = function():Header
+			this.panel.headerFactory = function():PinboredHeader
 			{
-				const header:Header = new Header();
+				// const header:Header = new Header();
+				const header:PinboredHeader = new PinboredHeader();
 				header.title = "Bookmarks list";
 				header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
+				header.padding = 0;
+				header.paddingLeft = 10;
+				header.gap = 0;
+				
+				header.titleFactory = function():ITextRenderer
+				{
+					var titleRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
+					titleRenderer.textFormat = PinboredMobileTheme.TEXTFORMAT_SCREEN_TITLE;
+					return titleRenderer;
+				}
 				
 				if(!this.searchBookmarks)
 				{
 					this.searchBookmarks = new TextInput();
-					this.searchBookmarks.width = 400;
-					this.searchBookmarks.prompt = "search keyword";
+					this.searchBookmarks.nameList.add(PinboredMobileTheme.TEXTINPUT_SEARCH);
+					this.searchBookmarks.prompt = "search any keyword...";
+					this.searchBookmarks.width = 500;
 					
 					//we can't get an enter key event without changing the returnKeyLabel
 					//not using ReturnKeyLabel.GO here so that it will build for web
 					this.searchBookmarks.textEditorProperties.returnKeyLabel = "go";
-					
 					this.searchBookmarks.addEventListener(FeathersEventType.ENTER, input_enterHandler);
 				}
 				
@@ -180,17 +194,89 @@ package screens
 				
 				return header;
 			}
-			
-			this.panel.footerFactory = function():ScrollContainer
+				
+			// panel footer
+			panel.footerFactory = function():ScrollContainer
 			{
 				var container:ScrollContainer = new ScrollContainer();
 				container.nameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
 				container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
 				container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-				_panelExcludedSpace += container.height;
+								
+				// create logo
+				var alpha:Number = 0.3;
+				
+				// create left horizontal layoutgroup
+				var leftItems:LayoutGroup = new LayoutGroup();
+				var leftItemsLayout:HorizontalLayout = new HorizontalLayout();
+				leftItemsLayout.paddingTop = leftItemsLayout.paddingRight = leftItemsLayout.paddingBottom = leftItemsLayout.paddingLeft = 14;
+				leftItemsLayout.gap = 10;
+				leftItems.layout = leftItemsLayout;
+				leftItems.layoutData = new AnchorLayoutData(0, NaN, 0, 0, NaN, 0);
+				
+				// create logo
+				var logo:Image = new Image(Texture.fromBitmap(new PinboredMobileTheme.LOGO_TRANSPARENT(), true));
+				logo.scaleX = logo.scaleY = 0.75;
+				logo.alpha = alpha;
+				leftItems.addChild(logo);
+				
+				// create disclaimer text
+				var disclaimer:Label = new Label();
+				disclaimer.maxWidth = 400;
+				disclaimer.nameList.add(PinboredMobileTheme.LABEL_DISCLAIMER);
+				disclaimer.text = AppModel.DISCLAIMER_TEXT;
+				leftItems.addChild(disclaimer);
+				
+				// create right horizontal layoutgroup
+				var rightItems:LayoutGroup = new LayoutGroup();
+				var rightItemsLayout:HorizontalLayout = new HorizontalLayout();
+				rightItemsLayout.paddingTop = rightItemsLayout.paddingRight = rightItemsLayout.paddingBottom = rightItemsLayout.paddingLeft = 14;
+				rightItemsLayout.gap = 10;
+				rightItems.layout = rightItemsLayout;
+				rightItems.layoutData = new AnchorLayoutData(0, 0, 0, NaN, NaN, 0);
+				
+				// create starling, feathers, open source icons
+				var feathersLogo:Image = new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_FEATHERS(), true));
+				feathersLogo.scaleX = feathersLogo.scaleY = 0.8;
+				feathersLogo.alpha = alpha;
+				rightItems.addChild(feathersLogo);
+				
+				var starlingLogo:Image = new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_STARLING(), true));
+				starlingLogo.scaleX = starlingLogo.scaleY = 0.15;
+				starlingLogo.alpha = alpha + 0.1;
+				rightItems.addChild(starlingLogo);
+				
+				// create open source + link text container
+				var rightTextGroup:LayoutGroup = new LayoutGroup();
+				var rightTextGroupLayout:VerticalLayout = new VerticalLayout();
+				rightTextGroupLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_RIGHT;
+				rightTextGroupLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+				rightTextGroup.layout = rightTextGroupLayout;
+				
+				// create open source text
+				var opensourceText:Label = new Label();
+				opensourceText.isQuickHitAreaEnabled = false;
+				opensourceText.nameList.add(PinboredMobileTheme.LABEL_RIGHT_ALIGNED_TEXT);
+				opensourceText.text = AppModel.OPENSOURCE_TEXT;
+				rightTextGroup.addChild(opensourceText);
+				
+				// create author link text
+				var authorlinkText:Label = new Label();
+				authorlinkText.isQuickHitAreaEnabled = false;
+				authorlinkText.nameList.add(PinboredMobileTheme.LABEL_AUTHOR_LINK);
+				authorlinkText.text = AppModel.LINK_TEXT;
+				rightTextGroup.addChild(authorlinkText);
+				
+				// add text on the right to the right items layoutgroup
+				rightItems.addChild(rightTextGroup);
+				
+				// add the left AND right items to the container
+				container.addChild(leftItems);
+				container.addChild(rightItems);
+					
 				return container;
 			}
-			
+				
 			this.panel.padding = 0;
 			this.addChild(panel);
 				

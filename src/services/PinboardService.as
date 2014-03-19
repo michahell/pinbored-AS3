@@ -18,14 +18,14 @@ package services
 			
 		}
 		
-		public static function GetAllBookmarks(tags:Vector.<String> = null):void {
+		public static function GetAllBookmarks(tags:Array = null):void {
 			
 			var customData:String = '';
 			
 			if(tags && tags.length > 0) {
 				var tagQuery:String = '&tag=';
-				tags.forEach(function(tag:String, index:int, vector:Vector.<String>):void {
-					if(index == vector.length - 1)
+				tags.forEach(function(tag:String, index:int, array:Array):void {
+					if(index == array.length - 1)
 						tagQuery += tag;
 					else
 						tagQuery += tag + '+';
