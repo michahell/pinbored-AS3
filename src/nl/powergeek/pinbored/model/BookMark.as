@@ -5,13 +5,12 @@ package nl.powergeek.pinbored.model
 	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
 	
-	import nl.powergeek.pinbored.components.InteractiveIcon;
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
-	
-	import org.osflash.signals.Signal;
-	
+	import nl.powergeek.pinbored.components.InteractiveIcon;
 	import nl.powergeek.pinbored.services.UrlChecker;
 	import nl.powergeek.pinbored.services.UrlCheckerFactory;
+	
+	import org.osflash.signals.Signal;
 	
 	import starling.display.Image;
 	import starling.events.Event;
@@ -21,12 +20,12 @@ package nl.powergeek.pinbored.model
 	{
 		
 		private var
-			icons:LayoutGroup = new LayoutGroup(),
-			iconCheckmark:InteractiveIcon,
-			iconTags:InteractiveIcon,
-			iconHeart:InteractiveIcon,
-			iconCross:InteractiveIcon,
-			urlChecker:UrlChecker;
+			_icons:LayoutGroup = new LayoutGroup(),
+			_iconCheckmark:InteractiveIcon,
+			_iconTags:InteractiveIcon,
+			_iconHeart:InteractiveIcon,
+			_iconCross:InteractiveIcon,
+			_urlChecker:UrlChecker;
 			
 		public var
 			bookmarkData: Object,
@@ -34,11 +33,15 @@ package nl.powergeek.pinbored.model
 			description:String,
 			extended:String,
 			tags:Vector.<String>,
-			accessory: LayoutGroup,
+			accessory: LayoutGroup;
+			
+		public const
 			staleConfirmed:Signal = new Signal(),
 			notStaleConfirmed:Signal = new Signal(),
 			editTapped:Signal = new Signal(),
-			deleteTapped:Signal = new Signal();
+			deleteTapped:Signal = new Signal(),
+			deleteConfirmed:Signal = new Signal(),
+			editConfirmed:Signal = new Signal();
 			
 			
 		public function BookMark(bookmarkData:Object)
@@ -49,7 +52,7 @@ package nl.powergeek.pinbored.model
 			this.extended = bookmarkData.extended;
 			this.tags = Vector.<String>(String(bookmarkData.tags).split(" "));
 			
-			this.icons.layout = new HorizontalLayout();
+			this._icons.layout = new HorizontalLayout();
 			
 			accessory = new LayoutGroup();
 			var layout:HorizontalLayout = new HorizontalLayout();
@@ -62,16 +65,16 @@ package nl.powergeek.pinbored.model
 				normal:new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_CHECKMARK_WHITE())),
 				active:new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_CHECKMARK_ACTIVE()))
 			};
-			iconCheckmark = new InteractiveIcon(checkmarkParams, true, 0.27);
+			_iconCheckmark = new InteractiveIcon(checkmarkParams, true, 0.27);
 			
 			var crossParams:Object = {
 				normal:new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_CROSS_WHITE())),
 				active:new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_CROSS_ACTIVE()))
 			};
-			iconCross = new InteractiveIcon(crossParams, true, 0.27);
+			_iconCross = new InteractiveIcon(crossParams, true, 0.27);
 			
 			
-			accessory.addChild(icons);
+			accessory.addChild(_icons);
 				
 			var editButton:Button = new Button();
 			editButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_ALTERNATIVE);
@@ -95,6 +98,7 @@ package nl.powergeek.pinbored.model
 		private function editTriggeredHandler(event:Event):void
 		{
 			const button:Button = Button(event.currentTarget);
+			button.isEnabled = false;
 			editTapped.dispatch(this);
 		}
 		
@@ -102,19 +106,19 @@ package nl.powergeek.pinbored.model
 		{
 			const button:Button = Button(event.currentTarget);
 						
-			urlChecker = UrlCheckerFactory.get();
+			_urlChecker = UrlCheckerFactory.get();
 			var bookmark:BookMark = this;
 			
-			urlChecker.check(this.href, function(stale:Boolean):void{
+			_urlChecker.check(this.href, function(stale:Boolean):void{
 				
 				if(stale) {
 					bookmark.staleConfirmed.dispatch();
-					icons.addChild(iconCross);
-					iconCross.setActive();
+					_icons.addChild(_iconCross);
+					_iconCross.setActive();
 				} else {
 					bookmark.notStaleConfirmed.dispatch();
-					icons.addChild(iconCheckmark);
-					iconCheckmark.setActive();
+					_icons.addChild(_iconCheckmark);
+					_iconCheckmark.setActive();
 				}
 				
 				button.isEnabled = false;
@@ -125,12 +129,13 @@ package nl.powergeek.pinbored.model
 		private function deleteTriggeredHandler(event:Event):void
 		{
 			const button:Button = Button(event.currentTarget);
+			button.isEnabled = false;
 			deleteTapped.dispatch(this);
 		}
 		
 		public function removeUrlChecker():void
 		{
-			this.urlChecker = null;
+			this._urlChecker = null;
 		}
 		
 		public function toString():String {

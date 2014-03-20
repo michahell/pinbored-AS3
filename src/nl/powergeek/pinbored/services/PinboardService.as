@@ -20,13 +20,15 @@ package nl.powergeek.pinbored.services
 		}
 		
 		public static function deleteBookmark(bookmark:BookMark):Signal {
+			
 			var deleteSignal:Signal = new Signal();
+			var argument:String = '&url=';
 			
 			// setup request params
 			var params:Object = {
 				type:		'get',
 				url: 		'posts/delete',
-				data:		bookmark.href,
+				data:		argument + bookmark.href,
 				signal: 	deleteSignal
 			};
 			
@@ -41,27 +43,24 @@ package nl.powergeek.pinbored.services
 		
 		public static function GetAllBookmarks(tags:Array = null):void {
 			
-			var customData:String = '';
+			var tagList:String = '&tag=';
+			var argument:String = '';
 			
 			if(tags && tags.length > 0) {
-				var tagQuery:String = '&tag=';
 				tags.forEach(function(tag:String, index:int, array:Array):void {
 					if(index == array.length - 1)
-						tagQuery += tag;
+						tagList += tag;
 					else
-						tagQuery += tag + '+';
+						tagList += tag + '+';
 				});
-				trace('requesting bookmarks filtered by tags: ' + tagQuery);
-				customData += tagQuery;
-			} else {
-				trace('requesting all bookmarks... ');
+				argument = tagList;
 			}
 			
 			// setup request params
 			var params:Object = {
 				type:		'get',
 				url: 		'posts/all',
-				data:		customData,
+				data:		argument,
 				signal: 	allBookmarksReceived
 			};
 			

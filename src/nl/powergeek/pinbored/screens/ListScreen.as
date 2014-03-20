@@ -24,6 +24,7 @@ package nl.powergeek.pinbored.screens
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	import flash.text.TextFormat;
+	import flash.utils.setTimeout;
 	
 	import nl.powergeek.REST.RESTClient;
 	import nl.powergeek.REST.RESTRequest;
@@ -32,21 +33,23 @@ package nl.powergeek.pinbored.screens
 	import nl.powergeek.feathers.components.Tag;
 	import nl.powergeek.feathers.components.TagTextInput;
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
+	import nl.powergeek.pinbored.model.AppModel;
+	import nl.powergeek.pinbored.model.BookMark;
+	import nl.powergeek.pinbored.model.BookmarkEvent;
+	import nl.powergeek.pinbored.services.PinboardService;
 	import nl.powergeek.utils.ArrayCollectionPager;
 	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
-	import nl.powergeek.pinbored.services.PinboardService;
-	
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
 	import starling.textures.Texture;
-	import nl.powergeek.pinbored.model.BookMark;
-	import nl.powergeek.pinbored.model.AppModel;
 	
 	public class ListScreen extends Screen
 	{
@@ -99,6 +102,13 @@ package nl.powergeek.pinbored.screens
 			// remove listener
 			owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, onTransitionComplete);
 			
+			// setup list listeners
+			list.addEventListener(BookmarkEvent.BOOKMARK_DELETED, function(event:starling.events.Event):void {
+				trace('receiving BOOKMARK_DELETED event from custom item renderer...');
+				var deletedBookmark:BookMark = BookMark(event.data);
+				removeBookmarkFromList(deletedBookmark);
+			});
+			
 			// get all bookmarks and populate list control
 			getInitialData();
 		}
@@ -116,13 +126,12 @@ package nl.powergeek.pinbored.screens
 					AppModel.rawBookmarkListCollectionPager = new ArrayCollectionPager(AppModel.rawBookmarkDataListFiltered, resultsPerPage);
 					var firstResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.first();
 					
+					cleanBookmarkList();
 					AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(firstResultPageCollection);
-					
-					list.dataProvider = null;
-					list.dataProvider = new ListCollection(AppModel.bookmarksList);
+					activateBookmarkList();
 				} else {
 					trace('no results after filtering...');
-					list.dataProvider = null;
+					cleanBookmarkList();
 				}
 				
 			});
@@ -140,47 +149,79 @@ package nl.powergeek.pinbored.screens
 				AppModel.rawBookmarkListCollectionPager = new ArrayCollectionPager(AppModel.rawBookmarkDataList, resultsPerPage);
 				var firstResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.first();
 				
+				cleanBookmarkList();
 				AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(firstResultPageCollection);
-				
-				// attach listeners to each bookmark in the bookmarkslist
-				AppModel.bookmarksList.forEach(function(bm:BookMark, index:uint, array:Array):void {
-					
-					// if bookmark EDIT is tapped
-					bm.editTapped.add(function(tappedBookmark:BookMark):void{
-						trace('bookmark edit tapped!');
-					});
-					
-					// if bookmark DELETE is tapped
-					bm.deleteTapped.addOnce(function(tappedBookmark:BookMark):void{
-						// disable delete button
-						
-						trace('bookmark delete tapped!');
-						var returnSignal:Signal = PinboardService.deleteBookmark(tappedBookmark);
-						returnSignal.addOnce(function():void{
-							trace('bookmark delete request completed.');
-							
-						});
-					});
-					
-					// if bookmark is confirmed stale
-					bm.staleConfirmed.addOnce(function():void {
-						trace('getting signal..');
-					});
-					
-					// if bookmark is confirmed NOT stale
-					bm.notStaleConfirmed.addOnce(function():void {
-						trace('getting signal..');
-					});
-					
-				});
-				
-				list.dataProvider = null;
-				list.dataProvider = new ListCollection(AppModel.bookmarksList);
+				activateBookmarkList();
 			});
 			
 			// get all bookmarks
-			// PinboardService.GetAllBookmarks();
-			PinboardService.GetAllBookmarks(['temp_SW']);
+			PinboardService.GetAllBookmarks();
+//			PinboardService.GetAllBookmarks(['temp_SW']);
+		}
+		
+		private function cleanBookmarkList():void {
+			
+			// first, remove all listeners from old bookmarksList
+			AppModel.bookmarksList.forEach(function(bm:BookMark, index:uint, array:Array):void {
+				bm.editTapped..removeAll();
+				bm.deleteTapped.removeAll();
+				bm.staleConfirmed.removeAll();
+				bm.notStaleConfirmed.removeAll();
+			});
+				
+			// then, null the dataprovider for refresh
+			list.dataProvider = null;
+		}
+		
+		private function activateBookmarkList():void {
+			
+			// attach listeners to each bookmark in the bookmarkslist
+			AppModel.bookmarksList.forEach(function(bm:BookMark, index:uint, array:Array):void {
+				
+				// if bookmark EDIT is tapped
+				bm.editTapped.add(function(tappedBookmark:BookMark):void{
+					trace('bookmark edit tapped!');
+				});
+				
+				// if bookmark DELETE is tapped
+				bm.deleteTapped.addOnce(function(tappedBookmark:BookMark):void{
+					trace('bookmark delete tapped!');
+					// execute request and attach listener to returned signal
+					var returnSignal:Signal = PinboardService.deleteBookmark(tappedBookmark);
+					returnSignal.addOnce(function():void{
+						trace('bookmark delete request completed.');
+						// update the bookmark by confirming delete
+						tappedBookmark.deleteConfirmed.dispatch();
+					});
+					
+					// MOCK CONFIRMATION!!
+					setTimeout(function():void{
+						tappedBookmark.deleteConfirmed.dispatch();
+					}, Math.random() * 1000);
+					
+				});
+				
+				// if bookmark is confirmed stale
+				bm.staleConfirmed.addOnce(function():void {
+					trace('getting signal..');
+				});
+				
+				// if bookmark is confirmed NOT stale
+				bm.notStaleConfirmed.addOnce(function():void {
+					trace('getting signal..');
+				});
+				
+			});
+			
+			// update the list's dataprovider
+			list.dataProvider = new ListCollection(AppModel.bookmarksList);
+		}
+		
+		private function removeBookmarkFromList(bookmark:BookMark):void {
+			
+			var preDeleteScrollPos:Number = list.verticalScrollPosition;
+			var bmIndex:Number = list.dataProvider.getItemIndex(bookmark);
+			list.dataProvider.removeItemAt(bmIndex);
 		}
 		
 		private function createGUI():void
@@ -333,7 +374,22 @@ package nl.powergeek.pinbored.screens
 			this.listScrollContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_ON;
 			
 			this.panel.addChild(this.listScrollContainer);
-				
+			
+			// list styling
+			var listLayout:VerticalLayout = new VerticalLayout();
+			listLayout.hasVariableItemDimensions = true;
+			
+			// copied over from list initialize function
+			listLayout.useVirtualLayout = true;
+			listLayout.manageVisibility = true;
+			listLayout.paddingTop = listLayout.paddingRight = listLayout.paddingBottom = listLayout.paddingLeft = 0;
+			listLayout.gap = 0;
+			listLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
+			listLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
+			
+			// assign the listLayout to the list
+			list.layout = listLayout;
+			
 			// add a list for the bookmarks
 			list.itemRendererFactory = function():IListItemRenderer
 			{
@@ -342,10 +398,6 @@ package nl.powergeek.pinbored.screens
 				return renderer;
 			};
 			
-			list.itemRendererProperties.horizontalAlign = Button.HORIZONTAL_ALIGN_LEFT;
-			list.itemRendererProperties.verticalAlign = Button.VERTICAL_ALIGN_MIDDLE;
-			list.itemRendererProperties.iconPosition = Button.ICON_POSITION_LEFT;
-			list.itemRendererProperties.gap = 10;
 			list.isSelectable = false;
 			
 			// add list to panel

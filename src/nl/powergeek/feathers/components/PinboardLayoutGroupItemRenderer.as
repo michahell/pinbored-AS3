@@ -12,9 +12,17 @@ package nl.powergeek.feathers.components
 	import flash.text.TextFormatAlign;
 	
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
+	import nl.powergeek.pinbored.model.BookMark;
+	import nl.powergeek.pinbored.model.BookmarkEvent;
 	
+	import org.osflash.signals.Signal;
+	
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
+	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
@@ -35,6 +43,11 @@ package nl.powergeek.feathers.components
 			_currentState:String = STATE_UP,
 			_backgroundSkin:DisplayObject,
 			touchID:int = -1;
+			
+		// reference to bookmark signals
+		private var
+			_deleteConfirmed:Signal,
+			_editConfirmed:Signal;
 		
 		public function PinboardLayoutGroupItemRenderer() { }
 		
@@ -176,9 +189,48 @@ package nl.powergeek.feathers.components
 				else
 					this._href.text = '[ no link ]';
 				
-				if(this._data.hasOwnProperty("accessory"))
+				if(this._data.hasOwnProperty("accessory")) {
 					this.accessory = this._data.accessory;
+					
+				}
+				//TODO add listeners to buttons
+				if(this._data.hasOwnProperty("deleteConfirmed")) {
+					this._deleteConfirmed = this._data.deleteConfirmed;
+					this._deleteConfirmed.addOnce(function():void{
+						removeSelf(BookMark(_data));
+					});
+				}
+//				if(this._data.hasOwnProperty("staleConfirmed")) {
+//					Signal(this._data.staleConfirmed).addOnce(function():void{
+//						
+//					});
+//				}
+//				if(this._data.hasOwnProperty("notStaleConfirmed")) {
+//					Signal(this._data.notStaleConfirmed).addOnce(function():void{
+//						
+//					});
+//				}
+//				if(this._data.hasOwnProperty("editConfirmed")) {
+//					Signal(this._data.editTapped).add(function():void{
+//						
+//					});
+//				}
 			}
+		}
+		
+		private function removeSelf(bookmark:BookMark):void {
+			var animTime:Number = 1.5;
+			var tween:Tween = new Tween(this, animTime, Transitions.EASE_IN_BACK);
+			tween.animate("height", 0);
+			tween.animate("scaleY", 0);
+			tween.animate("width",  0);
+			tween.animate("scaleX", 0);
+			tween.animate("x", this.width / 2);
+			tween.onComplete = function():void {
+				dispatchEventWith(BookmarkEvent.BOOKMARK_DELETED, true, bookmark);
+			};
+			
+			Starling.current.juggler.add(tween);
 		}
 		
 		public function get backgroundSkin():DisplayObject
@@ -258,7 +310,7 @@ package nl.powergeek.feathers.components
 			{
 				var accessoryLayoutData:AnchorLayoutData = new AnchorLayoutData();
 				accessoryLayoutData.top = this._padding;
-				accessoryLayoutData.right = this._padding * 3;
+				accessoryLayoutData.right = this._padding * 2;
 				accessoryLayoutData.bottom = this._padding;
 				
 				this._accessory.layoutData = accessoryLayoutData;
