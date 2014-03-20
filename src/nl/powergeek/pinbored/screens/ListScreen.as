@@ -1,4 +1,4 @@
-package screens
+package nl.powergeek.pinbored.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.Callout;
@@ -31,13 +31,13 @@ package screens
 	import nl.powergeek.feathers.components.PinboredHeader;
 	import nl.powergeek.feathers.components.Tag;
 	import nl.powergeek.feathers.components.TagTextInput;
-	import nl.powergeek.feathers.themes.PinboredMobileTheme;
+	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	import nl.powergeek.utils.ArrayCollectionPager;
 	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
-	import services.PinboardService;
+	import nl.powergeek.pinbored.services.PinboardService;
 	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -45,6 +45,8 @@ package screens
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
 	import starling.textures.Texture;
+	import nl.powergeek.pinbored.model.BookMark;
+	import nl.powergeek.pinbored.model.AppModel;
 	
 	public class ListScreen extends Screen
 	{
@@ -57,7 +59,7 @@ package screens
 			searchTags:TagTextInput,
 			list:List = new List(),
 			button:Button,
-			_backgroundImage:Image = new Image(Texture.fromBitmap(new PinboredMobileTheme.BACKGROUND2(), false)),
+			_backgroundImage:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.BACKGROUND2(), false)),
 			_panelExcludedSpace:uint = 0;
 		
 		// REST related
@@ -140,13 +142,45 @@ package screens
 				
 				AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(firstResultPageCollection);
 				
-				//				list.dataProvider = null;
+				// attach listeners to each bookmark in the bookmarkslist
+				AppModel.bookmarksList.forEach(function(bm:BookMark, index:uint, array:Array):void {
+					
+					// if bookmark EDIT is tapped
+					bm.editTapped.add(function(tappedBookmark:BookMark):void{
+						trace('bookmark edit tapped!');
+					});
+					
+					// if bookmark DELETE is tapped
+					bm.deleteTapped.addOnce(function(tappedBookmark:BookMark):void{
+						// disable delete button
+						
+						trace('bookmark delete tapped!');
+						var returnSignal:Signal = PinboardService.deleteBookmark(tappedBookmark);
+						returnSignal.addOnce(function():void{
+							trace('bookmark delete request completed.');
+							
+						});
+					});
+					
+					// if bookmark is confirmed stale
+					bm.staleConfirmed.addOnce(function():void {
+						trace('getting signal..');
+					});
+					
+					// if bookmark is confirmed NOT stale
+					bm.notStaleConfirmed.addOnce(function():void {
+						trace('getting signal..');
+					});
+					
+				});
+				
+				list.dataProvider = null;
 				list.dataProvider = new ListCollection(AppModel.bookmarksList);
 			});
 			
 			// get all bookmarks
 			// PinboardService.GetAllBookmarks();
-			PinboardService.GetAllBookmarks(['programming']);
+			PinboardService.GetAllBookmarks(['temp_SW']);
 		}
 		
 		private function createGUI():void
@@ -157,7 +191,7 @@ package screens
 			// add a panel with a header, footer and no scroll shit
 			this.panel.verticalScrollPolicy = Panel.SCROLL_POLICY_OFF;
 			this.panel.horizontalScrollPolicy = Panel.SCROLL_POLICY_OFF;
-			this.panel.nameList.add(PinboredMobileTheme.PANEL_TRANSPARENT_BACKGROUND);
+			this.panel.nameList.add(PinboredDesktopTheme.PANEL_TRANSPARENT_BACKGROUND);
 			
 			this.panel.headerFactory = function():PinboredHeader
 			{
@@ -172,15 +206,15 @@ package screens
 				header.titleFactory = function():ITextRenderer
 				{
 					var titleRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
-					titleRenderer.textFormat = PinboredMobileTheme.TEXTFORMAT_SCREEN_TITLE;
+					titleRenderer.textFormat = PinboredDesktopTheme.TEXTFORMAT_SCREEN_TITLE;
 					return titleRenderer;
 				}
 				
 				if(!this.searchBookmarks)
 				{
 					this.searchBookmarks = new TextInput();
-					this.searchBookmarks.nameList.add(PinboredMobileTheme.TEXTINPUT_SEARCH);
-					this.searchBookmarks.prompt = "search any keyword...";
+					this.searchBookmarks.nameList.add(PinboredDesktopTheme.TEXTINPUT_SEARCH);
+					this.searchBookmarks.prompt = "search any keyword and hit enter...";
 					this.searchBookmarks.width = 500;
 					
 					//we can't get an enter key event without changing the returnKeyLabel
@@ -215,7 +249,7 @@ package screens
 				leftItems.layoutData = new AnchorLayoutData(0, NaN, 0, 0, NaN, 0);
 				
 				// create logo
-				var logo:Image = new Image(Texture.fromBitmap(new PinboredMobileTheme.LOGO_TRANSPARENT(), true));
+				var logo:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.LOGO_TRANSPARENT(), true));
 				logo.scaleX = logo.scaleY = 0.75;
 				logo.alpha = alpha;
 				leftItems.addChild(logo);
@@ -223,7 +257,7 @@ package screens
 				// create disclaimer text
 				var disclaimer:Label = new Label();
 				disclaimer.maxWidth = 400;
-				disclaimer.nameList.add(PinboredMobileTheme.LABEL_DISCLAIMER);
+				disclaimer.nameList.add(PinboredDesktopTheme.LABEL_DISCLAIMER);
 				disclaimer.text = AppModel.DISCLAIMER_TEXT;
 				leftItems.addChild(disclaimer);
 				
@@ -236,12 +270,12 @@ package screens
 				rightItems.layoutData = new AnchorLayoutData(0, 0, 0, NaN, NaN, 0);
 				
 				// create starling, feathers, open source icons
-				var feathersLogo:Image = new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_FEATHERS(), true));
+				var feathersLogo:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_FEATHERS(), true));
 				feathersLogo.scaleX = feathersLogo.scaleY = 0.8;
 				feathersLogo.alpha = alpha;
 				rightItems.addChild(feathersLogo);
 				
-				var starlingLogo:Image = new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_STARLING(), true));
+				var starlingLogo:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_STARLING(), true));
 				starlingLogo.scaleX = starlingLogo.scaleY = 0.15;
 				starlingLogo.alpha = alpha + 0.1;
 				rightItems.addChild(starlingLogo);
@@ -256,14 +290,14 @@ package screens
 				// create open source text
 				var opensourceText:Label = new Label();
 				opensourceText.isQuickHitAreaEnabled = false;
-				opensourceText.nameList.add(PinboredMobileTheme.LABEL_RIGHT_ALIGNED_TEXT);
+				opensourceText.nameList.add(PinboredDesktopTheme.LABEL_RIGHT_ALIGNED_TEXT);
 				opensourceText.text = AppModel.OPENSOURCE_TEXT;
 				rightTextGroup.addChild(opensourceText);
 				
 				// create author link text
 				var authorlinkText:Label = new Label();
 				authorlinkText.isQuickHitAreaEnabled = false;
-				authorlinkText.nameList.add(PinboredMobileTheme.LABEL_AUTHOR_LINK);
+				authorlinkText.nameList.add(PinboredDesktopTheme.LABEL_AUTHOR_LINK);
 				authorlinkText.text = AppModel.LINK_TEXT;
 				rightTextGroup.addChild(authorlinkText);
 				
@@ -273,7 +307,10 @@ package screens
 				// add the left AND right items to the container
 				container.addChild(leftItems);
 				container.addChild(rightItems);
-					
+				
+				// update _panelExcludedSpace
+				_panelExcludedSpace += Math.max(container.height, leftItems.height, rightItems.height);
+				
 				return container;
 			}
 				
@@ -294,9 +331,6 @@ package screens
 			// add a scrollcontainer for the list
 			this.listScrollContainer = new ScrollContainer();
 			this.listScrollContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_ON;
-			
-			// update scrollcontainer height
-			this.listScrollContainer.height = panel.height - _panelExcludedSpace - searchTags.height - 100;
 			
 			this.panel.addChild(this.listScrollContainer);
 				
@@ -319,6 +353,9 @@ package screens
 			var listBg:Quad = new Quad(50, 50, 0x000000);
 			listBg.alpha = 0.3;
 			this.list.backgroundSkin = this.list.backgroundDisabledSkin = listBg;
+			
+			// finally, validate panel for scroll container height update
+			this.panel.validate();
 		}
 		
 		private function input_enterHandler():void
@@ -343,7 +380,7 @@ package screens
 			searchTags.width = panel.width;
 			
 			// update scrollcontainer height
-			this.listScrollContainer.height = panel.height - _panelExcludedSpace - searchTags.height - 100;
+			this.listScrollContainer.height = panel.height - _panelExcludedSpace - searchTags.height - 123;
 			
 			// layout
 		}

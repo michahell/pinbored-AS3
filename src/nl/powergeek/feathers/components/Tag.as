@@ -6,7 +6,7 @@ package nl.powergeek.feathers.components
 	import feathers.layout.AnchorLayoutData;
 	import feathers.textures.Scale3Textures;
 	
-	import nl.powergeek.feathers.themes.PinboredMobileTheme;
+	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	
 	import org.osflash.signals.Signal;
 	
@@ -14,6 +14,7 @@ package nl.powergeek.feathers.components
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
+	import nl.powergeek.pinbored.components.InteractiveIcon;
 	
 	public class Tag extends FeathersControl
 	{
@@ -34,29 +35,27 @@ package nl.powergeek.feathers.components
 			
 		public function Tag(screenDPIscale:Number, text:String)
 		{
-//			trace('tag created: ' + text);
 			this._screenDPIscale = screenDPIscale;
-			trace('dpi scaling: ' + screenDPIscale);
 			this._text = text;
 		}
 		
 		override protected function initialize():void {
 			
 			// add tag background (scale 3 image, pill shaped)
-			const texture:Texture = Texture.fromBitmap(new PinboredMobileTheme.SCALE_3_TAG_IMAGE(), false);
+			const texture:Texture = Texture.fromBitmap(new PinboredDesktopTheme.SCALE_3_TAG_IMAGE(), false);
 			const textures:Scale3Textures = new Scale3Textures(texture, 60, 80, Scale3Textures.DIRECTION_HORIZONTAL);
 			this._image = new Scale3Image(textures, this._screenDPIscale);
 			this._image.height = TagTextInput.TAG_HEIGHT;
 			this.addChild(this._image);
 			
 			// add the label
-			this._label.nameList.add(PinboredMobileTheme.LABEL_TAG_TEXTRENDERER);
+			this._label.nameList.add(PinboredDesktopTheme.LABEL_TAG_TEXTRENDERER);
 			this.addChild(this._label);
 			
 			// add the delete icon
 			var closeIconParams:Object = {
-				normal: new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_CROSS_WHITE())),
-				active: new Image(Texture.fromBitmap(new PinboredMobileTheme.ICON_CROSS_ACTIVE()))
+				normal: new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_CROSS_WHITE())),
+				active: new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_CROSS_ACTIVE()))
 			};
 			
 			_closeIcon = new InteractiveIcon(closeIconParams, false, this._screenDPIscale, 0.15);

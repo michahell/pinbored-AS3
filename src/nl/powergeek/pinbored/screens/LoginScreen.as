@@ -1,4 +1,4 @@
-package screens
+package nl.powergeek.pinbored.screens
 {
 	import feathers.controls.Button;
 	import feathers.controls.Callout;
@@ -14,7 +14,7 @@ package screens
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.VerticalLayout;
 	
-	import nl.powergeek.feathers.themes.PinboredMobileTheme;
+	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
@@ -36,7 +36,7 @@ package screens
 			infoLabel:Label,
 			tokenInput:TextInput,
 			loginButton:Button,
-			_backgroundImage:Image = new Image(Texture.fromBitmap(new PinboredMobileTheme.BACKGROUND1(), false));
+			_backgroundImage:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.BACKGROUND1(), false));
 		
 		// signals
 		private var
@@ -121,7 +121,7 @@ package screens
 			// login button
 			this.loginButton = new Button();
 			this.loginButton.label = "Login";
-			this.loginButton.nameList.add(PinboredMobileTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
+			this.loginButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
 			this.loginButton.addEventListener( Event.TRIGGERED, loginTriggeredHandler );
 			this.loginBoxInner.addChild( loginButton );
 		}

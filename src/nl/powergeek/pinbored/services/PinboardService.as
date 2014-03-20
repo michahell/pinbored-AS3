@@ -1,21 +1,42 @@
-package services
+package nl.powergeek.pinbored.services
 {
 	import flash.events.Event;
 	import flash.net.URLVariables;
 	
-	import nl.powergeek.utils.ArrayCollectionPager;
 	import nl.powergeek.REST.RESTClient;
 	import nl.powergeek.REST.RESTRequest;
+	import nl.powergeek.utils.ArrayCollectionPager;
 	
 	import org.osflash.signals.Signal;
+	import nl.powergeek.pinbored.model.BookMark;
 
 	public class PinboardService
 	{
-		public static var
-		allBookmarksReceived:Signal = new Signal(Event);
+		public static const
+			allBookmarksReceived:Signal = new Signal(Event);
 		
 		public function PinboardService() {
 			
+		}
+		
+		public static function deleteBookmark(bookmark:BookMark):Signal {
+			var deleteSignal:Signal = new Signal();
+			
+			// setup request params
+			var params:Object = {
+				type:		'get',
+				url: 		'posts/delete',
+				data:		bookmark.href,
+				signal: 	deleteSignal
+			};
+			
+			// build the request
+			var getBookmarks:RESTRequest = new RESTRequest(params);
+			
+			// do the request (or dryrun it)
+			RESTClient.doRequest(getBookmarks, true);
+			
+			return deleteSignal;
 		}
 		
 		public static function GetAllBookmarks(tags:Array = null):void {
@@ -36,6 +57,7 @@ package services
 				trace('requesting all bookmarks... ');
 			}
 			
+			// setup request params
 			var params:Object = {
 				type:		'get',
 				url: 		'posts/all',
@@ -57,17 +79,6 @@ package services
 			// add all bookmarks to 'the list'
 			rawObjectsArray.forEach(function(bookmark:Object, index:int, array:Array):void {
 				var bm:BookMark = new BookMark(bookmark);
-				
-				// if bookmark is stale...
-				bm.staleConfirmed.addOnce(function():void {
-					trace('getting signal..');
-				});
-				
-				// if bookmark is stale...
-				bm.notStaleConfirmed.addOnce(function():void {
-					trace('getting signal..');
-				});
-				
 				bookmarkCollection.push(bm);
 			});
 			
@@ -91,23 +102,11 @@ package services
 					// one tag on bookmark, one tag to filter with
 					} else if(tags.length == 1 && tagNames.length == 1) {
 						if (tags[0] == tagNames[0]) test = true;
-					// one tag on bookmark, multiple tags to filter with
-					} else if(tags.length == 1 && tagNames.length > 1) {
-						if (tagNames.indexOf(tags[0]) > 0)
-							test = true;
 					// multiple tags on bookmark, multiple tags to filter with
-					} else if(tags.length > 1 && tagNames.length > 1) {
+					} else if(tags.length >= 1 && tagNames.length >= 1) {
 						for(var i:uint = 0; i < tags.length; i++) {
-							if(tagNames.indexOf(tags[i] > 0)) {
-								test = true;
-								break;
-							}
-						}
-					// multiple tags on bookmark, multiple tags to filter with
-					} else if(tags.length > 1 && tagNames.length == 1) {
-						for(var j:uint = 0; j < tags.length; j++) {
-							if(tagNames[0] == tags[j]) {
-								test = true;
+							if(tagNames.indexOf(tags[i] == -1)) {
+								test = false;
 								break;
 							}
 						}

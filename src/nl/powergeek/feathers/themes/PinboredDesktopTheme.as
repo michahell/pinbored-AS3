@@ -33,7 +33,7 @@ package nl.powergeek.feathers.themes
 	import starling.display.materials.FlatColorMaterial;
 	import starling.display.materials.IMaterial;
 	
-	public class PinboredMobileTheme extends MetalWorksMobileTheme
+	public class PinboredDesktopTheme extends MetalWorksMobileTheme
 	{
 		// embedded fonts
 		[Embed(source="assets/fonts/pinbored/OpenSans-Light.ttf", fontName="OpenSansLight", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
@@ -113,15 +113,17 @@ package nl.powergeek.feathers.themes
 		
 		// alternate skin names
 		public static const
-			TEXTINPUT_TRANSPARENT_BACKGROUND:String = 'pinbored-textinput-transparent-background',
-			TEXTINPUT_SEARCH:String = 'pinbored-textinput-search',
+			TEXTINPUT_TRANSPARENT_BACKGROUND:String = 'pinbored-transparent-background-textinput',
+			TEXTINPUT_SEARCH:String = 'pinbored-search-textinput',
 			
-			LABEL_TAG_TEXTRENDERER:String = 'pinbored-tag-textrenderer',
-			LABEL_DISCLAIMER:String = 'pinbored-disclaimer-textrenderer',
-			LABEL_AUTHOR_LINK:String = 'pinbored-authorlink-textrenderer',
-			LABEL_RIGHT_ALIGNED_TEXT:String = 'pinbored-right-aligned-textrenderer',
+			LABEL_TAG_TEXTRENDERER:String = 'pinbored-tag-label',
+			LABEL_DISCLAIMER:String = 'pinbored-disclaimer-label',
+			LABEL_AUTHOR_LINK:String = 'pinbored-authorlink-label',
+			LABEL_RIGHT_ALIGNED_TEXT:String = 'pinbored-right-aligned-label',
+			LABEL_BOOKMARK_DESCRIPTION:String = 'pinbored-bookmark-description-label',
+			LABEL_BOOKMARK_HREF:String = 'pinbored-bookmark-href-label',
 			
-			PANEL_TRANSPARENT_BACKGROUND:String = 'pinbored-panel-transparent-background',
+			PANEL_TRANSPARENT_BACKGROUND:String = 'pinboredtransparent-background-panel',
 			
 			BUTTON_QUAD_CONTEXT_PRIMARY:String = 'pinbored-quad-context-edit-button',
 			BUTTON_QUAD_CONTEXT_DELETE:String = 'pinbored-quad-context-delete-button',
@@ -136,12 +138,14 @@ package nl.powergeek.feathers.themes
 		// textformats
 		public static var
 			TEXTFORMAT_TAG:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 14, 0xFFFFFF, true),
-			TEXTFORMAT_TAG_TEXT_INPUT_PROMPT:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 14, 0xDDDDDD, true),
+			TEXTFORMAT_TAG_TEXT_INPUT_PROMPT:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 14, 0xAAAAAA, true),
 			TEXTFORMAT_DISCLAIMER:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xAAAAAA, false),
 			TEXTFORMAT_LINK:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0x0099FF, false, null, true),
-			TEXTFORMAT_SCREEN_TITLE:TextFormat = new TextFormat(OpenSansLightFont.fontName, 20, 0xEEEEEE, false);
+			TEXTFORMAT_SCREEN_TITLE:TextFormat = new TextFormat(OpenSansLightFont.fontName, 20, 0xEEEEEE, false),
+			TEXTFORMAT_BOOKMARK_DESCRIPTION:TextFormat = new TextFormat(OpenSansLightFont.fontName, 13, 0xEEEEEE, false),
+			TEXTFORMAT_BOOKMARK_HREF:TextFormat = new TextFormat(OpenSansLightFont.fontName, 12, 0xBBBBBB, false);
 		
-		public function PinboredMobileTheme(container:DisplayObjectContainer=null, scaleToDPI:Boolean=true)
+		public function PinboredDesktopTheme(container:DisplayObjectContainer=null, scaleToDPI:Boolean=true)
 		{
 			super(container, scaleToDPI);
 		}
@@ -168,6 +172,8 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(Label, disclaimerLabelInitializer, LABEL_DISCLAIMER);
 			this.setInitializerForClass(Label, authorLinkLabelInitializer, LABEL_AUTHOR_LINK);
 			this.setInitializerForClass(Label, rightAlignedTextLabelInitializer, LABEL_RIGHT_ALIGNED_TEXT);
+			this.setInitializerForClass(Label, bookmarkLabelInitializer, LABEL_BOOKMARK_DESCRIPTION);
+			this.setInitializerForClass(Label, bookmarkHrefInitializer, LABEL_BOOKMARK_HREF);
 			
 		}
 		
@@ -185,14 +191,32 @@ package nl.powergeek.feathers.themes
 			container.backgroundSkin = bg;
 		}
 		
+		private function bookmarkLabelInitializer(label:Label):void
+		{
+			label.textRendererFactory = function():ITextRenderer {
+				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
+				tr.width = label.width;
+				tr.textFormat = TEXTFORMAT_BOOKMARK_DESCRIPTION;
+				return tr;
+			}
+		}
+		
+		private function bookmarkHrefInitializer(label:Label):void
+		{
+			label.textRendererFactory = function():ITextRenderer {
+				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
+				tr.width = label.width;
+				tr.textFormat = TEXTFORMAT_BOOKMARK_HREF;
+				return tr;
+			}
+		}
+		
 		private function rightAlignedTextLabelInitializer(label:Label):void
 		{
 			label.textRendererFactory = function():ITextRenderer {
 				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
 				TEXTFORMAT_DISCLAIMER.align = TextFormatAlign.RIGHT;
 				tr.textFormat = TEXTFORMAT_DISCLAIMER;
-//				tr.background = true;
-//				tr.backgroundColor = 0xFF0000;
 				return tr;
 			}
 		}
@@ -205,8 +229,6 @@ package nl.powergeek.feathers.themes
 				tr.useHandCursor = true;
 				TEXTFORMAT_LINK.align = TextFormatAlign.RIGHT;
 				tr.textFormat = TEXTFORMAT_LINK;
-//				tr.background = true;
-//				tr.backgroundColor = 0xFF0000;
 				return tr;
 			}
 		}

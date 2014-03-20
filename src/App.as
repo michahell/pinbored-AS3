@@ -15,16 +15,17 @@ package
 	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
 	
-	import nl.powergeek.feathers.themes.PinboredMobileTheme;
+	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	
-	import screens.ListScreen;
-	import screens.LoginScreen;
+	import nl.powergeek.pinbored.screens.ListScreen;
+	import nl.powergeek.pinbored.screens.LoginScreen;
 	
 	import starling.animation.Transitions;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
 	import starling.text.TextField;
+	import nl.powergeek.pinbored.model.AppModel;
 	
 	public class App extends Sprite
 	{
@@ -44,7 +45,7 @@ package
 		
 		private function addedToStageHandler( event:Event ):void
 		{
-			new PinboredMobileTheme();
+			new PinboredDesktopTheme();
 			
 			// first create main container
 //			_mainContainer = new LayoutGroup();

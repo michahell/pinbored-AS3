@@ -11,7 +11,7 @@ package nl.powergeek.feathers.components
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
-	import nl.powergeek.feathers.themes.PinboredMobileTheme;
+	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
@@ -60,29 +60,11 @@ package nl.powergeek.feathers.components
 			hrefLayoutData.bottom = this._padding;
 			hrefLayoutData.left = this._padding;
 			
-			
 			this._label.layoutData = labelLayoutData;
-			this._label.nameList.add(Label.ALTERNATE_NAME_HEADING);
-				
-//			this._label.textRendererFactory = function():ITextRenderer
-//			{
-//				var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
-//				textRenderer.textFormat = new TextFormat("Arial", 24, 0xFF0000, true);
-//				textRenderer.embedFonts = true;
-//				textRenderer.isHTML = false;
-//				return textRenderer;
-//			}
+			this._label.nameList.add(PinboredDesktopTheme.LABEL_BOOKMARK_DESCRIPTION);
 			
 			this._href.layoutData = hrefLayoutData;
-			
-//			this._href.textRendererFactory = function():ITextRenderer
-//			{
-//				var textRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
-//				textRenderer.textFormat = new TextFormat("Arial", 16, 0x0000FF, false, false, true);
-//				textRenderer.embedFonts = true;
-//				textRenderer.isHTML = false;
-//				return textRenderer;
-//			}
+			this._href.nameList.add(PinboredDesktopTheme.LABEL_BOOKMARK_HREF);
 			
 			this.addChild(this._label);
 			this.addChild(this._href);

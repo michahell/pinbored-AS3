@@ -1,4 +1,4 @@
-package services
+package nl.powergeek.pinbored.services
 {
 	public class UrlCheckerFactory
 	{

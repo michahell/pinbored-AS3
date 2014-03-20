@@ -1,6 +1,7 @@
 package nl.powergeek.feathers.components
 {
 	import feathers.controls.Button;
+	import feathers.controls.ImageLoader;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.TextInput;
 	import feathers.core.FeathersControl;
@@ -11,21 +12,26 @@ package nl.powergeek.feathers.components
 	
 	import flash.ui.Keyboard;
 	
-	import nl.powergeek.feathers.themes.PinboredMobileTheme;
+	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	
 	import org.osflash.signals.Signal;
 	
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
-	import starling.display.graphics.RoundedRectangle;
 	import starling.events.Event;
 	import starling.events.KeyboardEvent;
+	import starling.textures.Texture;
 	
 	public class TagTextInput extends FeathersControl
 	{
 		public static const
-			MAX_TAGS:Number = 3;
+			MAX_TAGS:uint = 3,
+			SEPARATOR_HEIGHT:uint = 1,
+			SEPARATOR_COLOR:uint = 0x000000,
+			SEPARATOR_ALPHA:Number = 0.5,
+			TAG_HEIGHT:uint = 28,
+			SEARCHBUTTON_HEIGHT:uint = TAG_HEIGHT + 6;
 		
 		private var
 			_tagCount:Number = 0,
@@ -42,14 +48,14 @@ package nl.powergeek.feathers.components
 			_searchButton:Button,
 			_screenDPIscale:Number,
 			_padding:Number = 10,
-			_tagNames:Vector.<String> = new Vector.<String>;
+			_tagNames:Vector.<String> = new Vector.<String>,
+			_disAllowedStartChars:Array = [' ', ',', ', '];
+			
+//			['|', '\\', '/', '{', '}', '-', '(', ')', '*', '&', '^', '%'] ?
 		
 		public const
 			searchTagsTriggered:Signal = new Signal(Vector.<String>);
 		
-		public static const
-			TAG_HEIGHT:uint = 28,
-			SEARCHBUTTON_HEIGHT:uint = TAG_HEIGHT + 6;
 
 		public function TagTextInput(screenDPIscale:Number)
 		{
@@ -88,8 +94,19 @@ package nl.powergeek.feathers.components
 			
 			// create and add textinput
 			this._textInput.prompt = "add tags for filtering";
-			this._textInput.nameList.add(PinboredMobileTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
 			this._textInput.padding = this._padding / 2;
+			
+			// add tag icon in front of tag text input
+			var tagIcon:ImageLoader = new ImageLoader();
+			tagIcon.source = Texture.fromBitmap(new PinboredDesktopTheme.ICON_TAG_WHITE(), true);
+			tagIcon.snapToPixels = true;
+			tagIcon.padding = 0;
+			tagIcon.paddingTop = 4;
+			tagIcon.paddingLeft = 0;
+			tagIcon.paddingRight = 20;
+			tagIcon.scaleX = tagIcon.scaleY = 0.16;
+			this._textInput.defaultIcon = tagIcon;
 			
 			// add listeners
 			this._textInput.addEventListener(Event.CHANGE, textInputHandler);
@@ -104,21 +121,19 @@ package nl.powergeek.feathers.components
 			_searchButton = new Button();
 			_searchButton.label = 'search & filter';
 			_searchButton.height = SEARCHBUTTON_HEIGHT;
-			_searchButton.nameList.add(PinboredMobileTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
+			_searchButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
 			_searchButton.addEventListener(Event.TRIGGERED, searchButtonTriggeredHandler); 
 				
 			var buttonLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			buttonLayoutData.verticalCenter = 0;
-			buttonLayoutData.right = this._padding * 2;
+			buttonLayoutData.right = this._padding;
 			_searchButton.layoutData = buttonLayoutData;
 			this._componentLayoutGroup.addChild(this._searchButton);
 		}
 		
 		private function searchButtonTriggeredHandler():void
 		{
-//			if(this._tagNames.length > 0) {
 			searchTagsTriggered.dispatch(this._tagNames);
-//			}
 		}
 		
 		private function keyInputHandler(event:KeyboardEvent):void
@@ -141,52 +156,60 @@ package nl.powergeek.feathers.components
 			var textInput:TextInput = TextInput(event.target);
 			var text:String = textInput.text;
 			
-			// if text contains space or comma
-			var spaceIndex:Number = text.indexOf(' ');
-			var commaIndex:Number = text.indexOf(', ');
+			// check for disallowed start characters
+			if(_disAllowedStartChars.indexOf(text) >= 0)
+				textInput.text = text = '';
 			
-			// if we do not yet have reached the max. number of tags
-			if(this._tagCount < MAX_TAGS) {
+			// if we have text input at all
+			if(text.length > 0) {
 				
-				if(spaceIndex > -1 || commaIndex > -1) {
+				// if text contains space or comma
+				var spaceIndex:Number = text.indexOf(' ');
+				var commaIndex:Number = text.indexOf(', ');
+				
+				// if we do not yet have reached the max. number of tags
+				if(this._tagCount < MAX_TAGS) {
 					
-					// remove the word from this text input
-					var tagText:String = '';
-					
-					if(spaceIndex > -1) {
-						tagText = text.substr(0, spaceIndex);
-					} else if(commaIndex > -1) {
-						tagText = text.substr(0, commaIndex);
+					if(spaceIndex > -1 || commaIndex > -1) {
+						
+						// remove the word from this text input
+						var tagText:String = '';
+						
+						if(spaceIndex > -1) {
+							tagText = text.substr(0, spaceIndex);
+						} else if(commaIndex > -1) {
+							tagText = text.substr(0, commaIndex + 1);	// + 1 because we need to skip the ',' character!
+						}
+						
+						// create the tag and add it to the list o tags
+						var tag:Tag = _tagFactory(tagText);
+						
+						// add listener to tag removed signal
+						tag.removed.addOnce(function():void {
+							removeTag(tag);
+						});
+						
+						// quickly remove the textInput, then add the tag, then re-add the textInput!
+						_tagContainer.removeChild(this._textInput);
+						_tagContainer.addChild(tag);
+						_tagContainer.addChild(this._textInput);
+						
+						// add tag text to tagText array for quick access
+						_tagNames.push(tag.text);
+						_tagsArray.push(tag);
+						
+						// set focus back to textinput after removing and adding it to display list
+						_textInput.setFocus();
+						
+						// clear the text
+						textInput.text = '';
+						
+						// increment tagCount
+						_tagCount++;
+						
+						// and invalidate, need to redraw this thing
+						invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 					}
-					
-					// create the tag and add it to the list o tags
-					var tag:Tag = _tagFactory(tagText);
-					
-					// add listener to tag removed signal
-					tag.removed.addOnce(function():void {
-						removeTag(tag);
-					});
-					
-					// quickly remove the textInput, then add the tag, then re-add the textInput!
-					_tagContainer.removeChild(this._textInput);
-					_tagContainer.addChild(tag);
-					_tagContainer.addChild(this._textInput);
-					
-					// add tag text to tagText array for quick access
-					_tagNames.push(tag.text);
-					_tagsArray.push(tag);
-					
-					// set focus back to textinput after removing and adding it to display list
-					_textInput.setFocus();
-					
-					// clear the text
-					textInput.text = '';
-					
-					// increment tagCount
-					_tagCount++;
-					
-					// and invalidate, need to redraw this thing
-					invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 				}
 			}
 		}
@@ -285,8 +308,8 @@ package nl.powergeek.feathers.components
 		
 		private function defaultSeparatorFactory():DisplayObject
 		{
-			var line:Quad = new Quad(5, 5, 0x000000);
-			line.alpha = 0.5;
+			var line:Quad = new Quad(5, SEPARATOR_HEIGHT, SEPARATOR_COLOR);
+			line.alpha = SEPARATOR_ALPHA;
 			return line;
 		}
 

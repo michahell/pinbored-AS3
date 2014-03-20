@@ -1,4 +1,4 @@
-package nl.powergeek.feathers.components
+package nl.powergeek.pinbored.components
 {
 	import feathers.controls.LayoutGroup;
 	import feathers.layout.HorizontalLayout;

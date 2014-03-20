@@ -1,4 +1,4 @@
-package
+package nl.powergeek.pinbored.model
 {
 	public class AppSettings
 	{

@@ -12,6 +12,8 @@ package
 	import starling.core.Starling;
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
+	import nl.powergeek.pinbored.model.AppModel;
+	import nl.powergeek.pinbored.model.AppSettings;
 	
 	[SWF(width="1024",height="768",frameRate="60",backgroundColor="#2f2f2f")]
 	public class pinbored extends Sprite
