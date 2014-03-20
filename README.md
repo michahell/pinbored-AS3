@@ -10,13 +10,22 @@ Big fat disclaimer
 ------------------
 Everything is provided AS-IS. Use this project in any way you wish, just not to bother me :) If you have a question i will be happy to answer but i will not feel obliged in any way. Also, i probably violated several conventions of AS3 or the Feathers UI so do not expect perfect Feathers-compliant theming and components :)
 
-Todo
-----
-* delete request
-* item renderer icon horizontal layout includes editing capabilities
-* edit request
-* item renderer icon scale fix
-* animations?
+Roadmap V1
+----------
+* proper login screen
+* login functionality
+* item renderer has, when collapsed, editing capabilities
+* edit animations
+* update request
+* ~~item renderer icon scale fix~~
+* ~~delete request~~
+* ~~delete animation~~
+* ~~basic skin~~
+
+Roadmap V2
+----------
+* massive 'stale' checker screen (check all your bookmarks for broken links)
+* tag information screen (tag statistics)
 
 libraries used
 --------------
