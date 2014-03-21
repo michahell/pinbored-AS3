@@ -7,6 +7,7 @@ package
 	import feathers.controls.Screen;
 	import feathers.controls.ScreenNavigator;
 	import feathers.controls.ScreenNavigatorItem;
+	import feathers.core.FocusManager;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
@@ -15,8 +16,9 @@ package
 	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
 	
+	import nl.powergeek.REST.RESTClient;
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
-	
+	import nl.powergeek.pinbored.model.AppModel;
 	import nl.powergeek.pinbored.screens.ListScreen;
 	import nl.powergeek.pinbored.screens.LoginScreen;
 	
@@ -25,7 +27,6 @@ package
 	import starling.events.Event;
 	import starling.events.ResizeEvent;
 	import starling.text.TextField;
-	import nl.powergeek.pinbored.model.AppModel;
 	
 	public class App extends Sprite
 	{
@@ -33,8 +34,6 @@ package
 		private static const LIST_SCREEN:String = "ListScreen";
 		
 		private var 
-//			_mainContainer:LayoutGroup,
-//			_navbar:LayoutGroup,
 			_navigator:ScreenNavigator,
 			_transitionManager:ScreenSlidingStackTransitionManager;
 		
@@ -45,38 +44,14 @@ package
 		
 		private function addedToStageHandler( event:Event ):void
 		{
+			// initialize theme
 			new PinboredDesktopTheme();
 			
-			// first create main container
-//			_mainContainer = new LayoutGroup();
-//			var maincontainerLayout:VerticalLayout = new VerticalLayout();
-//			maincontainerLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
-//			maincontainerLayout.horizontalAlign = VerticalLayout.HORIZONTAL_ALIGN_JUSTIFY;
-//			maincontainerLayout.padding = 0;
-//			maincontainerLayout.gap = 0;
-//			_mainContainer.layout = maincontainerLayout;
-//			this.addChild(_mainContainer);
-//			
-//			// add a simple navbar
-//			_navbar = new LayoutGroup();
-//			_navbar.layout = new AnchorLayout();
-//			_navbar.layoutData = new AnchorLayoutData(0, 0, 0, 0);
-//			this._mainContainer.addChild(_navbar);
-//			
-//			// add a horizontal button group to the layout
-//			var _buttonbar:LayoutGroup = new LayoutGroup();
-//			var _buttonbarLayout:HorizontalLayout = new HorizontalLayout();
-//			_buttonbarLayout.padding = 5;
-//			_buttonbarLayout.gap = 5;
-//			_buttonbar.layout = _buttonbarLayout; 
-//			_navbar.addChild(_buttonbar);
-//			
-//			// add some buttons to the buttongroup
-//			var _bookmarksButton:Button = new Button();
-//			_bookmarksButton.label = 'bookmarks';
-//			_bookmarksButton.nameList.add(PinboredMobileTheme.ALTERNATE_NAME_NAVIGATION_BUTTON);
-//			_buttonbar.addChild(_bookmarksButton);
+			// initialize REST client
+			RESTClient.initialize(AppModel.PINBOARD_BASE_API_URL);
 			
+			// enable FocusManager
+			FocusManager.isEnabled = true;
 			
 			// add navigator (screens)
 			this._navigator = new ScreenNavigator();

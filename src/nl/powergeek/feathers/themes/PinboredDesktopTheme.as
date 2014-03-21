@@ -12,6 +12,7 @@ package nl.powergeek.feathers.themes
 	import feathers.core.FeathersControl;
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
+	import feathers.core.PopUpManager;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.HorizontalLayout;
 	import feathers.themes.MetalWorksMobileTheme;
@@ -115,6 +116,7 @@ package nl.powergeek.feathers.themes
 		public static const
 			TEXTINPUT_TRANSPARENT_BACKGROUND:String = 'pinbored-transparent-background-textinput',
 			TEXTINPUT_SEARCH:String = 'pinbored-search-textinput',
+			TEXTINPUT_TRANSLUCENT_BOX:String = 'pinbored-translucent-box-textinput',
 			
 			LABEL_TAG_TEXTRENDERER:String = 'pinbored-tag-label',
 			LABEL_DISCLAIMER:String = 'pinbored-disclaimer-label',
@@ -133,7 +135,8 @@ package nl.powergeek.feathers.themes
 		// some static constants for 'internal' use
 		public static const
 			BUTTON_DEFAULT_ALPHA:Number = 1,
-			CONTEXT_BUTTON_DEFAULT_ALPHA:Number = 1;
+			CONTEXT_BUTTON_DEFAULT_ALPHA:Number = 1,
+			LIST_ANIMATION_TIME:Number = 0.5;
 			
 		// textformats
 		public static var
@@ -157,6 +160,7 @@ package nl.powergeek.feathers.themes
 			// custom text input skins
 			this.setInitializerForClass(TextInput, transparentTagTextInputInitializer, TEXTINPUT_TRANSPARENT_BACKGROUND);
 			this.setInitializerForClass(TextInput, pinboredSearchTextInputInitializer, TEXTINPUT_SEARCH);
+			this.setInitializerForClass(TextInput, pinboredTranslucentTextInputInitializer, TEXTINPUT_TRANSLUCENT_BOX);
 			
 			// custom quad buttons
 			this.setInitializerForClass(Button, quadContextPrimaryButtonInitializer, BUTTON_QUAD_CONTEXT_PRIMARY);
@@ -174,6 +178,14 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(Label, rightAlignedTextLabelInitializer, LABEL_RIGHT_ALIGNED_TEXT);
 			this.setInitializerForClass(Label, bookmarkLabelInitializer, LABEL_BOOKMARK_DESCRIPTION);
 			this.setInitializerForClass(Label, bookmarkHrefInitializer, LABEL_BOOKMARK_HREF);
+			
+			// setup popupmanager
+			PopUpManager.overlayFactory = function():DisplayObject
+			{
+				var quad:Quad = new Quad(100, 100, 0x000000);
+				quad.alpha = 0.5;
+				return quad;
+			};
 			
 		}
 		
@@ -240,6 +252,35 @@ package nl.powergeek.feathers.themes
 				tr.wordWrap = true;
 				TEXTFORMAT_DISCLAIMER.align = TextFormatAlign.LEFT;
 				tr.textFormat = TEXTFORMAT_DISCLAIMER;
+				return tr;
+			}
+		}
+		
+		private function pinboredTranslucentTextInputInitializer(input:TextInput):void
+		{
+			// draw quad
+			var backgroundSkin:Quad = new Quad(10, 10, 0x000000);
+			backgroundSkin.alpha = 0.3;
+			
+			// text input background
+			input.backgroundDisabledSkin = backgroundSkin;
+			input.backgroundEnabledSkin = backgroundSkin;
+			input.backgroundFocusedSkin = backgroundSkin;
+			input.backgroundSkin = backgroundSkin;
+			
+			input.padding = 10;
+			
+			input.textEditorFactory = function():ITextEditor {
+				var tfte:TextFieldTextEditor = new TextFieldTextEditor();
+				tfte.width = input.width;
+				tfte.textFormat = TEXTFORMAT_TAG;
+				return tfte;
+			}
+			
+			input.promptFactory = function():ITextRenderer {
+				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
+				tr.width = input.width;
+				tr.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
 				return tr;
 			}
 		}

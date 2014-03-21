@@ -8,17 +8,26 @@ package nl.powergeek.pinbored.screens
 	import feathers.controls.Screen;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.TextInput;
+	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.FeathersControl;
+	import feathers.core.ITextRenderer;
+	import feathers.core.PopUpManager;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.VerticalLayout;
 	
+	import flash.events.Event;
+	import flash.utils.setTimeout;
+	
+	import nl.powergeek.REST.RESTClient;
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
+	import nl.powergeek.pinbored.services.PinboardService;
 	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
+	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -34,13 +43,19 @@ package nl.powergeek.pinbored.screens
 			loginboxBackground:Quad,
 			loginHeader:Label,
 			infoLabel:Label,
-			tokenInput:TextInput,
+			usernameInput:TextInput,
+			passwordInput:TextInput,
 			loginButton:Button,
 			_backgroundImage:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.BACKGROUND1(), false));
-		
+			
 		// signals
 		private var
+			_screenReference:LoginScreen,
 			_onListScreenRequest:Signal = new Signal( LoginScreen );
+			
+		public const
+			LOGINBOX_WIDTH:Number = 500,
+			LOGINBOX_HEIGHT:Number = 300;
 		
 		public function LoginScreen()
 		{
@@ -56,7 +71,7 @@ package nl.powergeek.pinbored.screens
 			owner.addEventListener(FeathersEventType.TRANSITION_COMPLETE, onTransitionComplete);
 		}
 		
-		private function onTransitionComplete(event:Event):void
+		private function onTransitionComplete(event:starling.events.Event):void
 		{
 			// remove listener
 			owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, onTransitionComplete);
@@ -64,6 +79,9 @@ package nl.powergeek.pinbored.screens
 		
 		private function createGUI():void
 		{
+			// store screenReference 
+			this._screenReference = this;
+			
 			// create nice background
 			this.addChild(_backgroundImage);
 			
@@ -74,7 +92,8 @@ package nl.powergeek.pinbored.screens
 			
 			// create the outer loginbox container
 			loginBoxOuter = new LayoutGroup();
-			loginBoxOuter.width = 400;
+			loginBoxOuter.width = LOGINBOX_WIDTH;
+			loginBoxOuter.height = LOGINBOX_HEIGHT;
 			var al:AnchorLayoutData = new AnchorLayoutData();
 			al.horizontalCenter = 0;
 			al.verticalCenter = 0;
@@ -82,13 +101,12 @@ package nl.powergeek.pinbored.screens
 			this.mainContainer.addChild(this.loginBoxOuter);
 			
 			// create semi transparent quad inside loginbox
-			loginboxBackground = new Quad(10, 10, 0x000000);
+			loginboxBackground = new Quad(LOGINBOX_WIDTH, 10, 0x000000);
 			loginboxBackground.alpha = 0.4;
 			this.loginBoxOuter.addChild(loginboxBackground);
 			
 			// create inner loginbox container
 			loginBoxInner = new LayoutGroup();
-			loginBoxInner.width = 400;
 			var loginBoxLayout:VerticalLayout = new VerticalLayout();
 			loginBoxLayout.padding = 10;
 			loginBoxLayout.gap = 10;
@@ -103,7 +121,6 @@ package nl.powergeek.pinbored.screens
 			
 			// create a login label text
 			loginHeader = new Label();
-			loginHeader.nameList.add(Label.ALTERNATE_NAME_HEADING);
 			loginHeader.text = 'login to use Pinbored';
 			this.loginBoxInner.addChild(loginHeader);
 			
@@ -112,17 +129,25 @@ package nl.powergeek.pinbored.screens
 			infoLabel.text = 'with your Pinboard API token';
 			this.loginBoxInner.addChild(infoLabel);
 			
-			// create a pinboard token input
-			tokenInput = new TextInput();
-			tokenInput.width = 250;
-			tokenInput.prompt = 'pinboard token';
-			this.loginBoxInner.addChild(tokenInput);
+			// create a username input
+			usernameInput = new TextInput();
+			usernameInput.width = 170;
+			usernameInput.prompt = 'pinboard username';
+			usernameInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+			this.loginBoxInner.addChild(usernameInput);
+			
+			// create a password input
+			passwordInput = new TextInput();
+			passwordInput.width = 170;
+			passwordInput.prompt = 'pinboard password';
+			passwordInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+			this.loginBoxInner.addChild(passwordInput);
 			
 			// login button
 			this.loginButton = new Button();
 			this.loginButton.label = "Login";
 			this.loginButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
-			this.loginButton.addEventListener( Event.TRIGGERED, loginTriggeredHandler );
+			this.loginButton.addEventListener(starling.events.Event.TRIGGERED, loginTriggeredHandler );
 			this.loginBoxInner.addChild( loginButton );
 		}
 		
@@ -140,18 +165,58 @@ package nl.powergeek.pinbored.screens
 			mainContainer.width = this.width;
 			mainContainer.height = this.height;
 			
-			loginBoxOuter.width = loginBoxInner.width;
-			loginBoxOuter.height = loginBoxInner.height;
-			
 			loginboxBackground.width = loginBoxOuter.width;
 			loginboxBackground.height = loginBoxOuter.height;
 			
 			// layout
 		}
 		
-		protected function loginTriggeredHandler( event:Event ):void
+		protected function loginTriggeredHandler( event:starling.events.Event ):void
 		{	
-			this.onListScreenRequest.dispatch( this );
+			// first, get the username and password
+			var username:String = usernameInput.text;
+			var password:String = passwordInput.text;
+			var usertoken:String = '';
+			
+			// if we have username + password input
+			if(username && username.length > 0 && password && password.length > 0) {
+				
+				// show loading modal
+				var unknownIcon:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_HEART_WHITE()));
+				var checkIcon:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_CHECKMARK_WHITE()));
+				PopUpManager.addPopUp(unknownIcon, true, true);
+				
+				// perform getusertoken request
+				var returnSignal:Signal = PinboardService.getUserToken(username, password);
+				returnSignal.addOnce(function(event:flash.events.Event):void {
+					
+					// retrieve token
+					usertoken = new XML(event.target.data as String).text();
+					//trace('got user token: ' + usertoken);
+					
+					// update RESTClient and request list screen
+					if(usertoken && usertoken.length > 0) {
+						
+						// add confirmation icon
+						PopUpManager.removePopUp(unknownIcon, true);
+						PopUpManager.addPopUp(checkIcon, true, true);
+						
+						// update REST
+						RESTClient.setToken('?auth_token=', username + ':' + usertoken);
+						RESTClient.setReturnType('&format=', 'json');
+						//trace('RESTClient base url: ' + RESTClient.getBaseUrl());
+						
+						// go to list screen
+						setTimeout(function():void{
+							PopUpManager.removePopUp(checkIcon, true);
+							onListScreenRequest.dispatch( _screenReference );
+						}, 500);
+					}
+				});
+			} else {
+				//TODO handle username / password error etc.
+				trace('error: no username or password provided!');
+			}
 		}
 
 		public function get onListScreenRequest():ISignal

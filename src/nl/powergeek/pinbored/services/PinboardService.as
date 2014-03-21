@@ -1,27 +1,65 @@
 package nl.powergeek.pinbored.services
 {
 	import flash.events.Event;
+	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	
 	import nl.powergeek.REST.RESTClient;
 	import nl.powergeek.REST.RESTRequest;
+	import nl.powergeek.pinbored.model.BookMark;
 	import nl.powergeek.utils.ArrayCollectionPager;
 	
 	import org.osflash.signals.Signal;
-	import nl.powergeek.pinbored.model.BookMark;
 
 	public class PinboardService
 	{
 		public static const
 			allBookmarksReceived:Signal = new Signal(Event);
 		
-		public function PinboardService() {
+		
+		public function PinboardService() { }
+		
+		public static function getUserToken(username:String, password:String):Signal {
 			
+			var tokenSignal:Signal = new Signal(Event);
+			
+			// setup request params
+			var params:Object = {
+				type:		'get',
+				url: 		'user/api_token'
+			};
+			
+			// build the request
+			var partialRequest:RESTRequest = new RESTRequest(params);
+			
+			// do the request only to build (so dryrun!)
+			partialRequest = RESTClient.doRequest(partialRequest, true);
+			
+			// modify url to include basic auth,  user:password
+			// see https://pinboard.in/api/ under authentication
+			var modifiedUrl:String = partialRequest.fullUrl.replace('api', username + ':' + password + '@api');
+			//trace('modified request: ' + modifiedUrl);
+			
+			// setup request params
+			var overrideParams:Object = {
+				type:			'get',
+				urlOverride: 	modifiedUrl,
+				signal: 		tokenSignal
+			};
+			
+			// build the request
+			var tokenRequest:RESTRequest = new RESTRequest(overrideParams);
+			
+			// do the request only to build (so dryrun!)
+			tokenRequest = RESTClient.doRequest(tokenRequest, false);
+			//trace('final request: ' + tokenRequest.fullUrl);
+			
+			return tokenSignal;
 		}
 		
 		public static function deleteBookmark(bookmark:BookMark):Signal {
 			
-			var deleteSignal:Signal = new Signal();
+			var deleteSignal:Signal = new Signal(Event);
 			var argument:String = '&url=';
 			
 			// setup request params

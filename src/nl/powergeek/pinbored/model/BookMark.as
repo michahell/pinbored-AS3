@@ -33,7 +33,8 @@ package nl.powergeek.pinbored.model
 			description:String,
 			extended:String,
 			tags:Vector.<String>,
-			accessory: LayoutGroup;
+			accessory: LayoutGroup,
+			hiddenContent: LayoutGroup;
 			
 		public const
 			staleConfirmed:Signal = new Signal(),
@@ -55,10 +56,10 @@ package nl.powergeek.pinbored.model
 			this._icons.layout = new HorizontalLayout();
 			
 			accessory = new LayoutGroup();
-			var layout:HorizontalLayout = new HorizontalLayout();
-			layout.gap = 5;
-			layout.padding = 5;
-			accessory.layout = layout;
+			var accessoryLayout:HorizontalLayout = new HorizontalLayout();
+			accessoryLayout.gap = 5;
+			accessoryLayout.padding = 5;
+			accessory.layout = accessoryLayout;
 			
 			// create icons from textures
 			var checkmarkParams:Object = {
@@ -93,12 +94,36 @@ package nl.powergeek.pinbored.model
 			deleteButton.label = "delete";
 			deleteButton.addEventListener( Event.TRIGGERED, deleteTriggeredHandler );
 			accessory.addChild(deleteButton);
+			
+			// create hidden content
+			hiddenContent = new LayoutGroup();
+			hiddenContent.scaleY = 0;
+			hiddenContent.height = 0;
+			hiddenContent.visible = false;
+			
+			// hidden content layout group
+			var hiddenContentLayout:HorizontalLayout = new HorizontalLayout();
+			hiddenContentLayout.gap = 5;
+			hiddenContentLayout.padding = 5;
+			hiddenContent.layout = hiddenContentLayout;
+			
+			// add some test content to see how this works
+			var mockButton:Button = new Button();
+			mockButton.label = 'phat mock button';
+			mockButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_SUCCESS);
+			
+			var mockButton2:Button = new Button();
+			mockButton2.label = 'phat mock button 22';
+			mockButton2.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
+			
+			hiddenContent.addChild(mockButton);
+			hiddenContent.addChild(mockButton2);
 		}
 		
 		private function editTriggeredHandler(event:Event):void
 		{
 			const button:Button = Button(event.currentTarget);
-			button.isEnabled = false;
+			// button.isEnabled = false;
 			editTapped.dispatch(this);
 		}
 		

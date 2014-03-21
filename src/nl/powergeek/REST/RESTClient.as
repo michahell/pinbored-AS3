@@ -21,8 +21,10 @@ package nl.powergeek.REST
 
 		private static var 
 			loader:URLLoader = new URLLoader();
+			
+		public function RESTClient() { }
 		
-		public function RESTClient(RESTBaseUrl:String, tokenParameter:String = '', token:String = '', returnTypeParameter:String = '', returnType:String = '')
+		public static function initialize(RESTBaseUrl:String, tokenParameter:String = '', token:String = '', returnTypeParameter:String = '', returnType:String = ''):void
 		{
 			REST_BASE_URL = RESTBaseUrl;
 			TOKEN_PARAMETER = tokenParameter;
@@ -38,7 +40,21 @@ package nl.powergeek.REST
 			loader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
 		}
 		
-		public static function doRequest(restrequest:RESTRequest, dryRun:Boolean = false):void {
+		public static function setToken(tokenParameter:String, token:String):void {
+			TOKEN_PARAMETER = tokenParameter;
+			TOKEN = token;
+		}
+		
+		public static function setReturnType(returnTypeParameter:String, returnType:String):void {
+			RETURN_TYPE_PARAMETER = returnTypeParameter;
+			RETURN_TYPE = returnType;
+		}
+		
+		public static function getBaseUrl():String {
+			return REST_BASE_URL + TOKEN_PARAMETER + TOKEN + RETURN_TYPE_PARAMETER + RETURN_TYPE;
+		}
+		
+		public static function doRequest(restrequest:RESTRequest, dryRun:Boolean = false):RESTRequest {
 			
 			// attach complete listener to loader
 			loader.addEventListener(Event.COMPLETE, function(event:Event):void {
@@ -65,29 +81,40 @@ package nl.powergeek.REST
 			// 'build' request:
 			restrequest.build();
 			
-			// echo request
-			trace('requesting:\n',
-				restrequest.type, '\n',
-				restrequest.payload.url, '\n'
-			);
-			
-			// send the request
-			if(dryRun == false)
+			// send the request or dry run it
+			if(dryRun == false) {
 				loader.load(restrequest.payload);
+				// echo request
+				trace('requested :\n',
+					restrequest.type, '\n',
+					restrequest.payload.url, '\n'
+				);
+			} else {
+				// echo request
+				trace('requesting DRY-RUN :\n',
+					restrequest.type, '\n',
+					restrequest.payload.url, '\n'
+				);
+			}
+			
+			return restrequest;
+		}
+		
+		public static function doDirectRequest(urlRequest:URLRequest):void {
 			
 		}
 		
-		protected function ioErrorHandler(event:IOErrorEvent):void
+		protected static function ioErrorHandler(event:IOErrorEvent):void
 		{
 			trace('RESTClient ERROR: ' + event.text);
 		}
 		
-		protected function securityErrorHandler(event:SecurityErrorEvent):void
+		protected static function securityErrorHandler(event:SecurityErrorEvent):void
 		{
 			trace('RESTClient SECURITY ERROR: ' + event.text);
 		}
 		
-		protected function httpStatusHandler(event:HTTPStatusEvent):void
+		protected static function httpStatusHandler(event:HTTPStatusEvent):void
 		{
 //			trace('RESTClient STATUS: ' + event.status, event.responseURL);
 		}

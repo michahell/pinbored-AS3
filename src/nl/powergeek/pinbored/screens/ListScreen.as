@@ -67,7 +67,6 @@ package nl.powergeek.pinbored.screens
 		
 		// REST related
 		private var
-			restClient:RESTClient,
 			resultsPerPage:Number = 25;
 		
 		// signals
@@ -77,15 +76,6 @@ package nl.powergeek.pinbored.screens
 		public function ListScreen()
 		{
 			super();
-			
-			// create REST client
-			restClient = new RESTClient(
-				'https://api.pinboard.in/v1/', 
-				'?auth_token=', 
-				'michahell:bc82053a1f923175fab7',
-				'&format=',
-				'json'
-			);
 		}
 		
 		override protected function initialize():void
@@ -102,11 +92,23 @@ package nl.powergeek.pinbored.screens
 			// remove listener
 			owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, onTransitionComplete);
 			
-			// setup list listeners
+			// setup list delete listener
 			list.addEventListener(BookmarkEvent.BOOKMARK_DELETED, function(event:starling.events.Event):void {
 				trace('receiving BOOKMARK_DELETED event from custom item renderer...');
 				var deletedBookmark:BookMark = BookMark(event.data);
 				removeBookmarkFromList(deletedBookmark);
+			});
+			
+			list.addEventListener(BookmarkEvent.BOOKMARK_COLLAPSING, function(event:starling.events.Event):void {
+				trace('receiving BOOKMARK_COLLAPSING event from custom item renderer...');
+				var collapsedBookmark:BookMark = BookMark(event.data);
+				// TODO stuff with collapsing bookmark
+			});
+			
+			list.addEventListener(BookmarkEvent.BOOKMARK_FOLDING, function(event:starling.events.Event):void {
+				trace('receiving BOOKMARK_FOLDING event from custom item renderer...');
+				var foldedBookmark:BookMark = BookMark(event.data);
+				// TODO stuff with folding bookmark
 			});
 			
 			// get all bookmarks and populate list control
@@ -155,8 +157,8 @@ package nl.powergeek.pinbored.screens
 			});
 			
 			// get all bookmarks
-			PinboardService.GetAllBookmarks();
-//			PinboardService.GetAllBookmarks(['temp_SW']);
+//			PinboardService.GetAllBookmarks();
+			PinboardService.GetAllBookmarks(['temp_SW']);
 		}
 		
 		private function cleanBookmarkList():void {
@@ -178,11 +180,6 @@ package nl.powergeek.pinbored.screens
 			// attach listeners to each bookmark in the bookmarkslist
 			AppModel.bookmarksList.forEach(function(bm:BookMark, index:uint, array:Array):void {
 				
-				// if bookmark EDIT is tapped
-				bm.editTapped.add(function(tappedBookmark:BookMark):void{
-					trace('bookmark edit tapped!');
-				});
-				
 				// if bookmark DELETE is tapped
 				bm.deleteTapped.addOnce(function(tappedBookmark:BookMark):void{
 					trace('bookmark delete tapped!');
@@ -197,18 +194,8 @@ package nl.powergeek.pinbored.screens
 					// MOCK CONFIRMATION!!
 					setTimeout(function():void{
 						tappedBookmark.deleteConfirmed.dispatch();
+						trace('dispatching delete...');
 					}, Math.random() * 1000);
-					
-				});
-				
-				// if bookmark is confirmed stale
-				bm.staleConfirmed.addOnce(function():void {
-					trace('getting signal..');
-				});
-				
-				// if bookmark is confirmed NOT stale
-				bm.notStaleConfirmed.addOnce(function():void {
-					trace('getting signal..');
 				});
 				
 			});
@@ -272,7 +259,7 @@ package nl.powergeek.pinbored.screens
 				
 			// panel footer
 			panel.footerFactory = function():ScrollContainer
-			{
+			{ 
 				var container:ScrollContainer = new ScrollContainer();
 				container.nameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
 				container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;

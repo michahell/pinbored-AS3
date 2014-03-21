@@ -32,6 +32,8 @@ package nl.powergeek.pinbored.model
 			
 		public static const
 			
+			PINBOARD_BASE_API_URL:String = 'https://api.pinboard.in/v1/',
+		
 			DISCLAIMER_TEXT:String = '' +
 				'Dislaimer: use at your own risk. ' +
 				'I am in no way responsible for any ' +
