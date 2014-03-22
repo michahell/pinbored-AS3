@@ -120,6 +120,9 @@ package nl.powergeek.pinbored.services
 		
 		public static function mapRawBookmarksToBookmarks(rawObjectsArray:Array):Array
 		{
+			if(!rawObjectsArray || rawObjectsArray.length == 0)
+				throw new Error('error: rawObjectsArray is null or contains no items.');
+				
 			var bookmarkCollection:Array = [];
 			
 			// add all bookmarks to 'the list'

@@ -10,14 +10,26 @@ package nl.powergeek.utils
 			_currentPage:Number = 0,
 			_numPages:Number = -1;
 			
-		public function ArrayCollectionPager(sourceArray:Array = null, resultsPerPage:Number = 50)
+		public function ArrayCollectionPager(sourceArray:Array = null, resultsPerPage:Number = 20)
 		{
+			trace('ArrayCollectionPager: source array size before split: ' + sourceArray.length);
+			
 			// split the given source array
 			_arrayCollection = split(sourceArray, resultsPerPage);
 			
 			// update internal numPages indicator
 			if(_arrayCollection && _arrayCollection.length > 0)
-				_numPages = _arrayCollection.length;
+				// if there are pages
+				if(_arrayCollection[0] is Array) {
+					_numPages = _arrayCollection.length;
+					for (var i:uint = 0; i < _numPages; i++) {
+						trace('ArrayCollectionPager: result page size: ' + _arrayCollection[i].length);
+					}
+				} else {
+					_numPages = 0;
+				}
+				
+			trace('ArrayCollectionPager: numPages: ' + _numPages);
 		}
 		
 		/**
@@ -31,12 +43,18 @@ package nl.powergeek.utils
 			// if there is a source Array and it contains items
 			var listCollectionArray:Array = null;
 			
+//			if(sourceArray && sourceArray.length > 0) {
+//				// calculate how many parts we need
+//				var parts:Number = Math.ceil(sourceArray.length / resultsPerPage);
+//				trace('ArrayCollectionPager: split in part size: ' + parts, ' source array length: ', sourceArray.length, ' results per page: ', resultsPerPage);
+//				
+//				// split the source array into an arrayCollection of n parts
+//				listCollectionArray = ArrayUtils.splitTo(sourceArray, parts);
+//			}
+			
 			if(sourceArray && sourceArray.length > 0) {
-				// calculate how many parts we need
-				var parts:Number = Math.ceil(sourceArray.length / resultsPerPage);
-				
 				// split the source array into an arrayCollection of n parts
-				listCollectionArray = ArrayUtils.splitTo(sourceArray, parts);
+				listCollectionArray = ArrayUtils.splitToTypeSafe(sourceArray, resultsPerPage);
 			}
 			
 			return listCollectionArray;
@@ -57,7 +75,7 @@ package nl.powergeek.utils
 				else
 					return _arrayCollection;
 			} else {
-				throw new Error('ListCollectionPager Error: there is no internal _listCollections Vector!');
+				throw new Error('ArrayCollectionPager: Error: there is no internal _listCollections Vector!');
 			}
 			return null;
 		}
@@ -73,7 +91,7 @@ package nl.powergeek.utils
 				_currentPage = _arrayCollection.length - 1;
 				return _arrayCollection[_arrayCollection.length - 1];
 			} else {
-				throw new Error('ListCollectionPager Error: there is no internal _listCollections Vector!');
+				throw new Error('ArrayCollectionPager: Error: there is no internal _listCollections Vector!');
 			}
 			return null;
 		}
@@ -85,12 +103,14 @@ package nl.powergeek.utils
 		 */		
 		public function next():Array {
 			if(_arrayCollection && _arrayCollection.length > 0) {
-				if(_arrayCollection.length <= _currentPage + 1) {
-					_currentPage++;				
+				if(_arrayCollection.length > _currentPage) {
+					_currentPage++;		
 					return _arrayCollection[_currentPage];
+				} else {
+					throw new Error('ArrayCollectionPager: Error: not possible to return next result page, current result page = ' + _currentPage + ' !');
 				}
 			} else {
-				throw new Error('ListCollectionPager Error: there is no internal _listCollections Vector!');
+				throw new Error('ArrayCollectionPager: Error: there is no internal _listCollections Vector!');
 			}
 			return null;
 		}
@@ -105,9 +125,11 @@ package nl.powergeek.utils
 				if(_currentPage > 0) {
 					_currentPage--;					
 					return _arrayCollection[_currentPage];
+				} else {
+					throw new Error('ArrayCollectionPager: Error: not possible to return previous result page, current result page = ' + _currentPage + ' !');
 				}
 			} else {
-				throw new Error('ListCollectionPager Error: there is no internal _listCollections Vector!');
+				throw new Error('ArrayCollectionPager: Error: there is no internal _listCollections Vector!');
 			}
 			return null;
 		}
@@ -116,7 +138,7 @@ package nl.powergeek.utils
 		 * Returns the current result page number.
 		 */		
 		public function current():Number {
-			return _currentPage;
+			return _currentPage + 1;
 		}
 		
 		/**

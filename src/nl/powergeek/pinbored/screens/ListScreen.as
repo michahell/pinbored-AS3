@@ -137,9 +137,31 @@ package nl.powergeek.pinbored.screens
 				}
 			});
 			
-			// TODO listen to paging bar events and call displayNext / displayPrevious functions?
+			// TODO listen to Pager signals and call displayNext / displayPrevious functions?
+			pagingControl.firstPageRequested.add(function():void {
+				trace('first page requested!');
+				displayFirstResultsPage();
+			});
 			
+			pagingControl.previousPageRequested.add(function():void {
+				trace('previous page requested!');
+				displayPreviousResultsPage();
+			});
 			
+			pagingControl.numberedPageRequested.add(function():void {
+				trace('numbered page requested!');
+				displayNumberedResultsPage();
+			});
+			
+			pagingControl.nextPageRequested.add(function():void {
+				trace('next page requested!');
+				displayNextResultsPage();
+			});
+			
+			pagingControl.lastPageRequested.add(function():void {
+				trace('last page requested!');
+				displayLastResultsPage();
+			});
 			
 			// get all bookmarks and populate list control
 			getInitialData();
@@ -175,7 +197,7 @@ package nl.powergeek.pinbored.screens
 			invalidate(INVALIDATION_FLAG_ALL);
 			
 			// get all bookmarks
-			PinboardService.GetAllBookmarks();
+			PinboardService.GetAllBookmarks(['Webdevelopment']);
 		}
 		
 		private function cleanBookmarkList():void {
@@ -229,7 +251,7 @@ package nl.powergeek.pinbored.screens
 			// create buttons for all result pages
 			var resultPages:Number = AppModel.rawBookmarkListCollectionPager.numPages;
 			
-			trace('pagingControl visible! ');
+			trace('pagingControl visible! ' + resultPages);
 			// make paging control visible
 			pagingControl.visible = true;
 			pagingControl.activate(resultPages);
@@ -241,29 +263,59 @@ package nl.powergeek.pinbored.screens
 		private function displayFirstResultsPage():void
 		{
 			var firstResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.first();
+			trace('first page result #items: ' + firstResultPageCollection.length);
 			// update current result page 'pointer'
 			AppModel.currentResultPage = AppModel.rawBookmarkListCollectionPager.current();
+			// also update total result pages 'pointer'
+			AppModel.numResultPages = AppModel.rawBookmarkListCollectionPager.numPages;
 			refreshListWithCollection(firstResultPageCollection);
-		}
-		
-		private function displayNextResultsPage():void
-		{
-			var nextResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.next();
-			// update current result page 'pointer'
-			AppModel.currentResultPage = AppModel.rawBookmarkListCollectionPager.current();
-			refreshListWithCollection(nextResultPageCollection);
 		}
 		
 		private function displayPreviousResultsPage():void
 		{
-			var nextResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.previous();
-			// update current result page 'pointer'
-			AppModel.currentResultPage = AppModel.rawBookmarkListCollectionPager.current();
-			refreshListWithCollection(nextResultPageCollection);
+			if(AppModel.currentResultPage > 1) {
+				var previousResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.previous();
+				trace('previous page result #items: ' + previousResultPageCollection.length);
+				// update current result page 'pointer'
+				AppModel.currentResultPage = AppModel.rawBookmarkListCollectionPager.current();
+				refreshListWithCollection(previousResultPageCollection);
+			} else {
+				trace('TODO handle not possible to get previous result page case!');
+				// TODO handle 'getting previous result page not possible' 
+			}
+		}
+		
+		private function displayNumberedResultsPage():void
+		{
+			// TODO
+		}
+		
+		private function displayNextResultsPage():void
+		{
+			//trace(AppModel.currentResultPage, ' < ', AppModel.numResultPages, ' = ', AppModel.currentResultPage < AppModel.numResultPages);
+			
+			if(AppModel.currentResultPage < AppModel.numResultPages) {
+				var nextResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.next();
+				trace('next page result #items: ' + nextResultPageCollection.length);
+				// update current result page 'pointer'
+				AppModel.currentResultPage = AppModel.rawBookmarkListCollectionPager.current();
+				refreshListWithCollection(nextResultPageCollection);
+			} else {
+				trace('TODO handle not possible to get next result page case!');
+				// TODO handle 'getting next result page not possible'
+			}
+		}
+		
+		private function displayLastResultsPage():void
+		{
+			// TODO
 		}
 		
 		private function refreshListWithCollection(array:Array):void
 		{
+			if(!array || array.length == 0)
+				throw new Error('array is null or contains no items.');
+				
 			cleanBookmarkList();
 			AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(array);
 			activateBookmarkList();
@@ -484,13 +536,17 @@ package nl.powergeek.pinbored.screens
 			_backgroundImage.width = this.width;
 			_backgroundImage.height = this.height;
 			
-			// update screengroup, searchtags, scrollcontainer, list width etc.
-			list.width = panel.width;
+			// update searchtags
+			searchTags.width = panel.width;
+			
+			// update paging control
 			pagingControl.width = panel.width;
 			pagingControl.invalidate(INVALIDATION_FLAG_SIZE);
 			pagingControl.validate();
+			
+			// update list scrollcontainer and list width
 			listScrollContainer.width = panel.width;
-			searchTags.width = panel.width;
+			list.width = panel.width;
 			
 			// update _panelExcludedSpace
 			var listContainerHeight:Number = _panelExcludedSpace + pagingControl.height;

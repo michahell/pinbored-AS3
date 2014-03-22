@@ -74,7 +74,6 @@ package nl.powergeek.pinbored.screens
 		public function LoginScreen()
 		{
 			super()
-			// TODO update text on login screen!
 			// TODO add pinbored logo to loginscreen
 			// TODO update text styles on login screen
 		}
@@ -287,7 +286,6 @@ package nl.powergeek.pinbored.screens
 		
 		protected function login():void {
 			
-			// TODO remove this for release!
 			CONFIG::TESTING {
 				usernameInput.text = 'michahell';
 				passwordInput.text = 'Yefjq7ct!';

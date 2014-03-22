@@ -2,15 +2,19 @@ package nl.powergeek.feathers.components
 {
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
 	
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	
+	import org.osflash.signals.Signal;
+	
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
+	import starling.events.Event;
 	
 	public class Pager extends LayoutGroup
 	{
@@ -22,6 +26,13 @@ package nl.powergeek.feathers.components
 			_leftFiller:DisplayObject,
 			_rightFiller:DisplayObject,
 			_resultPages:Number = -1;
+	
+		public const
+			firstPageRequested:Signal = new Signal(),
+			previousPageRequested:Signal = new Signal(),
+			numberedPageRequested:Signal = new Signal(),
+			nextPageRequested:Signal = new Signal(),
+			lastPageRequested:Signal = new Signal();
 			
 		
 		public function Pager()
@@ -74,7 +85,9 @@ package nl.powergeek.feathers.components
 			if(_buttons && _buttons.length > 0) {
 				trace('removing previous pager buttons...' + _buttons.length);
 				while(_buttons.length > 0) {
-					_buttonContainer.removeChild(Button(_buttons.pop()), true);
+					var removedButton:Button = Button(_buttons.pop());
+					removedButton.removeEventListeners();
+					_buttonContainer.removeChild(removedButton, true);
 				}
 			}
 			
@@ -89,8 +102,10 @@ package nl.powergeek.feathers.components
 				var first:Button = new Button();
 				first.label = '<< FIRST';
 				first.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
-				// TODO add listener to each button and let it dispatch events with the NUMBER
-				// as extra data?
+				
+				// add first listener ..haha <boring meta joke>
+				first.addEventListener(Event.TRIGGERED, onFirstHandler);
+				
 				_buttons.push(first);
 				_buttonContainer.addChild(first);
 				
@@ -98,8 +113,10 @@ package nl.powergeek.feathers.components
 				var previous:Button = new Button();
 				previous.label = '< PREV';
 				previous.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
-				// TODO add listener to each button and let it dispatch events with the NUMBER
-				// as extra data?
+				
+				// add previous listener ..haha <boring meta joke>
+				previous.addEventListener(Event.TRIGGERED, onPrevHandler);
+				
 				_buttons.push(previous);
 				_buttonContainer.addChild(previous);
 				
@@ -108,6 +125,10 @@ package nl.powergeek.feathers.components
 					var button:Button = new Button();
 					button.label = i.toString();
 					button.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
+					
+					// add button listener
+					button.addEventListener(Event.TRIGGERED, onNumberButtonHandler);
+					
 					_buttons.push(button);
 					_buttonContainer.addChild(button);
 				}
@@ -116,8 +137,10 @@ package nl.powergeek.feathers.components
 				var next:Button = new Button();
 				next.label = 'NEXT >';
 				next.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
-				// TODO add listener to each button and let it dispatch events with the NUMBER
-				// as extra data?
+				
+				// add button listener
+				next.addEventListener(Event.TRIGGERED, onNextHandler);
+				
 				_buttons.push(next);
 				_buttonContainer.addChild(next);
 				
@@ -125,9 +148,38 @@ package nl.powergeek.feathers.components
 				var last:Button = new Button();
 				last.label = 'LAST >>';
 				last.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
+				
+				// add button listener
+				last.addEventListener(Event.TRIGGERED, onLastHandler);
+				
 				_buttons.push(last);
 				_buttonContainer.addChild(last);
 			}
+		}
+		
+		private function onFirstHandler(event:Event):void
+		{
+			firstPageRequested.dispatch();
+		}
+		
+		private function onPrevHandler(event:Event):void
+		{
+			previousPageRequested.dispatch();
+		}
+		
+		private function onNumberButtonHandler(event:Event):void
+		{
+			numberedPageRequested.dispatch();
+		}
+		
+		private function onNextHandler(event:Event):void
+		{
+			nextPageRequested.dispatch();
+		}
+		
+		private function onLastHandler(event:Event):void
+		{
+			lastPageRequested.dispatch();
 		}
 		
 		override protected function draw():void

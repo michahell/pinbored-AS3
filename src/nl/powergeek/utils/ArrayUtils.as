@@ -1,13 +1,20 @@
 package nl.powergeek.utils
 {
+	import flash.utils.getDefinitionByName;
+	import flash.utils.getQualifiedClassName;
+
 	public class ArrayUtils
 	{
 		public function ArrayUtils()
 		{
 		}
 		
-		public static function splitTo(a1:Array, parts:uint):Array 
-		{
+		public static function getClass(obj:Object):Class {
+			return Class(getDefinitionByName(getQualifiedClassName(obj)));
+		}
+		
+		public static function splitTo(a1:Array, parts:uint):Array {
+			
 			if (parts > 1) {
 				
 				var aCount:Number = a1.length / parts;
@@ -34,19 +41,18 @@ package nl.powergeek.utils
 				} else {
 					for (var k:uint = 0; k<parts; k++) 
 					{
-						var newarray2:Array = new Array();
+						var childArray:Array = new Array();
 						
 						if (copy.length > 0) 
 						{ 
 							// if a1 is not empty 
 							for (var j:uint = 0; j<limit; j++) 
 							{
-//								newarray2.push(a1.splice(0, 1));
-//								trace('item: ' + a1[index].href);
-								newarray2.push(copy[index]);
+								childArray.push(copy.splice(0, 1));
+//								newarray2.push(copy[index]);
 								index++;
 							}
-							res.push(newarray2);
+							res.push(childArray);
 						}
 					}
 					
@@ -63,5 +69,79 @@ package nl.powergeek.utils
 				return a1;
 			}
 		}
+		
+		public static function splitToTypeSafe(source:Array, resultsPerPage:uint):Array {
+			
+			// 50 items and 10 items per page means 5 child arrays.
+			var fullPages:uint = Math.floor(source.length / resultsPerPage);
+			trace('parts: ', source.length + ' / ' + resultsPerPage + ' = ' + fullPages);
+			
+			// 48 items would mean 4 child arrays and the last one containing 8 instead of 10 items.
+			var restPage:uint = uint(source.length % resultsPerPage);
+			trace('rest: ', source.length + ' % ' + resultsPerPage + ' = ' + restPage);
+			
+			// copy source
+			var sourceCopy:Array = source.slice();
+			
+			// create result array
+			var result:Array = [];
+			
+			
+			// state vars
+			var childArrayNum:Number = 0;
+			var taken:Number = 0;
+			
+			// while there are items in the source copy
+			while(sourceCopy.length > 0) {
+				
+				// get item from source copy
+				var item:* = sourceCopy.splice(0, 1);
+				
+				if(taken < resultsPerPage) {
+					result[childArrayNum].push(item);
+					taken++;
+				} else {
+					taken = 0;
+					childArrayNum++;
+				}
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+//			// add the full pages
+//			for(var k:uint = 0; k < fullPages; k++) {
+//				
+//				// create child array
+//				var childArray:Array = [];
+//				
+//				// for <resultsPerPage> number of items, move items from source copy over to the child array
+//				for(var n:uint = 0; n < resultsPerPage; n++) {
+//					
+//					// get item from source copy
+//					var item:* = sourceCopy.splice(0, 1);
+//					
+//					// put it into the child array
+//					childArray.push(item);
+//				}
+//				
+//				// store the child array in the result array
+//				result.push(childArray);
+//			}
+//			
+//			// add the rest page
+//			var restArray:Array = [];
+			
+			
+			// finally, return the created result array
+			return source;
+		
+		}
+		
 	}
 }
