@@ -6,6 +6,12 @@ Why yet another bookmark manager?
 ---------------------------------
 Because i was annoyed with the ~1300 bookmarks that i had on PinBoard, and NO free, open source application that i could use to quickly batch 'CRUD' them. Also, an excuse to create something with the amazing Starling [Feathers UI](https://github.com/joshtynjala/feathers).
 
+Screenshots
+-----------
+
+![bookmark list screen](screenshot-list-screen.png "Pinbored bookmark screen")
+![login screen](screenshot-login-screen.png "Pinbored login screen")
+
 Big fat disclaimer
 ------------------
 Everything is provided AS-IS. Use this project in any way you wish, just not to bother me :) If you have a question i will be happy to answer but i will not feel obliged in any way. Also, i probably violated several conventions of AS3 or the Feathers UI so do not expect perfect Feathers-compliant theming and components :)
