@@ -43,7 +43,6 @@ package nl.powergeek.pinbored.services
 			// modify url to include basic auth,  user:password
 			// see https://pinboard.in/api/ under authentication
 			var modifiedUrl:String = partialRequest.fullUrl.replace('api', username + ':' + password + '@api');
-			//trace('modified request: ' + modifiedUrl);
 			
 			// setup request params
 			var overrideParams:Object = {
@@ -62,7 +61,6 @@ package nl.powergeek.pinbored.services
 		
 			// do the request only to build (so dryrun!)
 			tokenRequest = RESTClient.doRequest(tokenRequest, false);
-			//trace('final request: ' + tokenRequest.fullUrl);
 			
 			return deferred.promise;
 		}
@@ -91,6 +89,7 @@ package nl.powergeek.pinbored.services
 		
 		public static function GetAllBookmarks(tags:Array = null):void {
 			
+			// TODO implement deferred here
 			var tagList:String = '&tag=';
 			var argument:String = '';
 			

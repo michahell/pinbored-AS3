@@ -143,7 +143,7 @@ package nl.powergeek.feathers.themes
 		// some static constants for 'internal' use
 		public static const
 			BUTTON_DEFAULT_ALPHA:Number = 1,
-			CONTEXT_BUTTON_DEFAULT_ALPHA:Number = 1,
+			CONTEXT_BUTTON_DEFAULT_ALPHA:Number = 0.9,
 			ANIMATION_TIME:Number = 0.5,
 			LIST_ANIMATION_TIME:Number = 0.5;
 			
@@ -193,37 +193,6 @@ package nl.powergeek.feathers.themes
 			// pager initializers
 			this.setInitializerForClass(Pager, pagerDefaultInitializer, PAGER_HORIZONTAL_DEFAULT);
 			
-		}
-		
-		private function pagerDefaultButtonInitializer(button:Button):void
-		{
-			var defaultSkin:Quad = new Quad(10, 10, 0x000000);
-			defaultSkin.alpha = 0.5;
-			button.defaultSkin = defaultSkin;
-			
-			var downSkin:Quad = new Quad(10, 10, 0x000000);
-			downSkin.alpha = 0.3;
-			button.downSkin = downSkin;
-			
-			var hoverSkin:Quad = new Quad(10, 10, 0x000000);
-			hoverSkin.alpha = 0.7;
-			button.hoverSkin = hoverSkin;
-			
-			var disabledSkin:Quad = new Quad(10, 10, 0x000000);
-			disabledSkin.alpha = 0.15;
-			button.disabledSkin = disabledSkin;
-			
-			button.padding = 3;
-			button.paddingLeft = button.paddingRight = 5;
-			
-			button.defaultLabelProperties.embedFonts = true;
-			
-			button.defaultLabelProperties.textFormat = this.smallLightTextFormat;
-			button.disabledLabelProperties.textFormat = this.smallDisabledTextFormat;
-			button.selectedDisabledLabelProperties.textFormat = this.smallDisabledTextFormat;
-			
-			// use hand cursor over button
-			button.useHandCursor = true;
 		}
 		
 		private function pagerDefaultInitializer(pager:Pager):void
@@ -405,6 +374,37 @@ package nl.powergeek.feathers.themes
 				tr.textFormat = TEXTFORMAT_TAG;
 				return tr;
 			}
+		}
+		
+		private function pagerDefaultButtonInitializer(button:Button):void
+		{
+			var defaultSkin:Quad = new Quad(10, 10, 0x000000);
+			defaultSkin.alpha = 0.5;
+			button.defaultSkin = defaultSkin;
+			
+			var downSkin:Quad = new Quad(10, 10, 0x000000);
+			downSkin.alpha = 0.3;
+			button.downSkin = downSkin;
+			
+			var hoverSkin:Quad = new Quad(10, 10, 0x000000);
+			hoverSkin.alpha = 0.7;
+			button.hoverSkin = hoverSkin;
+			
+			var disabledSkin:Quad = new Quad(10, 10, 0x000000);
+			disabledSkin.alpha = 0.15;
+			button.disabledSkin = disabledSkin;
+			
+			button.padding = 3;
+			button.paddingLeft = button.paddingRight = 5;
+			
+			button.defaultLabelProperties.embedFonts = true;
+			
+			button.defaultLabelProperties.textFormat = this.smallLightTextFormat;
+			button.disabledLabelProperties.textFormat = this.smallDisabledTextFormat;
+			button.selectedDisabledLabelProperties.textFormat = this.smallDisabledTextFormat;
+			
+			// use hand cursor over button
+			button.useHandCursor = true;
 		}
 		
 		private function quadContextAlternativeButtonInitializer(button:Button):void

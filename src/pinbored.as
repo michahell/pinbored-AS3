@@ -15,7 +15,7 @@ package
 	import nl.powergeek.pinbored.model.AppModel;
 	import nl.powergeek.pinbored.model.AppSettings;
 	
-	[SWF(width="1024",height="768",frameRate="60",backgroundColor="#2f2f2f")]
+	[SWF(width="1024",height="768",frameRate="45",backgroundColor="#2f2f2f")]
 	public class pinbored extends Sprite
 	{
 		private var _starling:Starling;
@@ -59,8 +59,6 @@ package
 		
 		private function stage_resizeHandler(event:Event):void
 		{
-			// trace('flash stage resize detected..');
-			
 			AppModel.resized.dispatch(event);
 				
 			this._starling.stage.stageWidth = this.stage.stageWidth;

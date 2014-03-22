@@ -18,20 +18,24 @@ Everything is provided AS-IS. Use this project in any way you wish, just not to 
 
 Roadmap V1
 ----------
-
 * paging bar for paging results in bookmark list screen
 * item renderer has, when collapsed, editing capabilities
 * edit animations
 * update request
-* ~~proper login screen~~
-* ~~login functionality~~
-* ~~item renderer icon scale fix~~
-* ~~delete request~~
-* ~~delete animation~~
-* ~~basic skin~~
+* update XML manifest for nice AIR package description etc.
+* **~~proper login screen~~**
+* **~~login functionality~~**
+* **~~item renderer icon scale fix~~**
+* **~~delete request~~**
+* **~~delete animation~~**
+* **~~basic skin~~**
 
 Roadmap V2
 ----------
+* abstract and complete Pager component
+* abstract and complete TagInput component
+* abstract and complete Pinbored Theme
+* release Pinbored theme and skins (maybe separate GitHub repo)
 * massive 'stale' checker screen (check all your bookmarks for broken links)
 * tag information screen (tag statistics)
 

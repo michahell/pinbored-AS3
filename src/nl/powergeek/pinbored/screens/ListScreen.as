@@ -113,16 +113,23 @@ package nl.powergeek.pinbored.screens
 				// show loading icon
 				showLoading();
 				
+				// make paging control invisible PRE-EMPTIVE!
+				pagingControl.visible = false;
+				pagingControl.invalidate(INVALIDATION_FLAG_ALL);
+				
 				AppModel.rawBookmarkDataListFiltered = PinboardService.filterTags(AppModel.rawBookmarkDataList, tagNames);
 				trace('done filtering: ' + AppModel.rawBookmarkDataListFiltered.length);
 				
 				// show loading icon
-				setTimeout(function():void {
-					hideLoading();
-				}, 1000);
+				hideLoading();
 				
+				// small timeout for update?
+				setTimeout(function():void {
+					// validate for list scroll height update
+					invalidate(INVALIDATION_FLAG_ALL);
+				}, 1000);
+					
 				if(AppModel.rawBookmarkDataListFiltered.length > 0) {
-					trace('called!');
 					displayInitialResultsPage(AppModel.rawBookmarkDataListFiltered);
 				} else {
 					trace('no results after filtering...');
@@ -154,11 +161,18 @@ package nl.powergeek.pinbored.screens
 				// hide loading icon
 				setTimeout(function():void {
 					hideLoading();
+					// validate for list scroll height update
+					invalidate(INVALIDATION_FLAG_ALL);
 				}, 1000);
 			});
 			
 			// show loading icon
 			showLoading();
+			
+			// make paging control invisible
+			pagingControl.visible = false;
+			pagingControl.invalidate(INVALIDATION_FLAG_ALL);
+			invalidate(INVALIDATION_FLAG_ALL);
 			
 			// get all bookmarks
 			PinboardService.GetAllBookmarks();
@@ -173,7 +187,7 @@ package nl.powergeek.pinbored.screens
 				bm.staleConfirmed.removeAll();
 				bm.notStaleConfirmed.removeAll();
 			});
-				
+			
 			// then, null the dataprovider for refresh
 			list.dataProvider = null;
 		}
@@ -215,14 +229,10 @@ package nl.powergeek.pinbored.screens
 			// create buttons for all result pages
 			var resultPages:Number = AppModel.rawBookmarkListCollectionPager.numPages;
 			
-			// if we have result pages
-			if(resultPages > 0) {
-				trace('we have result pages!');
-				// make paging control visible and add padding
-				pagingControl.visible = true;
-				pagingControl.isEnabled = true;
-				pagingControl.activate(resultPages);
-			}
+			trace('pagingControl visible! ');
+			// make paging control visible
+			pagingControl.visible = true;
+			pagingControl.activate(resultPages);
 			
 			// display initial results
 			displayFirstResultsPage();
@@ -314,7 +324,8 @@ package nl.powergeek.pinbored.screens
 				searchBookmarks.addEventListener(FeathersEventType.ENTER, input_enterHandler);
 				
 				header.rightItems = new <DisplayObject>[searchBookmarks];
-				_panelExcludedSpace += header.height;
+				
+				_panelExcludedSpace += Math.max(header.height, searchBookmarks.height);
 				
 				return header;
 			}
@@ -461,14 +472,12 @@ package nl.powergeek.pinbored.screens
 			this.list.backgroundSkin = this.list.backgroundDisabledSkin = listBg;
 			
 			// finally, validate panel for scroll container height update
-			this.panel.validate();
+			invalidate(INVALIDATION_FLAG_ALL);
 		}
 		
 		override protected function draw():void
 		{
-			// commit 
-			
-			// measurement
+			// resize panel
 			panel.width = AppModel.starling.stage.stageWidth;
 			panel.height = AppModel.starling.stage.stageHeight;
 			
@@ -477,13 +486,17 @@ package nl.powergeek.pinbored.screens
 			
 			// update screengroup, searchtags, scrollcontainer, list width etc.
 			list.width = panel.width;
+			pagingControl.width = panel.width;
+			pagingControl.invalidate(INVALIDATION_FLAG_SIZE);
+			pagingControl.validate();
 			listScrollContainer.width = panel.width;
 			searchTags.width = panel.width;
 			
-			// update scrollcontainer height
-			this.listScrollContainer.height = panel.height - _panelExcludedSpace - searchTags.height - 123;
+			// update _panelExcludedSpace
+			var listContainerHeight:Number = _panelExcludedSpace + pagingControl.height;
 			
-			// layout
+			// update scrollcontainer height
+			this.listScrollContainer.height = panel.height - listContainerHeight - searchTags.height - 123;
 		}
 
 	}

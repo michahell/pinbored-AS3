@@ -74,6 +74,9 @@ package nl.powergeek.pinbored.screens
 		public function LoginScreen()
 		{
 			super()
+			// TODO update text on login screen!
+			// TODO add pinbored logo to loginscreen
+			// TODO update text styles on login screen
 		}
 		
 		override protected function initialize():void
@@ -91,6 +94,11 @@ package nl.powergeek.pinbored.screens
 		{
 			// remove listener
 			owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, onTransitionComplete);
+			
+			// testing quick login fix
+			CONFIG::TESTING {
+				this.login();
+			}
 		}
 		
 		private function createGUI():void
@@ -162,7 +170,7 @@ package nl.powergeek.pinbored.screens
 			
 			// create a sub login info label text
 			infoLabel = new Label();
-			infoLabel.text = 'with your Pinboard API token';
+			infoLabel.text = 'with your Pinboard username and password';
 			this.loginBoxInner.addChild(infoLabel);
 			
 			// create a username input
@@ -181,9 +189,10 @@ package nl.powergeek.pinbored.screens
 			
 			// login button
 			this.loginButton = new Button();
-			this.loginButton.label = "Login";
+			this.loginButton.label = "Login and get API token";
 			this.loginButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
 			this.loginButton.addEventListener(starling.events.Event.TRIGGERED, loginTriggeredHandler);
+			this.loginButton.addEventListener(FeathersEventType.ENTER, loginTriggeredEnterHandler);
 			this.addEventListener(FeathersEventType.ENTER, loginTriggeredEnterHandler);
 			this.loginBoxInner.addChild( loginButton );
 		}
@@ -277,6 +286,12 @@ package nl.powergeek.pinbored.screens
 		}
 		
 		protected function login():void {
+			
+			// TODO remove this for release!
+			CONFIG::TESTING {
+				usernameInput.text = 'michahell';
+				passwordInput.text = 'Yefjq7ct!';
+			}
 			
 			// first, get the username and password
 			var username:String = usernameInput.text;

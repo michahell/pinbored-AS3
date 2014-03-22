@@ -29,7 +29,7 @@ package nl.powergeek.feathers.components
 			MAX_TAGS:uint = 3,
 			SEPARATOR_HEIGHT:uint = 1,
 			SEPARATOR_COLOR:uint = 0x000000,
-			SEPARATOR_ALPHA:Number = 0.5,
+			SEPARATOR_ALPHA:Number = 0,
 			TAG_HEIGHT:uint = 28,
 			SEARCHBUTTON_HEIGHT:uint = TAG_HEIGHT + 6;
 		
@@ -42,7 +42,8 @@ package nl.powergeek.feathers.components
 			_backgroundFactory:Function = defaultBackgroundFactory,
 			_tagFactory:Function = defaultTagFactory,
 			_background:DisplayObject,
-			_separatorFactory:Function = defaultSeparatorFactory,
+			_separatorFactoryTop:Function = defaultSeparatorFactoryTop,
+			_separatorFactoryBottom:Function = defaultSeparatorFactoryBottom,
 			separatorTop:DisplayObject,
 			separatorBottom:DisplayObject,
 			_searchButton:Button,
@@ -51,7 +52,6 @@ package nl.powergeek.feathers.components
 			_tagNames:Vector.<String> = new Vector.<String>,
 			_disAllowedStartChars:Array = [' ', ',', ', '];
 			
-//			['|', '\\', '/', '{', '}', '-', '(', ')', '*', '&', '^', '%'] ?
 		
 		public const
 			searchTagsTriggered:Signal = new Signal(Vector.<String>);
@@ -72,8 +72,8 @@ package nl.powergeek.feathers.components
 			this.addChild(this._background);
 			
 			// create separators
-			separatorTop = _separatorFactory();
-			separatorBottom = _separatorFactory();
+			separatorTop = _separatorFactoryTop();
+			separatorBottom = _separatorFactoryBottom();
 			this.addChild(separatorTop);
 			this.addChild(separatorBottom);
 			
@@ -306,21 +306,38 @@ package nl.powergeek.feathers.components
 			_backgroundFactory = value;
 		}
 		
-		private function defaultSeparatorFactory():DisplayObject
+		private function defaultSeparatorFactoryTop():DisplayObject
+		{
+			var line:Quad = new Quad(5, SEPARATOR_HEIGHT, SEPARATOR_COLOR);
+			line.alpha = 0.9;
+			return line;
+		}
+
+		public function get separatorFactoryTop():Function
+		{
+			return _separatorFactoryTop;
+		}
+
+		public function set separatorFactoryTop(value:Function):void
+		{
+			_separatorFactoryTop = value;
+		}
+		
+		private function defaultSeparatorFactoryBottom():DisplayObject
 		{
 			var line:Quad = new Quad(5, SEPARATOR_HEIGHT, SEPARATOR_COLOR);
 			line.alpha = SEPARATOR_ALPHA;
 			return line;
 		}
 
-		public function get separatorFactory():Function
+		public function get separatorFactoryBottom():Function
 		{
-			return _separatorFactory;
+			return _separatorFactoryBottom;
 		}
 
-		public function set separatorFactory(value:Function):void
+		public function set separatorFactoryBottom(value:Function):void
 		{
-			_separatorFactory = value;
+			_separatorFactoryBottom = value;
 		}
 
 
