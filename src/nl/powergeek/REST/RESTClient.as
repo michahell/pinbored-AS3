@@ -56,21 +56,43 @@ package nl.powergeek.REST
 		
 		public static function doRequest(restrequest:RESTRequest, dryRun:Boolean = false):RESTRequest {
 			
-			// attach complete listener to loader
-			loader.addEventListener(Event.COMPLETE, function(event:Event):void {
+			var errorHandler:Function = function(event:Event):void {
 				
 				// remove anon listener
 				loader.removeEventListener(event.type, arguments.callee);
 				
-				// dispatch signal belonging to request, if present:
+				// dispatch error signal if present
+				if(restrequest.signalError != null)
+					restrequest.signalError.dispatch(event);
+				
+				// call error callback if present
+				if(restrequest.callbackError != null)
+					restrequest.callbackError(event);
+			};
+				
+			var successHandler:Function = function(event:Event):void {
+				
+				// remove anon listener
+				loader.removeEventListener(event.type, arguments.callee);
+				
+				// dispatch signal if present
 				if(restrequest.signal != null)
 					restrequest.signal.dispatch(event);
 				
-				// call callback, if present:
+				// call callback if present
 				if(restrequest.callback != null)
 					restrequest.callback(event);
-			});
+			};
+				
+			// attach complete listener to loader
+			loader.addEventListener(Event.COMPLETE, successHandler);
 			
+			// attach listeners on security event
+			loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, errorHandler);
+			
+			// attach listeners on security event
+			loader.addEventListener(IOErrorEvent.IO_ERROR, errorHandler);
+		
 			// pass in token or other stuff
 			restrequest.tokenParam = TOKEN_PARAMETER;
 			restrequest.token = TOKEN;

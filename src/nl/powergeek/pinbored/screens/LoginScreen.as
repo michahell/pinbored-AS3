@@ -1,5 +1,7 @@
 package nl.powergeek.pinbored.screens
 {
+	import com.codecatalyst.promise.Promise;
+	
 	import feathers.controls.Button;
 	import feathers.controls.Callout;
 	import feathers.controls.Header;
@@ -22,16 +24,21 @@ package nl.powergeek.pinbored.screens
 	
 	import nl.powergeek.REST.RESTClient;
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
+	import nl.powergeek.pinbored.model.AppModel;
+	import nl.powergeek.pinbored.model.AppSettings;
 	import nl.powergeek.pinbored.services.PinboardService;
 	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
 	
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.textures.Texture;
+	import starling.utils.deg2rad;
 	
 	public class LoginScreen extends Screen
 	{
@@ -40,6 +47,7 @@ package nl.powergeek.pinbored.screens
 			mainContainer:LayoutGroup,
 			loginBoxOuter:LayoutGroup,
 			loginBoxInner:LayoutGroup,
+			iconContainer:LayoutGroup,
 			loginboxBackground:Quad,
 			loginHeader:Label,
 			infoLabel:Label,
@@ -56,6 +64,12 @@ package nl.powergeek.pinbored.screens
 		public const
 			LOGINBOX_WIDTH:Number = 500,
 			LOGINBOX_HEIGHT:Number = 300;
+
+		private var 
+			loadingIcon:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_LOADING())),
+			checkIcon:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_CHECKMARK_WHITE())),
+			crossIcon:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_CROSS_WHITE()));
+			
 		
 		public function LoginScreen()
 		{
@@ -64,6 +78,8 @@ package nl.powergeek.pinbored.screens
 		
 		override protected function initialize():void
 		{
+			super.initialize();
+			
 			// create GUI
 			createGUI();
 			
@@ -119,6 +135,26 @@ package nl.powergeek.pinbored.screens
 			loginBoxInner.layoutData = al2;
 			this.mainContainer.addChild(this.loginBoxInner);
 			
+			// create icon container
+			iconContainer = new LayoutGroup();
+			var iconContainerLayoutData:AnchorLayoutData = new AnchorLayoutData();
+			iconContainerLayoutData.verticalCenter = 0;
+			iconContainerLayoutData.bottom = 160;
+			iconContainerLayoutData.horizontalCenter = 0;
+			iconContainer.layoutData = iconContainerLayoutData;
+			this.mainContainer.addChild(iconContainer);
+			
+			// add icons to iconContainer
+			loadingIcon.alignPivot();
+			checkIcon.alignPivot();
+			crossIcon.alignPivot();
+			loadingIcon.x = checkIcon.x = crossIcon.x = loadingIcon.width;
+			this.iconContainer.addChild(loadingIcon);
+			this.iconContainer.addChild(checkIcon);
+			this.iconContainer.addChild(crossIcon);
+			
+			resetIcons();
+			
 			// create a login label text
 			loginHeader = new Label();
 			loginHeader.text = 'login to use Pinbored';
@@ -147,8 +183,14 @@ package nl.powergeek.pinbored.screens
 			this.loginButton = new Button();
 			this.loginButton.label = "Login";
 			this.loginButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
-			this.loginButton.addEventListener(starling.events.Event.TRIGGERED, loginTriggeredHandler );
+			this.loginButton.addEventListener(starling.events.Event.TRIGGERED, loginTriggeredHandler);
+			this.addEventListener(FeathersEventType.ENTER, loginTriggeredEnterHandler);
 			this.loginBoxInner.addChild( loginButton );
+		}
+		
+		protected function resetIcons():void {
+			loadingIcon.visible = checkIcon.visible = crossIcon.visible = false;
+			loadingIcon.y = checkIcon.y = crossIcon.y = -30;
 		}
 		
 		override protected function draw():void
@@ -171,48 +213,122 @@ package nl.powergeek.pinbored.screens
 			// layout
 		}
 		
+		protected function loginTriggeredEnterHandler( event:starling.events.Event ):void
+		{	
+			trace('enter pressed..');
+			this.login();
+		}
+		
 		protected function loginTriggeredHandler( event:starling.events.Event ):void
 		{	
+			this.login();
+		}
+		
+		protected function showLoadingIcon():void 
+		{
+			resetIcons();
+			
+			loadingIcon.visible = true;
+			loadingIcon.alpha = 0;
+			loadingIcon.y = -30;
+			
+			this.addEventListener(starling.events.Event.ENTER_FRAME, function(event:starling.events.Event):void {
+				if(loadingIcon.visible == true)
+					loadingIcon.rotation += deg2rad(2);
+				else
+					removeEventListener(event.type, arguments.callee);
+			});
+			
+			var tween:Tween = new Tween(loadingIcon, PinboredDesktopTheme.ANIMATION_TIME, Transitions.EASE_OUT_BOUNCE);
+			tween.animate("y", loadingIcon.y + 30);
+			tween.animate("alpha", 1);
+			
+			Starling.current.juggler.add(tween);
+		}
+		
+		protected function showCrossIcon():void
+		{
+			resetIcons();
+			
+			crossIcon.visible = true;
+			crossIcon.alpha = 0;
+			crossIcon.y = -30;
+			
+			var tween:Tween = new Tween(crossIcon, PinboredDesktopTheme.ANIMATION_TIME, Transitions.EASE_OUT_BOUNCE);
+			tween.animate("y", crossIcon.y + 30);
+			tween.animate("alpha", 1);
+			
+			Starling.current.juggler.add(tween);
+		}
+		
+		protected function showCheckIcon():void
+		{
+			resetIcons();
+			
+			checkIcon.visible = true;
+			checkIcon.alpha = 0;
+			checkIcon.y = -30;
+			
+			var tween:Tween = new Tween(checkIcon, PinboredDesktopTheme.ANIMATION_TIME, Transitions.EASE_OUT_BOUNCE);
+			tween.animate("y", checkIcon.y + 30);
+			tween.animate("alpha", 1);
+			
+			Starling.current.juggler.add(tween);
+		}
+		
+		protected function login():void {
+			
 			// first, get the username and password
 			var username:String = usernameInput.text;
 			var password:String = passwordInput.text;
-			var usertoken:String = '';
 			
 			// if we have username + password input
 			if(username && username.length > 0 && password && password.length > 0) {
 				
 				// show loading modal
-				var unknownIcon:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_HEART_WHITE()));
-				var checkIcon:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_CHECKMARK_WHITE()));
-				PopUpManager.addPopUp(unknownIcon, true, true);
+				showLoadingIcon();
 				
-				// perform getusertoken request
-				var returnSignal:Signal = PinboardService.getUserToken(username, password);
-				returnSignal.addOnce(function(event:flash.events.Event):void {
+				var showFailed:Function = function():void {
+					// add cross icon
+					showCrossIcon();
+					
+					setTimeout(function():void {
+						resetIcons();
+					}, 1000);
+				}
+				
+				var requestCompleted:Function = function(event:flash.events.Event):void {
 					
 					// retrieve token
-					usertoken = new XML(event.target.data as String).text();
-					//trace('got user token: ' + usertoken);
+					var usertoken:String = new XML(event.target.data as String).text();
 					
 					// update RESTClient and request list screen
 					if(usertoken && usertoken.length > 0) {
 						
 						// add confirmation icon
-						PopUpManager.removePopUp(unknownIcon, true);
-						PopUpManager.addPopUp(checkIcon, true, true);
+						showCheckIcon();
 						
 						// update REST
 						RESTClient.setToken('?auth_token=', username + ':' + usertoken);
 						RESTClient.setReturnType('&format=', 'json');
-						//trace('RESTClient base url: ' + RESTClient.getBaseUrl());
 						
 						// go to list screen
 						setTimeout(function():void{
-							PopUpManager.removePopUp(checkIcon, true);
+							resetIcons();
 							onListScreenRequest.dispatch( _screenReference );
 						}, 500);
+					} else {
+						showFailed();
 					}
-				});
+				};
+				
+				var requestFailed:Function = function(event:flash.events.Event):void {
+					showFailed();
+				};
+				
+				// perform getusertoken request
+				PinboardService.getUserToken(username, password).then(requestCompleted, requestFailed);
+				
 			} else {
 				//TODO handle username / password error etc.
 				trace('error: no username or password provided!');

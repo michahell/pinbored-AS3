@@ -1,5 +1,8 @@
 package nl.powergeek.pinbored.services
 {
+	import com.codecatalyst.promise.Deferred;
+	import com.codecatalyst.promise.Promise;
+	
 	import flash.events.Event;
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
@@ -19,9 +22,11 @@ package nl.powergeek.pinbored.services
 		
 		public function PinboardService() { }
 		
-		public static function getUserToken(username:String, password:String):Signal {
+		public static function getUserToken(username:String, password:String):Promise {
 			
 			var tokenSignal:Signal = new Signal(Event);
+			var tokenSignalError:Signal = new Signal(Event);
+			var deferred:Deferred = new Deferred();
 			
 			// setup request params
 			var params:Object = {
@@ -44,17 +49,22 @@ package nl.powergeek.pinbored.services
 			var overrideParams:Object = {
 				type:			'get',
 				urlOverride: 	modifiedUrl,
-				signal: 		tokenSignal
+				signal: 		tokenSignal,
+				signalError:	tokenSignalError
 			};
 			
 			// build the request
 			var tokenRequest:RESTRequest = new RESTRequest(overrideParams);
 			
+			// attach listeners to request complete and request fail
+			tokenSignal.addOnce(function(event:Event):void { deferred.resolve(event); });
+			tokenSignalError.addOnce(function(event:Event):void { deferred.reject(event); });
+		
 			// do the request only to build (so dryrun!)
 			tokenRequest = RESTClient.doRequest(tokenRequest, false);
 			//trace('final request: ' + tokenRequest.fullUrl);
 			
-			return tokenSignal;
+			return deferred.promise;
 		}
 		
 		public static function deleteBookmark(bookmark:BookMark):Signal {

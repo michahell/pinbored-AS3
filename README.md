@@ -12,11 +12,13 @@ Everything is provided AS-IS. Use this project in any way you wish, just not to 
 
 Roadmap V1
 ----------
-* proper login screen
-* login functionality
+
+* paging bar for paging results in bookmark list screen
 * item renderer has, when collapsed, editing capabilities
 * edit animations
 * update request
+* ~~proper login screen~~
+* ~~login functionality~~
 * ~~item renderer icon scale fix~~
 * ~~delete request~~
 * ~~delete animation~~
@@ -33,6 +35,7 @@ libraries used
 * [Starling-Extension-Graphics](https://github.com/StarlingGraphics/Starling-Extension-Graphics/tree/master/examples)
 * [Feathers UI](https://github.com/joshtynjala/feathers)
 * [Signals AS3](https://github.com/robertpenner/as3-signals)
+* [Promise AS3](https://github.com/CodeCatalyst/promise-as3)
 * [Twitter Bootstrap](http://getbootstrap.com/css/#buttons), for the button colors used.
 
 gists used
@@ -42,5 +45,6 @@ gists used
 credits
 -------
 * checkmark icon - http://www.flaticon.com/free-icon/check_1682
+* font Mono CP?
 
 

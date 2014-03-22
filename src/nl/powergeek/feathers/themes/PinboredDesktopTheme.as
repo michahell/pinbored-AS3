@@ -23,6 +23,7 @@ package nl.powergeek.feathers.themes
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
 	
+	import nl.powergeek.feathers.components.Pager;
 	import nl.powergeek.feathers.components.TagTextInput;
 	
 	import starling.display.DisplayObject;
@@ -103,6 +104,10 @@ package nl.powergeek.feathers.themes
 		[Embed(source="assets/images/pinbored/icons/icon_tags_white.png")]
 		public static const ICON_TAG_WHITE:Class;
 		
+		// loading
+		[Embed(source="assets/images/pinbored/icons/icon-loading.png")]
+		public static const ICON_LOADING:Class;
+		
 		// starling
 		[Embed(source="assets/images/pinbored/icons/starling-logo.png")]
 		public static const ICON_STARLING:Class;
@@ -130,12 +135,16 @@ package nl.powergeek.feathers.themes
 			BUTTON_QUAD_CONTEXT_PRIMARY:String = 'pinbored-quad-context-edit-button',
 			BUTTON_QUAD_CONTEXT_DELETE:String = 'pinbored-quad-context-delete-button',
 			BUTTON_QUAD_CONTEXT_SUCCESS:String = 'pinbored-quad-context-secondary-button',
-			BUTTON_QUAD_CONTEXT_ALTERNATIVE:String = 'pinbored-quad-context-ternary-button';
+			BUTTON_QUAD_CONTEXT_ALTERNATIVE:String = 'pinbored-quad-context-ternary-button',
+			BUTTON_PAGER_SMALL_DEFAULT:String = 'pinbored-pager-small-default-button',
+			
+			PAGER_HORIZONTAL_DEFAULT:String = 'pinbored-horizontal-default-pager';
 			
 		// some static constants for 'internal' use
 		public static const
 			BUTTON_DEFAULT_ALPHA:Number = 1,
 			CONTEXT_BUTTON_DEFAULT_ALPHA:Number = 1,
+			ANIMATION_TIME:Number = 0.5,
 			LIST_ANIMATION_TIME:Number = 0.5;
 			
 		// textformats
@@ -148,6 +157,7 @@ package nl.powergeek.feathers.themes
 			TEXTFORMAT_BOOKMARK_DESCRIPTION:TextFormat = new TextFormat(OpenSansLightFont.fontName, 13, 0xEEEEEE, false),
 			TEXTFORMAT_BOOKMARK_HREF:TextFormat = new TextFormat(OpenSansLightFont.fontName, 12, 0xBBBBBB, false);
 		
+			
 		public function PinboredDesktopTheme(container:DisplayObjectContainer=null, scaleToDPI:Boolean=true)
 		{
 			super(container, scaleToDPI);
@@ -167,6 +177,7 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(Button, quadContextDeleteButtonInitializer, BUTTON_QUAD_CONTEXT_DELETE);
 			this.setInitializerForClass(Button, quadContextSuccessButtonInitializer, BUTTON_QUAD_CONTEXT_SUCCESS);
 			this.setInitializerForClass(Button, quadContextAlternativeButtonInitializer, BUTTON_QUAD_CONTEXT_ALTERNATIVE);
+			this.setInitializerForClass(Button, pagerDefaultButtonInitializer, BUTTON_PAGER_SMALL_DEFAULT);
 			
 			// transparent panel
 			this.setInitializerForClass(Panel, transparentPanelInitializer, PANEL_TRANSPARENT_BACKGROUND);
@@ -179,14 +190,45 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(Label, bookmarkLabelInitializer, LABEL_BOOKMARK_DESCRIPTION);
 			this.setInitializerForClass(Label, bookmarkHrefInitializer, LABEL_BOOKMARK_HREF);
 			
-			// setup popupmanager
-			PopUpManager.overlayFactory = function():DisplayObject
-			{
-				var quad:Quad = new Quad(100, 100, 0x000000);
-				quad.alpha = 0.5;
-				return quad;
-			};
+			// pager initializers
+			this.setInitializerForClass(Pager, pagerDefaultInitializer, PAGER_HORIZONTAL_DEFAULT);
 			
+		}
+		
+		private function pagerDefaultButtonInitializer(button:Button):void
+		{
+			var defaultSkin:Quad = new Quad(10, 10, 0x000000);
+			defaultSkin.alpha = 0.5;
+			button.defaultSkin = defaultSkin;
+			
+			var downSkin:Quad = new Quad(10, 10, 0x000000);
+			downSkin.alpha = 0.3;
+			button.downSkin = downSkin;
+			
+			var hoverSkin:Quad = new Quad(10, 10, 0x000000);
+			hoverSkin.alpha = 0.7;
+			button.hoverSkin = hoverSkin;
+			
+			var disabledSkin:Quad = new Quad(10, 10, 0x000000);
+			disabledSkin.alpha = 0.15;
+			button.disabledSkin = disabledSkin;
+			
+			button.padding = 3;
+			button.paddingLeft = button.paddingRight = 5;
+			
+			button.defaultLabelProperties.embedFonts = true;
+			
+			button.defaultLabelProperties.textFormat = this.smallLightTextFormat;
+			button.disabledLabelProperties.textFormat = this.smallDisabledTextFormat;
+			button.selectedDisabledLabelProperties.textFormat = this.smallDisabledTextFormat;
+			
+			// use hand cursor over button
+			button.useHandCursor = true;
+		}
+		
+		private function pagerDefaultInitializer(pager:Pager):void
+		{
+			// TODO default pager skin settings
 		}
 		
 		override protected function scrollContainerToolbarInitializer(container:ScrollContainer):void {

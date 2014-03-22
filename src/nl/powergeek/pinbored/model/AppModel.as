@@ -28,11 +28,16 @@ package nl.powergeek.pinbored.model
 			rawBookmarkListCollectionPager:ArrayCollectionPager,
 			
 			// final or current list
-			bookmarksList:Array = [];
+			bookmarksList:Array = [],
+			
+			// result paging state
+			currentResultPage:Number = -1,
+			numResultPages:Number = -1;
 			
 		public static const
 			
 			PINBOARD_BASE_API_URL:String = 'https://api.pinboard.in/v1/',
+			BOOKMARKS_PER_PAGE:uint = 25,
 		
 			DISCLAIMER_TEXT:String = '' +
 				'Dislaimer: use at your own risk. ' +

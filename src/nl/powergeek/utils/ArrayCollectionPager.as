@@ -7,26 +7,24 @@ package nl.powergeek.utils
 	{
 		private var
 			_arrayCollection:Array,
-			_currentPage:Number = 0;
+			_currentPage:Number = 0,
+			_numPages:Number = -1;
 			
 		public function ArrayCollectionPager(sourceArray:Array = null, resultsPerPage:Number = 50)
 		{
+			// split the given source array
 			_arrayCollection = split(sourceArray, resultsPerPage);
 			
-//			_arrayCollection.forEach(function(coll:Array, index:uint, array:Array):void {
-//				trace('contents: ' + coll);
-//				coll.forEach(function(bm:Object, index:uint, array:Array):void {
-//					trace('_arrayCollection > coll bookmark: ' + bm, bm.href, bm.extended);
-//				});
-//			});
+			// update internal numPages indicator
+			if(_arrayCollection && _arrayCollection.length > 0)
+				_numPages = _arrayCollection.length;
 		}
 		
 		/**
-		 * splits [sourceArray] into [resultsPerPage] listcollections 
+		 * Splits [sourceArray] into [resultsPerPage] listcollections 
 		 * @param sourceArray the source array to split into listcollections of same-size [resultsPerPage]
 		 * @param resultsPerPage the amount of items that have to at least be in each listcollection after the splitting.
 		 * @return a vector of listcollections.
-		 * 
 		 */		
 		public function split(sourceArray:Array, resultsPerPage:Number):Array {
 			
@@ -45,11 +43,10 @@ package nl.powergeek.utils
 		}
 		
 		/**
-		 * returns the first 'page' of results, IF a listCollections vector exists and its length is longer than 0.
+		 * Returns the first 'page' of results, IF a listCollections vector exists and its length is longer than 0.
 		 * * warning: updates currentPage internal variable, so if the first listcollection is requested and after that a next() call is made,
 		 * the next listcollection 'page' is returned, logically.
 		 * @return a listcollection 'page' 
-		 * 
 		 */		
 		public function first():Array {
 			if(_arrayCollection && _arrayCollection.length > 0) {
@@ -66,11 +63,10 @@ package nl.powergeek.utils
 		}
 		
 		/**
-		 * does the same as first() only returns the LAST ListCollection if a listCollections vector exists and its length is longer than 0.
+		 * Does the same as first() only returns the LAST ListCollection if a listCollections vector exists and its length is longer than 0.
 		 * warning: updates currentPage internal variable, so if the last listcollection is requested and after that a previous() call is made,
 		 * the last - 1 listcollection 'page' is returned, logically.
 		 * @return a listcollection 'page'
-		 * 
 		 */		
 		public function last():Array {
 			if(_arrayCollection && _arrayCollection.length > 0) {
@@ -83,10 +79,9 @@ package nl.powergeek.utils
 		}
 		
 		/**
-		 * gets the next listcollection from the pager if there is a next listcollection.
+		 * Gets the next listcollection from the pager if there is a next listcollection.
 		 * does NOT continue with the other end of the listcollections vector so stops at the first listcollection 'page'.
 		 * @return a listcollection 'page' or null if there is no next 'page'.
-		 * 
 		 */		
 		public function next():Array {
 			if(_arrayCollection && _arrayCollection.length > 0) {
@@ -101,10 +96,9 @@ package nl.powergeek.utils
 		}
 		
 		/**
-		 * gets the previous listcollection from the pager if there is a previous listcollection.
+		 * Gets the previous listcollection from the pager if there is a previous listcollection.
 		 * does NOT continue with the other end of the listcollections vector so stops at the first listcollection 'page'.
 		 * @return a listcollection 'page' or null if there is no previous 'page'.
-		 * 
 		 */		
 		public function previous():Array {
 			if(_arrayCollection && _arrayCollection.length > 0) {
@@ -117,6 +111,23 @@ package nl.powergeek.utils
 			}
 			return null;
 		}
+		
+		/**
+		 * Returns the current result page number.
+		 */		
+		public function current():Number {
+			return _currentPage;
+		}
+		
+		/**
+		 * gets the number of result pages, if any. 
+		 * @return a number... of result pages.
+		 */
+		public function get numPages():Number
+		{
+			return _numPages;
+		}
+
 		
 	}
 }

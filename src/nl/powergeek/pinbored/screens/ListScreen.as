@@ -28,6 +28,8 @@ package nl.powergeek.pinbored.screens
 	
 	import nl.powergeek.REST.RESTClient;
 	import nl.powergeek.REST.RESTRequest;
+	import nl.powergeek.feathers.components.AppScreen;
+	import nl.powergeek.feathers.components.Pager;
 	import nl.powergeek.feathers.components.PinboardLayoutGroupItemRenderer;
 	import nl.powergeek.feathers.components.PinboredHeader;
 	import nl.powergeek.feathers.components.Tag;
@@ -41,6 +43,7 @@ package nl.powergeek.pinbored.screens
 	
 	import org.osflash.signals.ISignal;
 	import org.osflash.signals.Signal;
+	import org.osmf.layout.HorizontalAlign;
 	
 	import starling.animation.Tween;
 	import starling.core.Starling;
@@ -51,26 +54,19 @@ package nl.powergeek.pinbored.screens
 	import starling.events.ResizeEvent;
 	import starling.textures.Texture;
 	
-	public class ListScreen extends Screen
+	public class ListScreen extends AppScreen
 	{
 		// GUI related
 		private var 
 			panel:Panel = new Panel(),
-			screenGroup:LayoutGroup,
-			listScrollContainer:ScrollContainer,
-			searchBookmarks:TextInput,
 			searchTags:TagTextInput,
+			pagingControl:Pager,
+			listScrollContainer:ScrollContainer,
 			list:List = new List(),
-			button:Button,
 			_backgroundImage:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.BACKGROUND2(), false)),
 			_panelExcludedSpace:uint = 0;
 		
-		// REST related
 		private var
-			resultsPerPage:Number = 25;
-		
-		// signals
-		private var 
 			_onLoginScreenRequest:Signal = new Signal( ListScreen );
 		
 		public function ListScreen()
@@ -111,35 +107,41 @@ package nl.powergeek.pinbored.screens
 				// TODO stuff with folding bookmark
 			});
 			
+			// when searched for tags, update the bookmarks list
+			searchTags.searchTagsTriggered.add(function(tagNames:Vector.<String>):void {
+				
+				// show loading icon
+				showLoading();
+				
+				AppModel.rawBookmarkDataListFiltered = PinboardService.filterTags(AppModel.rawBookmarkDataList, tagNames);
+				trace('done filtering: ' + AppModel.rawBookmarkDataListFiltered.length);
+				
+				// show loading icon
+				setTimeout(function():void {
+					hideLoading();
+				}, 1000);
+				
+				if(AppModel.rawBookmarkDataListFiltered.length > 0) {
+					trace('called!');
+					displayInitialResultsPage(AppModel.rawBookmarkDataListFiltered);
+				} else {
+					trace('no results after filtering...');
+					cleanBookmarkList();
+				}
+			});
+			
+			// TODO listen to paging bar events and call displayNext / displayPrevious functions?
+			
+			
+			
 			// get all bookmarks and populate list control
 			getInitialData();
 		}
 		
 		private function getInitialData():void
 		{
-			// when searched for tags, update the bookmarks list
-			searchTags.searchTagsTriggered.add(function(tagNames:Vector.<String>):void {
-				
-				AppModel.rawBookmarkDataListFiltered = PinboardService.filterTags(AppModel.rawBookmarkDataList, tagNames);
-				trace('done filtering: ' + AppModel.rawBookmarkDataListFiltered.length);
-				
-				if(AppModel.rawBookmarkDataListFiltered.length > 0) {
-					// first, page raw bookmark results (this list can be huge)
-					AppModel.rawBookmarkListCollectionPager = new ArrayCollectionPager(AppModel.rawBookmarkDataListFiltered, resultsPerPage);
-					var firstResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.first();
-					
-					cleanBookmarkList();
-					AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(firstResultPageCollection);
-					activateBookmarkList();
-				} else {
-					trace('no results after filtering...');
-					cleanBookmarkList();
-				}
-				
-			});
-			
 			// throw all bookmarks into a list
-			PinboardService.allBookmarksReceived.add(function(event:flash.events.Event):void {
+			PinboardService.allBookmarksReceived.addOnce(function(event:flash.events.Event):void {
 				
 				var parsedResponse:Object = JSON.parse(event.target.data as String);
 				
@@ -147,18 +149,19 @@ package nl.powergeek.pinbored.screens
 					AppModel.rawBookmarkDataList.push(bookmark);
 				});
 				
-				// first, page raw bookmark results (this list can be huge)
-				AppModel.rawBookmarkListCollectionPager = new ArrayCollectionPager(AppModel.rawBookmarkDataList, resultsPerPage);
-				var firstResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.first();
+				displayInitialResultsPage(AppModel.rawBookmarkDataList);
 				
-				cleanBookmarkList();
-				AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(firstResultPageCollection);
-				activateBookmarkList();
+				// hide loading icon
+				setTimeout(function():void {
+					hideLoading();
+				}, 1000);
 			});
 			
+			// show loading icon
+			showLoading();
+			
 			// get all bookmarks
-//			PinboardService.GetAllBookmarks();
-			PinboardService.GetAllBookmarks(['temp_SW']);
+			PinboardService.GetAllBookmarks();
 		}
 		
 		private function cleanBookmarkList():void {
@@ -204,11 +207,73 @@ package nl.powergeek.pinbored.screens
 			list.dataProvider = new ListCollection(AppModel.bookmarksList);
 		}
 		
+		private function displayInitialResultsPage(array:Array):void
+		{
+			// first, page raw bookmark results (this list can be huge)
+			AppModel.rawBookmarkListCollectionPager = new ArrayCollectionPager(array, AppModel.BOOKMARKS_PER_PAGE);
+			
+			// create buttons for all result pages
+			var resultPages:Number = AppModel.rawBookmarkListCollectionPager.numPages;
+			
+			// if we have result pages
+			if(resultPages > 0) {
+				trace('we have result pages!');
+				// make paging control visible and add padding
+				pagingControl.visible = true;
+				pagingControl.isEnabled = true;
+				pagingControl.activate(resultPages);
+			}
+			
+			// display initial results
+			displayFirstResultsPage();
+		}
+		
+		private function displayFirstResultsPage():void
+		{
+			var firstResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.first();
+			// update current result page 'pointer'
+			AppModel.currentResultPage = AppModel.rawBookmarkListCollectionPager.current();
+			refreshListWithCollection(firstResultPageCollection);
+		}
+		
+		private function displayNextResultsPage():void
+		{
+			var nextResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.next();
+			// update current result page 'pointer'
+			AppModel.currentResultPage = AppModel.rawBookmarkListCollectionPager.current();
+			refreshListWithCollection(nextResultPageCollection);
+		}
+		
+		private function displayPreviousResultsPage():void
+		{
+			var nextResultPageCollection:Array = AppModel.rawBookmarkListCollectionPager.previous();
+			// update current result page 'pointer'
+			AppModel.currentResultPage = AppModel.rawBookmarkListCollectionPager.current();
+			refreshListWithCollection(nextResultPageCollection);
+		}
+		
+		private function refreshListWithCollection(array:Array):void
+		{
+			cleanBookmarkList();
+			AppModel.bookmarksList = PinboardService.mapRawBookmarksToBookmarks(array);
+			activateBookmarkList();
+		}		
+		
 		private function removeBookmarkFromList(bookmark:BookMark):void {
 			
 			var preDeleteScrollPos:Number = list.verticalScrollPosition;
 			var bmIndex:Number = list.dataProvider.getItemIndex(bookmark);
 			list.dataProvider.removeItemAt(bmIndex);
+		}
+		
+		private function input_enterHandler():void
+		{
+			trace('entered search key word');
+		}
+		
+		public function get onLoginScreenRequest():ISignal
+		{
+			return _onLoginScreenRequest;
 		}
 		
 		private function createGUI():void
@@ -238,20 +303,17 @@ package nl.powergeek.pinbored.screens
 					return titleRenderer;
 				}
 				
-				if(!this.searchBookmarks)
-				{
-					this.searchBookmarks = new TextInput();
-					this.searchBookmarks.nameList.add(PinboredDesktopTheme.TEXTINPUT_SEARCH);
-					this.searchBookmarks.prompt = "search any keyword and hit enter...";
-					this.searchBookmarks.width = 500;
-					
-					//we can't get an enter key event without changing the returnKeyLabel
-					//not using ReturnKeyLabel.GO here so that it will build for web
-					this.searchBookmarks.textEditorProperties.returnKeyLabel = "go";
-					this.searchBookmarks.addEventListener(FeathersEventType.ENTER, input_enterHandler);
-				}
+				const searchBookmarks:TextInput = new TextInput();
+				searchBookmarks.nameList.add(PinboredDesktopTheme.TEXTINPUT_SEARCH);
+				searchBookmarks.prompt = "search any keyword and hit enter...";
+				searchBookmarks.width = 500;
 				
-				header.rightItems = new <DisplayObject>[this.searchBookmarks];
+				//we can't get an enter key event without changing the returnKeyLabel
+				//not using ReturnKeyLabel.GO here so that it will build for web
+				searchBookmarks.textEditorProperties.returnKeyLabel = "go";
+				searchBookmarks.addEventListener(FeathersEventType.ENTER, input_enterHandler);
+				
+				header.rightItems = new <DisplayObject>[searchBookmarks];
 				_panelExcludedSpace += header.height;
 				
 				return header;
@@ -356,6 +418,11 @@ package nl.powergeek.pinbored.screens
 			this.searchTags.width = this.width;
 			this.panel.addChild(this.searchTags);
 			
+			// add the list result paging bar, initially set to invisible
+			this.pagingControl = new Pager();
+			this.pagingControl.visible = false;
+			this.panel.addChild(this.pagingControl);
+			
 			// add a scrollcontainer for the list
 			this.listScrollContainer = new ScrollContainer();
 			this.listScrollContainer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_ON;
@@ -375,17 +442,17 @@ package nl.powergeek.pinbored.screens
 			listLayout.verticalAlign = VerticalLayout.VERTICAL_ALIGN_TOP;
 			
 			// assign the listLayout to the list
-			list.layout = listLayout;
+			this.list.layout = listLayout;
 			
 			// add a list for the bookmarks
-			list.itemRendererFactory = function():IListItemRenderer
+			this.list.itemRendererFactory = function():IListItemRenderer
 			{
 				var renderer:PinboardLayoutGroupItemRenderer = new PinboardLayoutGroupItemRenderer();
 				renderer.padding = 5;
 				return renderer;
 			};
 			
-			list.isSelectable = false;
+			this.list.isSelectable = false;
 			
 			// add list to panel
 			this.listScrollContainer.addChild(list);
@@ -395,11 +462,6 @@ package nl.powergeek.pinbored.screens
 			
 			// finally, validate panel for scroll container height update
 			this.panel.validate();
-		}
-		
-		private function input_enterHandler():void
-		{
-			trace('entered search key word');
 		}
 		
 		override protected function draw():void
@@ -422,11 +484,6 @@ package nl.powergeek.pinbored.screens
 			this.listScrollContainer.height = panel.height - _panelExcludedSpace - searchTags.height - 123;
 			
 			// layout
-		}
-
-		public function get onLoginScreenRequest():ISignal
-		{
-			return _onLoginScreenRequest;
 		}
 
 	}

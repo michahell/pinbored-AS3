@@ -20,7 +20,9 @@ package nl.powergeek.REST
 			data:String = '',
 			payload:URLRequest = null,
 			signal:Signal = null,
+			signalError:Signal = null,
 			callback:Function = null,
+			callbackError:Function = null,
 			modifyFactory:Function = defaultModifyFactory;
 			
 			
@@ -49,6 +51,14 @@ package nl.powergeek.REST
 			// optional request callback
 			if(params.callback && params.callback != null)
 				callback = params.callback;
+			
+			// optional request error signal
+			if(params.signalError && params.signalError != null)
+				signalError = params.signalError;
+			
+			// optional request error callback
+			if(params.callbackError && params.callbackError != null)
+				callbackError = params.callbackError;
 			
 			// optional url variables
 			if(params.data && params.data != null)
