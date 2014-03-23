@@ -66,6 +66,26 @@ package nl.powergeek.utils
 		 * the next listcollection 'page' is returned, logically.
 		 * @return a listcollection 'page' 
 		 */		
+		public function numbered(number:Number):Array {
+			if(_arrayCollection && _arrayCollection.length > 0) {
+				if(number < _numPages + 1) {
+					_currentPage = number - 1;
+					return _arrayCollection[number - 1];
+				} else {
+					throw new Error('ArrayCollectionPager: Error: this page number is out of bounds, num pages: ' + _numPages);
+				}
+			} else {
+				throw new Error('ArrayCollectionPager: Error: there is no internal _listCollections Vector!');
+			}
+			return null;
+		}
+		
+		/**
+		 * Returns the first 'page' of results, IF a listCollections vector exists and its length is longer than 0.
+		 * * warning: updates currentPage internal variable, so if the first listcollection is requested and after that a next() call is made,
+		 * the next listcollection 'page' is returned, logically.
+		 * @return a listcollection 'page' 
+		 */		
 		public function first():Array {
 			if(_arrayCollection && _arrayCollection.length > 0) {
 				_currentPage = 0;
@@ -137,8 +157,15 @@ package nl.powergeek.utils
 		/**
 		 * Returns the current result page number.
 		 */		
-		public function current():Number {
+		public function numCurrentPage():Number {
 			return _currentPage + 1;
+		}
+		
+		/**
+		 * Returns the alst result page number.
+		 */		
+		public function numLastPage():Number {
+			return _numPages;
 		}
 		
 		/**

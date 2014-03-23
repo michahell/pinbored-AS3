@@ -13,32 +13,16 @@ package nl.powergeek.pinbored.model
 
 	public class AppModel
 	{
-		public static var
+		public static const
 			resized:Signal = new Signal(Event);
 		
 		public static var
 			starling:Starling = null,
-			navigator:ScreenNavigator = null,
-			
-			// raw bookmarks
-			rawBookmarkDataList:Array = [],
-			rawBookmarkDataListFiltered:Array = [],
-			
-			// pager
-			rawBookmarkListCollectionPager:ArrayCollectionPager,
-			
-			// final or current list
-			bookmarksList:Array = [],
-			
-			// result paging state
-			currentResultPage:Number = -1,
-			numResultPages:Number = -1;
+			navigator:ScreenNavigator = null;
 			
 		public static const
-			
 			PINBOARD_BASE_API_URL:String = 'https://api.pinboard.in/v1/',
-			BOOKMARKS_PER_PAGE:uint = 25,
-		
+				
 			DISCLAIMER_TEXT:String = '' +
 				'Dislaimer: use at your own risk. ' +
 				'I am in no way responsible for any ' +
@@ -52,7 +36,9 @@ package nl.powergeek.pinbored.model
 			LINK_TEXT:String = '' +	
 			'<a href=\"http://www.powergeek.nl/\">http://www.powergeek.nl</a>';
 		
-		public function AppModel() { }
+		public function AppModel() {
+		
+		}
 		
 	}
 }

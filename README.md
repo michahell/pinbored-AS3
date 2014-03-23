@@ -18,17 +18,17 @@ Everything is provided AS-IS. Use this project in any way you wish, just not to 
 
 Roadmap V1
 ----------
-* paging bar for paging results in bookmark list screen
 * item renderer has, when collapsed, editing capabilities
 * edit animations
 * update request
 * update XML manifest for nice AIR package description etc.
-* **~~proper login screen~~**
-* **~~login functionality~~**
-* **~~item renderer icon scale fix~~**
-* **~~delete request~~**
-* **~~delete animation~~**
-* **~~basic skin~~**
+* ~~paging bar for paging results in bookmark list screen~~
+* ~~proper login screen~~
+* ~~login functionality~~
+* ~~item renderer icon scale fix~~
+* ~~delete request~~
+* ~~delete animation~~
+* ~~basic skin~~
 
 Roadmap V2
 ----------

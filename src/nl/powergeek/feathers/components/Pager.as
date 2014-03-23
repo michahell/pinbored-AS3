@@ -30,9 +30,17 @@ package nl.powergeek.feathers.components
 		public const
 			firstPageRequested:Signal = new Signal(),
 			previousPageRequested:Signal = new Signal(),
-			numberedPageRequested:Signal = new Signal(),
+			numberedPageRequested:Signal = new Signal(Number),
 			nextPageRequested:Signal = new Signal(),
 			lastPageRequested:Signal = new Signal();
+
+		private var 
+			first:Button,
+			previous:Button,
+			next:Button,
+			last:Button,
+			numResultPages:Number = -1,
+			numCurrentPage:Number = -1;
 			
 		
 		public function Pager()
@@ -44,12 +52,44 @@ package nl.powergeek.feathers.components
 		{
 			super.initialize();
 			
+			// create GUI
+			createGUI();
+		}
+		
+		public function update(pageNumber:Number):void
+		{
+			// enable all buttons
+			_buttons.forEach(function(button:Button, index:uint, array:Array):void {
+				button.isEnabled = true;
+			});
+			
+			// disable buttons based on current page number
+			if(pageNumber == 1) {
+				first.isEnabled = false;
+				previous.isEnabled = false;
+			} else if(pageNumber == numResultPages) {
+				last.isEnabled = false;
+				next.isEnabled = false;
+			}
+			
+			// highlight current page number button
+			_buttons.forEach(function(button:Button, index:uint, array:Array):void {
+				if(button.label == pageNumber.toString()) {
+					button.isEnabled = false;
+					// TODO highlight?
+				}
+			});
+			
+		}
+		
+		private function createGUI():void
+		{
 			// component layout
 			var layout:HorizontalLayout = new HorizontalLayout()
 			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_TOP;
 			layout.horizontalAlign= HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.paddingBottom = 1;
-//			layout.paddingTop = 1;
+			//			layout.paddingTop = 1;
 			this.layout = layout;
 			
 			// create fillers
@@ -81,6 +121,9 @@ package nl.powergeek.feathers.components
 		
 		public function activate(resultPages:Number):void
 		{
+			// first store resultPages
+			this.numResultPages = resultPages;
+			
 			// first remove any remaining buttons
 			if(_buttons && _buttons.length > 0) {
 				trace('removing previous pager buttons...' + _buttons.length);
@@ -99,7 +142,7 @@ package nl.powergeek.feathers.components
 				_buttons = new Array();
 				
 				// create first button
-				var first:Button = new Button();
+				first = new Button();
 				first.label = '<< FIRST';
 				first.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
 				
@@ -110,7 +153,7 @@ package nl.powergeek.feathers.components
 				_buttonContainer.addChild(first);
 				
 				// create previous button
-				var previous:Button = new Button();
+				previous = new Button();
 				previous.label = '< PREV';
 				previous.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
 				
@@ -124,7 +167,7 @@ package nl.powergeek.feathers.components
 				for (var i:uint = 1; i < resultPages + 1; i++) {
 					var button:Button = new Button();
 					button.label = i.toString();
-					button.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
+					button.nameList.add(PinboredDesktopTheme.BUTTON_NUMBERED_PAGER_SMALL_DEFAULT);
 					
 					// add button listener
 					button.addEventListener(Event.TRIGGERED, onNumberButtonHandler);
@@ -134,7 +177,7 @@ package nl.powergeek.feathers.components
 				}
 				
 				// create next button
-				var next:Button = new Button();
+				next = new Button();
 				next.label = 'NEXT >';
 				next.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
 				
@@ -145,7 +188,7 @@ package nl.powergeek.feathers.components
 				_buttonContainer.addChild(next);
 				
 				// create last button
-				var last:Button = new Button();
+				last = new Button();
 				last.label = 'LAST >>';
 				last.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
 				
@@ -169,7 +212,8 @@ package nl.powergeek.feathers.components
 		
 		private function onNumberButtonHandler(event:Event):void
 		{
-			numberedPageRequested.dispatch();
+			var number:Number = Number((event.target as Button).label);
+			numberedPageRequested.dispatch(number);
 		}
 		
 		private function onNextHandler(event:Event):void

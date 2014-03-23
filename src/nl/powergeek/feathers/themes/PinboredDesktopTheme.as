@@ -42,13 +42,13 @@ package nl.powergeek.feathers.themes
 		private static const OpenSansLight:Class;
 		public static var OpenSansLightFont:Font = new OpenSansLight();
 		
-		[Embed(source="assets/fonts/pinbored/OpenSans-Regular.ttf", fontName="OpenSansRegular", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
-		private static const OpenSansRegular:Class;
-		public static var OpenSansRegularFont:Font = new OpenSansRegular();
+//		[Embed(source="assets/fonts/pinbored/OpenSans-Regular.ttf", fontName="OpenSansRegular", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
+//		private static const OpenSansRegular:Class;
+//		public static var OpenSansRegularFont:Font = new OpenSansRegular();
 		
-		[Embed(source="assets/fonts/pinbored/OpenSans-Semibold.ttf", fontName="OpenSansSemiBold", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
-		private static const OpenSansSemiBold:Class;
-		public static var OpenSansSemiBoldFont:Font = new OpenSansSemiBold();
+//		[Embed(source="assets/fonts/pinbored/OpenSans-Semibold.ttf", fontName="OpenSansSemiBold", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
+//		private static const OpenSansSemiBold:Class;
+//		public static var OpenSansSemiBoldFont:Font = new OpenSansSemiBold();
 		
 		[Embed(source="assets/fonts/pinbored/OpenSans-Bold.ttf", fontName="OpenSansBold", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
 		private static const OpenSansBold:Class;
@@ -137,6 +137,7 @@ package nl.powergeek.feathers.themes
 			BUTTON_QUAD_CONTEXT_SUCCESS:String = 'pinbored-quad-context-secondary-button',
 			BUTTON_QUAD_CONTEXT_ALTERNATIVE:String = 'pinbored-quad-context-ternary-button',
 			BUTTON_PAGER_SMALL_DEFAULT:String = 'pinbored-pager-small-default-button',
+			BUTTON_NUMBERED_PAGER_SMALL_DEFAULT:String = 'pinbored-pager-small-numbered-default-button',
 			
 			PAGER_HORIZONTAL_DEFAULT:String = 'pinbored-horizontal-default-pager';
 			
@@ -151,13 +152,19 @@ package nl.powergeek.feathers.themes
 		public static var
 			TEXTFORMAT_TAG:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 14, 0xFFFFFF, true),
 			TEXTFORMAT_TAG_TEXT_INPUT_PROMPT:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 14, 0xAAAAAA, true),
+			
 			TEXTFORMAT_DISCLAIMER:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xAAAAAA, false),
 			TEXTFORMAT_LINK:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0x0099FF, false, null, true),
 			TEXTFORMAT_SCREEN_TITLE:TextFormat = new TextFormat(OpenSansLightFont.fontName, 20, 0xEEEEEE, false),
-			TEXTFORMAT_BOOKMARK_DESCRIPTION:TextFormat = new TextFormat(OpenSansLightFont.fontName, 13, 0xEEEEEE, false),
-			TEXTFORMAT_BOOKMARK_HREF:TextFormat = new TextFormat(OpenSansLightFont.fontName, 12, 0xBBBBBB, false);
-		
 			
+			TEXTFORMAT_BOOKMARK_DESCRIPTION:TextFormat = new TextFormat(OpenSansLightFont.fontName, 13, 0xEEEEEE, false),
+			TEXTFORMAT_BOOKMARK_HREF:TextFormat = new TextFormat(OpenSansLightFont.fontName, 12, 0xBBBBBB, false),
+			
+			TEXTFORMAT_PAGER:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xEEEEEE, true),
+			TEXTFORMAT_PAGER_DISABLED:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0x999999, true),
+			TEXTFORMAT_PAGER_DISABLED_HIGHLIGHT:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xAABBFF, true);
+
+		
 		public function PinboredDesktopTheme(container:DisplayObjectContainer=null, scaleToDPI:Boolean=true)
 		{
 			super(container, scaleToDPI);
@@ -178,6 +185,7 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(Button, quadContextSuccessButtonInitializer, BUTTON_QUAD_CONTEXT_SUCCESS);
 			this.setInitializerForClass(Button, quadContextAlternativeButtonInitializer, BUTTON_QUAD_CONTEXT_ALTERNATIVE);
 			this.setInitializerForClass(Button, pagerDefaultButtonInitializer, BUTTON_PAGER_SMALL_DEFAULT);
+			this.setInitializerForClass(Button, pagerDefaultNumberedButtonInitializer, BUTTON_NUMBERED_PAGER_SMALL_DEFAULT);
 			
 			// transparent panel
 			this.setInitializerForClass(Panel, transparentPanelInitializer, PANEL_TRANSPARENT_BACKGROUND);
@@ -376,6 +384,17 @@ package nl.powergeek.feathers.themes
 			}
 		}
 		
+		private function pagerDefaultNumberedButtonInitializer(button:Button):void
+		{
+			pagerDefaultButtonInitializer(button);
+			
+			var disabledSkin:Quad = new Quad(10, 10, 0x0055AA);
+			disabledSkin.alpha = 0.5;
+			button.disabledSkin = disabledSkin;
+			
+			button.disabledLabelProperties.textFormat = TEXTFORMAT_PAGER_DISABLED_HIGHLIGHT;
+		}
+		
 		private function pagerDefaultButtonInitializer(button:Button):void
 		{
 			var defaultSkin:Quad = new Quad(10, 10, 0x000000);
@@ -391,7 +410,7 @@ package nl.powergeek.feathers.themes
 			button.hoverSkin = hoverSkin;
 			
 			var disabledSkin:Quad = new Quad(10, 10, 0x000000);
-			disabledSkin.alpha = 0.15;
+			disabledSkin.alpha = 0.5;
 			button.disabledSkin = disabledSkin;
 			
 			button.padding = 3;
@@ -399,9 +418,9 @@ package nl.powergeek.feathers.themes
 			
 			button.defaultLabelProperties.embedFonts = true;
 			
-			button.defaultLabelProperties.textFormat = this.smallLightTextFormat;
-			button.disabledLabelProperties.textFormat = this.smallDisabledTextFormat;
-			button.selectedDisabledLabelProperties.textFormat = this.smallDisabledTextFormat;
+			button.defaultLabelProperties.textFormat = TEXTFORMAT_PAGER;
+			button.disabledLabelProperties.textFormat = TEXTFORMAT_PAGER_DISABLED;
+			button.selectedDisabledLabelProperties.textFormat = TEXTFORMAT_PAGER_DISABLED;
 			
 			// use hand cursor over button
 			button.useHandCursor = true;

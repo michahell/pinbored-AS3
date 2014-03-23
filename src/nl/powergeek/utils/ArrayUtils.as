@@ -86,7 +86,6 @@ package nl.powergeek.utils
 			// create result array
 			var result:Array = [];
 			
-			
 			// state vars
 			var childArrayNum:Number = 0;
 			var taken:Number = 0;
@@ -94,54 +93,24 @@ package nl.powergeek.utils
 			// while there are items in the source copy
 			while(sourceCopy.length > 0) {
 				
-				// get item from source copy
-				var item:* = sourceCopy.splice(0, 1);
-				
 				if(taken < resultsPerPage) {
+					if(!result[childArrayNum])
+						result[childArrayNum] = new Array();
+						
+					// get item from source copy
+					var item:* = sourceCopy.pop();
+					
+					// add the item to the result childArray
 					result[childArrayNum].push(item);
 					taken++;
 				} else {
 					taken = 0;
 					childArrayNum++;
 				}
-				
 			}
 			
-			
-			
-			
-			
-			
-			
-			
-//			// add the full pages
-//			for(var k:uint = 0; k < fullPages; k++) {
-//				
-//				// create child array
-//				var childArray:Array = [];
-//				
-//				// for <resultsPerPage> number of items, move items from source copy over to the child array
-//				for(var n:uint = 0; n < resultsPerPage; n++) {
-//					
-//					// get item from source copy
-//					var item:* = sourceCopy.splice(0, 1);
-//					
-//					// put it into the child array
-//					childArray.push(item);
-//				}
-//				
-//				// store the child array in the result array
-//				result.push(childArray);
-//			}
-//			
-//			// add the rest page
-//			var restArray:Array = [];
-			
-			
 			// finally, return the created result array
-			return source;
-		
+			return result;
 		}
-		
 	}
 }
