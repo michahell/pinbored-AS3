@@ -17,7 +17,7 @@ package nl.powergeek.pinbored.services
 	public class PinboardService
 	{
 		public static const
-			allBookmarksReceived:Signal = new Signal(Event);
+			bookmarksReceived:Signal = new Signal(Event);
 		
 		
 		public function PinboardService() { }
@@ -82,7 +82,7 @@ package nl.powergeek.pinbored.services
 			var getBookmarks:RESTRequest = new RESTRequest(params);
 			
 			// do the request (or dryrun it)
-			RESTClient.doRequest(getBookmarks, true);
+			RESTClient.doRequest(getBookmarks, false);
 			
 			return deleteSignal;
 		}
@@ -108,7 +108,7 @@ package nl.powergeek.pinbored.services
 				type:		'get',
 				url: 		'posts/all',
 				data:		argument,
-				signal: 	allBookmarksReceived
+				signal: 	bookmarksReceived
 			};
 			
 			// build the request
@@ -132,43 +132,6 @@ package nl.powergeek.pinbored.services
 			});
 			
 			return bookmarkCollection;
-		}
-		
-		public static function filterTags(rawBookmarkDataList:Array, tagNames:Vector.<String>):Array
-		{
-			var result:Array = [];
-			
-			if(tagNames.length > 0) {
-				
-				result = rawBookmarkDataList.filter(function(bm:Object, index:int, arr:Array):Boolean {
-					
-					var tags:Array = String(bm.tags).split(" ");
-					var test:Boolean;
-					
-					// if no tags, exclude
-					if(tags.length == 0) {
-						test = false;
-					// one tag on bookmark, one tag to filter with
-					} else if(tags.length == 1 && tagNames.length == 1) {
-						if (tags[0] == tagNames[0]) test = true;
-					// multiple tags on bookmark, multiple tags to filter with
-					} else if(tags.length >= 1 && tagNames.length >= 1) {
-						for(var i:uint = 0; i < tags.length; i++) {
-							if(tagNames.indexOf(tags[i] == -1)) {
-								test = false;
-								break;
-							}
-						}
-					}
-					
-					return test;
-				});
-				
-			} else {
-				result = rawBookmarkDataList;
-			}
-			
-			return result;
 		}
 	}
 }

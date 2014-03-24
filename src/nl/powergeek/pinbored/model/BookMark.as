@@ -5,6 +5,8 @@ package nl.powergeek.pinbored.model
 	import feathers.data.ListCollection;
 	import feathers.layout.HorizontalLayout;
 	
+	import flash.utils.setTimeout;
+	
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	import nl.powergeek.pinbored.components.InteractiveIcon;
 	import nl.powergeek.pinbored.services.UrlChecker;
@@ -30,6 +32,7 @@ package nl.powergeek.pinbored.model
 		public var
 			bookmarkData: Object,
 			href:String,
+			link:String,
 			description:String,
 			extended:String,
 			tags:Vector.<String>,
@@ -49,6 +52,7 @@ package nl.powergeek.pinbored.model
 		{
 			this.bookmarkData = bookmarkData;
 			this.href = bookmarkData.href;
+			this.link = bookmarkData.link;
 			this.description = bookmarkData.description;
 			this.extended = bookmarkData.extended;
 			this.tags = Vector.<String>(String(bookmarkData.tags).split(" "));
@@ -154,8 +158,15 @@ package nl.powergeek.pinbored.model
 		private function deleteTriggeredHandler(event:Event):void
 		{
 			const button:Button = Button(event.currentTarget);
-			button.isEnabled = false;
-			deleteTapped.dispatch(this);
+			if(button.label == 'delete') {
+				button.label = 'CONFIRM';
+				setTimeout(function():void {
+					button.label = 'delete';
+				}, 2000);
+			} else {
+				button.isEnabled = false;
+				deleteTapped.dispatch(this);
+			}
 		}
 		
 		public function removeUrlChecker():void

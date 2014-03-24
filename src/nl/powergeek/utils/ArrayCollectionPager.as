@@ -12,7 +12,7 @@ package nl.powergeek.utils
 			
 		public function ArrayCollectionPager(sourceArray:Array = null, resultsPerPage:Number = 20)
 		{
-			trace('ArrayCollectionPager: source array size before split: ' + sourceArray.length);
+			//trace('ArrayCollectionPager: source array size before split: ' + sourceArray.length);
 			
 			// split the given source array
 			_arrayCollection = split(sourceArray, resultsPerPage);
@@ -23,13 +23,13 @@ package nl.powergeek.utils
 				if(_arrayCollection[0] is Array) {
 					_numPages = _arrayCollection.length;
 					for (var i:uint = 0; i < _numPages; i++) {
-						trace('ArrayCollectionPager: result page size: ' + _arrayCollection[i].length);
+						//trace('ArrayCollectionPager: result page size: ' + _arrayCollection[i].length);
 					}
 				} else {
 					_numPages = 0;
 				}
 				
-			trace('ArrayCollectionPager: numPages: ' + _numPages);
+			//trace('ArrayCollectionPager: numPages: ' + _numPages);
 		}
 		
 		/**

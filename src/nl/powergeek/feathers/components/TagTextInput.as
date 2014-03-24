@@ -54,6 +54,7 @@ package nl.powergeek.feathers.components
 			
 		
 		public const
+			tagsChanged:Signal = new Signal(Vector.<String>),
 			searchTagsTriggered:Signal = new Signal(Vector.<String>);
 		
 
@@ -110,7 +111,7 @@ package nl.powergeek.feathers.components
 			
 			// add listeners
 			this._textInput.addEventListener(Event.CHANGE, textInputHandler);
-			this.addEventListener(KeyboardEvent.KEY_DOWN, keyInputHandler);
+			this._tagContainer.addEventListener(KeyboardEvent.KEY_DOWN, keyInputHandler);
 			this._tagContainer.addChild(this._textInput);
 			
 			// add tag layout group
@@ -146,7 +147,7 @@ package nl.powergeek.feathers.components
 			}
 			
 			if(event.keyCode == Keyboard.ENTER) {
-				searchTagsTriggered.dispatch(this._tagNames);
+//				searchTagsTriggered.dispatch(this._tagNames);
 			}
 		}
 		
@@ -181,22 +182,7 @@ package nl.powergeek.feathers.components
 							tagText = text.substr(0, commaIndex + 1);	// + 1 because we need to skip the ',' character!
 						}
 						
-						// create the tag and add it to the list o tags
-						var tag:Tag = _tagFactory(tagText);
-						
-						// add listener to tag removed signal
-						tag.removed.addOnce(function():void {
-							removeTag(tag);
-						});
-						
-						// quickly remove the textInput, then add the tag, then re-add the textInput!
-						_tagContainer.removeChild(this._textInput);
-						_tagContainer.addChild(tag);
-						_tagContainer.addChild(this._textInput);
-						
-						// add tag text to tagText array for quick access
-						_tagNames.push(tag.text);
-						_tagsArray.push(tag);
+						addTag(tagText);
 						
 						// set focus back to textinput after removing and adding it to display list
 						_textInput.setFocus();
@@ -204,14 +190,37 @@ package nl.powergeek.feathers.components
 						// clear the text
 						textInput.text = '';
 						
-						// increment tagCount
-						_tagCount++;
-						
 						// and invalidate, need to redraw this thing
 						invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 					}
 				}
 			}
+		}
+		
+		private function addTag(tagText:String):void
+		{
+			// create the tag and add it to the list o tags
+			var tag:Tag = _tagFactory(tagText);
+			
+			// add listener to tag removed signal
+			tag.removed.addOnce(function():void {
+				removeTag(tag);
+			});
+			
+			// quickly remove the textInput, then add the tag, then re-add the textInput!
+			_tagContainer.removeChild(this._textInput);
+			_tagContainer.addChild(tag);
+			_tagContainer.addChild(this._textInput);
+			
+			// add tag text to tagText array for quick access
+			_tagNames.push(tag.text);
+			_tagsArray.push(tag);
+			
+			// fire tagsChanged signal
+			tagsChanged.dispatch(_tagNames);
+			
+			// increment tagCount
+			_tagCount++;
 		}
 		
 		private function removeTag(tag:Tag):void {
@@ -225,6 +234,8 @@ package nl.powergeek.feathers.components
 			_tagCount--;
 			// update component
 			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
+			// fire tagsChanged signal
+			tagsChanged.dispatch(_tagNames);
 		}
 		
 		override protected function draw():void

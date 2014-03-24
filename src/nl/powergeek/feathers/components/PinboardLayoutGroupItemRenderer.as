@@ -90,7 +90,11 @@ package nl.powergeek.feathers.components
 			this._href.nameList.add(PinboredDesktopTheme.LABEL_BOOKMARK_HREF);
 			this.addChild(this._href);
 			
+			// add touch handling
 			this.addEventListener(TouchEvent.TOUCH, touchHandler);
+			
+			// set quick hit enabled to false
+			this.isQuickHitAreaEnabled = false;
 		}
 		
 		private function touchHandler(event:TouchEvent):void
@@ -155,8 +159,13 @@ package nl.powergeek.feathers.components
 				else
 					this._label.text = '[ no extended description ]';
 				
-				if(this._data.hasOwnProperty("href") && String(this._data.href).length > 0)
-					this._href.text = this._data.href;
+//				if(this._data.hasOwnProperty("href") && String(this._data.href).length > 0)
+//					this._href.text = this._data.href;
+//				else
+//					this._href.text = '[ no link ]';
+				
+				if(this._data.hasOwnProperty("link") && String(this._data.link).length > 0)
+					this._href.text = this._data.link;
 				else
 					this._href.text = '[ no link ]';
 				

@@ -2,6 +2,7 @@ package nl.powergeek.feathers.components
 {
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
+	import feathers.controls.ScrollContainer;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -19,7 +20,7 @@ package nl.powergeek.feathers.components
 	public class Pager extends LayoutGroup
 	{
 		private var
-			_buttonContainer:LayoutGroup,
+			_buttonContainer:ScrollContainer,
 			_buttons:Array = null,
 			_leftFillerBackgroundFactory:Function = defaultFillerBackground,
 			_rightFillerBackgroundFactory:Function = defaultFillerBackground,
@@ -58,28 +59,28 @@ package nl.powergeek.feathers.components
 		
 		public function update(pageNumber:Number):void
 		{
-			// enable all buttons
-			_buttons.forEach(function(button:Button, index:uint, array:Array):void {
-				button.isEnabled = true;
-			});
-			
-			// disable buttons based on current page number
-			if(pageNumber == 1) {
-				first.isEnabled = false;
-				previous.isEnabled = false;
-			} else if(pageNumber == numResultPages) {
-				last.isEnabled = false;
-				next.isEnabled = false;
-			}
-			
-			// highlight current page number button
-			_buttons.forEach(function(button:Button, index:uint, array:Array):void {
-				if(button.label == pageNumber.toString()) {
-					button.isEnabled = false;
-					// TODO highlight?
+			if (pageNumber > 0) {
+				// enable all buttons
+				_buttons.forEach(function(button:Button, index:uint, array:Array):void {
+					button.isEnabled = true;
+				});
+				
+				// disable buttons based on current page number
+				if(pageNumber == 1) {
+					first.isEnabled = false;
+					previous.isEnabled = false;
+				} else if(pageNumber == numResultPages) {
+					last.isEnabled = false;
+					next.isEnabled = false;
 				}
-			});
-			
+				
+				// highlight current page number button
+				_buttons.forEach(function(button:Button, index:uint, array:Array):void {
+					if(button.label == pageNumber.toString()) {
+						button.isEnabled = false;
+					}
+				});
+			}
 		}
 		
 		private function createGUI():void
@@ -89,7 +90,6 @@ package nl.powergeek.feathers.components
 			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_TOP;
 			layout.horizontalAlign= HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.paddingBottom = 1;
-			//			layout.paddingTop = 1;
 			this.layout = layout;
 			
 			// create fillers
@@ -100,12 +100,13 @@ package nl.powergeek.feathers.components
 			addChild(_leftFiller);
 			
 			// add buttoncontainer
-			_buttonContainer = new LayoutGroup();
+			_buttonContainer = new ScrollContainer();
 			var buttonContainerLayout:HorizontalLayout = new HorizontalLayout();
 			buttonContainerLayout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_TOP;
 			buttonContainerLayout.horizontalAlign = HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			buttonContainerLayout.gap = 0;
 			this._buttonContainer.layout = buttonContainerLayout;
+			this._buttonContainer.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_NONE;
 			addChild(_buttonContainer);
 			
 			// add right filler

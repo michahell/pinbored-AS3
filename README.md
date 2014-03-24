@@ -22,7 +22,10 @@ Roadmap V1
 * edit animations
 * update request
 * update XML manifest for nice AIR package description etc.
-* ~~paging bar for paging results in bookmark list screen~~
+* show amount of bookmarks retrieved / number of pages in header
+* able to search through all bookmark text
+* paging bar for paging results in bookmark list screen
+
 * ~~proper login screen~~
 * ~~login functionality~~
 * ~~item renderer icon scale fix~~
@@ -38,6 +41,7 @@ Roadmap V2
 * release Pinbored theme and skins (maybe separate GitHub repo)
 * massive 'stale' checker screen (check all your bookmarks for broken links)
 * tag information screen (tag statistics)
+* nice bookmark list update animations (bookmarks fading/moving in one by one for example)
 
 libraries used
 --------------

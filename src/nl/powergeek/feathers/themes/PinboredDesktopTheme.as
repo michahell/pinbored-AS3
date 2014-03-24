@@ -42,14 +42,6 @@ package nl.powergeek.feathers.themes
 		private static const OpenSansLight:Class;
 		public static var OpenSansLightFont:Font = new OpenSansLight();
 		
-//		[Embed(source="assets/fonts/pinbored/OpenSans-Regular.ttf", fontName="OpenSansRegular", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
-//		private static const OpenSansRegular:Class;
-//		public static var OpenSansRegularFont:Font = new OpenSansRegular();
-		
-//		[Embed(source="assets/fonts/pinbored/OpenSans-Semibold.ttf", fontName="OpenSansSemiBold", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
-//		private static const OpenSansSemiBold:Class;
-//		public static var OpenSansSemiBoldFont:Font = new OpenSansSemiBold();
-		
 		[Embed(source="assets/fonts/pinbored/OpenSans-Bold.ttf", fontName="OpenSansBold", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
 		private static const OpenSansBold:Class;
 		public static var OpenSansBoldFont:Font = new OpenSansBold();
@@ -158,7 +150,8 @@ package nl.powergeek.feathers.themes
 			TEXTFORMAT_SCREEN_TITLE:TextFormat = new TextFormat(OpenSansLightFont.fontName, 20, 0xEEEEEE, false),
 			
 			TEXTFORMAT_BOOKMARK_DESCRIPTION:TextFormat = new TextFormat(OpenSansLightFont.fontName, 13, 0xEEEEEE, false),
-			TEXTFORMAT_BOOKMARK_HREF:TextFormat = new TextFormat(OpenSansLightFont.fontName, 12, 0xBBBBBB, false),
+			//TEXTFORMAT_BOOKMARK_HREF:TextFormat = new TextFormat(OpenSansLightFont.fontName, 12, 0xBBBBBB, false),
+			TEXTFORMAT_BOOKMARK_HREF:TextFormat = new TextFormat(OpenSansLightFont.fontName, 12, 0x55BBFF, false, null, true),
 			
 			TEXTFORMAT_PAGER:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xEEEEEE, true),
 			TEXTFORMAT_PAGER_DISABLED:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0x999999, true),
@@ -235,7 +228,9 @@ package nl.powergeek.feathers.themes
 		private function bookmarkHrefInitializer(label:Label):void
 		{
 			label.textRendererFactory = function():ITextRenderer {
-				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
+				var tr:HyperlinkTextFieldTextRenderer = new HyperlinkTextFieldTextRenderer();
+				tr.isHTML = true;
+				tr.useHandCursor = true;
 				tr.width = label.width;
 				tr.textFormat = TEXTFORMAT_BOOKMARK_HREF;
 				return tr;

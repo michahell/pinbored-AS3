@@ -121,8 +121,8 @@ package nl.powergeek.pinbored.screens
 				pagingControl.visible = false;
 				pagingControl.invalidate(INVALIDATION_FLAG_ALL);
 				
-				ListScreenModel.rawBookmarkDataListFiltered = PinboardService.filterTags(ListScreenModel.rawBookmarkDataList, tagNames);
-				trace('done filtering: ' + ListScreenModel.rawBookmarkDataListFiltered.length);
+				// filter on tags 
+				ListScreenModel.filter();
 				
 				// show loading icon
 				hideLoading();
@@ -134,14 +134,19 @@ package nl.powergeek.pinbored.screens
 				}, 1000);
 					
 				if(ListScreenModel.rawBookmarkDataListFiltered.length > 0) {
-					displayInitialResultsPage(ListScreenModel.rawBookmarkDataListFiltered);
+					displayInitialResultsPage(ListScreenModel.getFilteredBookmarks());
 				} else {
 					trace('no results after filtering...');
 					cleanBookmarkList();
 				}
 			});
 			
-			// TODO listen to Pager signals and call displayNext / displayPrevious functions?
+			// listen to Tag input signals
+			searchTags.tagsChanged.add(function(tags:Vector.<String>):void {
+				ListScreenModel.setCurrentTags(tags);
+			});
+			
+			// listen to Pager signals
 			pagingControl.firstPageRequested.add(function():void {
 				displayFirstResultsPage();
 			});
@@ -170,14 +175,49 @@ package nl.powergeek.pinbored.screens
 			getInitialData();
 		}
 		
+		private function searchBookmarksHandler(event:starling.events.Event):void
+		{
+			trace('entered search key word');
+			
+			// show loading icon
+			showLoading();
+			
+			// make paging control invisible PRE-EMPTIVE!
+			pagingControl.visible = false;
+			pagingControl.invalidate(INVALIDATION_FLAG_ALL);
+			
+			// filter
+			var searchString:String = TextInput(event.target).text;
+			trace('searchString: ' + searchString);
+			ListScreenModel.filter(searchString);
+			
+			// show loading icon
+			hideLoading();
+			
+			// small timeout for update?
+			setTimeout(function():void {
+				// validate for list scroll height update
+				invalidate(INVALIDATION_FLAG_ALL);
+			}, 1000);
+			
+			if(ListScreenModel.getFilteredBookmarks().length > 0) {
+				displayInitialResultsPage(ListScreenModel.getFilteredBookmarks());
+			} else {
+				trace('no results after filtering...');
+				cleanBookmarkList();
+			}
+		}
+		
 		private function getInitialData():void
 		{
 			// throw all bookmarks into a list
-			PinboardService.allBookmarksReceived.addOnce(function(event:flash.events.Event):void {
+			PinboardService.bookmarksReceived.addOnce(function(event:flash.events.Event):void {
 				
 				var parsedResponse:Object = JSON.parse(event.target.data as String);
 				
 				parsedResponse.forEach(function(bookmark:Object, index:int, array:Array):void {
+					// quick href field replace (for auto-linking with hypertextfieldtextrenderer
+					bookmark.link = '<a href=\"' + bookmark.href + '\">' + bookmark.href + '</a>';
 					ListScreenModel.rawBookmarkDataList.push(bookmark);
 				});
 				
@@ -200,7 +240,8 @@ package nl.powergeek.pinbored.screens
 			invalidate(INVALIDATION_FLAG_ALL);
 			
 			// get all bookmarks
-			PinboardService.GetAllBookmarks(['Webdevelopment']);
+			//PinboardService.GetAllBookmarks(['Webdevelopment']);
+			PinboardService.GetAllBookmarks();
 		}
 		
 		private function cleanBookmarkList():void {
@@ -223,21 +264,15 @@ package nl.powergeek.pinbored.screens
 			ListScreenModel.bookmarksList.forEach(function(bm:BookMark, index:uint, array:Array):void {
 				
 				// if bookmark DELETE is tapped
-				bm.deleteTapped.addOnce(function(tappedBookmark:BookMark):void{
+				bm.deleteTapped.addOnce(function(tappedBookmark:BookMark):void {
 					trace('bookmark delete tapped!');
 					// execute request and attach listener to returned signal
 					var returnSignal:Signal = PinboardService.deleteBookmark(tappedBookmark);
-					returnSignal.addOnce(function():void{
+					returnSignal.addOnce(function():void {
 						trace('bookmark delete request completed.');
 						// update the bookmark by confirming delete
 						tappedBookmark.deleteConfirmed.dispatch();
 					});
-					
-					// MOCK CONFIRMATION!!
-					setTimeout(function():void{
-						tappedBookmark.deleteConfirmed.dispatch();
-						trace('dispatching delete...');
-					}, Math.random() * 1000);
 				});
 				
 			});
@@ -248,11 +283,8 @@ package nl.powergeek.pinbored.screens
 		
 		private function displayInitialResultsPage(array:Array):void
 		{
-			// first, page raw bookmark results (this list can be huge)
-			ListScreenModel.rawBookmarkListCollectionPager = new ArrayCollectionPager(array, ListScreenModel.BOOKMARKS_PER_PAGE);
-			
-			// create buttons for all result pages
-			var resultPages:Number = ListScreenModel.rawBookmarkListCollectionPager.numPages;
+			// create a new array collection pager and get number of result pages
+			var resultPages:Number = ListScreenModel.createArrayCollectionPager(array);
 			
 			trace('pagingControl visible! ' + resultPages);
 			// make paging control visible
@@ -320,14 +352,12 @@ package nl.powergeek.pinbored.screens
 		
 		private function removeBookmarkFromList(bookmark:BookMark):void {
 			
-			var preDeleteScrollPos:Number = list.verticalScrollPosition;
+			// remove item from list dataProvider
 			var bmIndex:Number = list.dataProvider.getItemIndex(bookmark);
 			list.dataProvider.removeItemAt(bmIndex);
-		}
-		
-		private function input_enterHandler():void
-		{
-			trace('entered search key word');
+			
+			// also delete item from rawBookMarkList
+			// TODO delete item from rawBookMarkList
 		}
 		
 		public function get onLoginScreenRequest():ISignal
@@ -370,7 +400,7 @@ package nl.powergeek.pinbored.screens
 				//we can't get an enter key event without changing the returnKeyLabel
 				//not using ReturnKeyLabel.GO here so that it will build for web
 				searchBookmarks.textEditorProperties.returnKeyLabel = "go";
-				searchBookmarks.addEventListener(FeathersEventType.ENTER, input_enterHandler);
+				searchBookmarks.addEventListener(FeathersEventType.ENTER, searchBookmarksHandler);
 				
 				header.rightItems = new <DisplayObject>[searchBookmarks];
 				
@@ -519,6 +549,8 @@ package nl.powergeek.pinbored.screens
 			var listBg:Quad = new Quad(50, 50, 0x000000);
 			listBg.alpha = 0.3;
 			this.list.backgroundSkin = this.list.backgroundDisabledSkin = listBg;
+			
+			this.isQuickHitAreaEnabled = false;
 			
 			// finally, validate panel for scroll container height update
 			invalidate(INVALIDATION_FLAG_ALL);
