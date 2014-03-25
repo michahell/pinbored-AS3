@@ -8,6 +8,8 @@ package nl.powergeek.feathers.components
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
 	
+	import flashx.textLayout.container.ISandboxSupport;
+	
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	
 	import org.osflash.signals.Signal;
@@ -25,8 +27,8 @@ package nl.powergeek.feathers.components
 			_leftFillerBackgroundFactory:Function = defaultFillerBackground,
 			_rightFillerBackgroundFactory:Function = defaultFillerBackground,
 			_leftFiller:DisplayObject,
-			_rightFiller:DisplayObject,
-			_resultPages:Number = -1;
+			_rightFiller:DisplayObject;
+			
 	
 		public const
 			firstPageRequested:Signal = new Signal(),
@@ -40,6 +42,8 @@ package nl.powergeek.feathers.components
 			previous:Button,
 			next:Button,
 			last:Button,
+			isActivated:Boolean = false,
+			_maxResultPages:Number = 20,
 			numResultPages:Number = -1,
 			numCurrentPage:Number = -1;
 			
@@ -57,32 +61,6 @@ package nl.powergeek.feathers.components
 			createGUI();
 		}
 		
-		public function update(pageNumber:Number):void
-		{
-			if (pageNumber > 0) {
-				// enable all buttons
-				_buttons.forEach(function(button:Button, index:uint, array:Array):void {
-					button.isEnabled = true;
-				});
-				
-				// disable buttons based on current page number
-				if(pageNumber == 1) {
-					first.isEnabled = false;
-					previous.isEnabled = false;
-				} else if(pageNumber == numResultPages) {
-					last.isEnabled = false;
-					next.isEnabled = false;
-				}
-				
-				// highlight current page number button
-				_buttons.forEach(function(button:Button, index:uint, array:Array):void {
-					if(button.label == pageNumber.toString()) {
-						button.isEnabled = false;
-					}
-				});
-			}
-		}
-		
 		private function createGUI():void
 		{
 			// component layout
@@ -90,6 +68,7 @@ package nl.powergeek.feathers.components
 			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_TOP;
 			layout.horizontalAlign= HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
 			layout.paddingBottom = 1;
+			layout.paddingTop = 0;
 			this.layout = layout;
 			
 			// create fillers
@@ -122,10 +101,66 @@ package nl.powergeek.feathers.components
 		
 		public function activate(resultPages:Number):void
 		{
+			//trace('pager ACTIVATE called..');
+			
 			// first store resultPages
 			this.numResultPages = resultPages;
 			
-			// first remove any remaining buttons
+			// first remove the first, previous, next, last buttons
+			if(first && _buttonContainer.contains(first))
+				_buttonContainer.removeChild(first);
+			
+			if(previous && _buttonContainer.contains(previous))
+				_buttonContainer.removeChild(previous);
+			
+			if(next && _buttonContainer.contains(next))
+				_buttonContainer.removeChild(next);
+			
+			if(last && _buttonContainer.contains(last))
+				_buttonContainer.removeChild(last);
+			
+			if(resultPages > 1) {
+				
+				// create first button
+				first = new Button();
+				first.label = '<< FIRST';
+				first.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
+				first.addEventListener(Event.TRIGGERED, onFirstHandler);
+				_buttonContainer.addChild(first);
+				
+				// create previous button
+				previous = new Button();
+				previous.label = '< PREV';
+				previous.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
+				previous.addEventListener(Event.TRIGGERED, onPrevHandler);
+				_buttonContainer.addChild(previous);
+				
+				// create n number of buttons for n result pages
+				createResultPageButtons(resultPages);
+				
+				// create next button
+				next = new Button();
+				next.label = 'NEXT >';
+				next.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
+				next.addEventListener(Event.TRIGGERED, onNextHandler);
+				_buttonContainer.addChild(next);
+				
+				// create last button
+				last = new Button();
+				last.label = 'LAST >>';
+				last.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
+				last.addEventListener(Event.TRIGGERED, onLastHandler);
+				_buttonContainer.addChild(last);
+				
+				isActivated = true;
+			}
+			
+//			invalidate(INVALIDATION_FLAG_ALL);
+		}
+		
+		private function createResultPageButtons(totalResultPages:Number, currentPage:Number = 1):void
+		{
+			// first remove old buttons
 			if(_buttons && _buttons.length > 0) {
 				trace('removing previous pager buttons...' + _buttons.length);
 				while(_buttons.length > 0) {
@@ -135,69 +170,75 @@ package nl.powergeek.feathers.components
 				}
 			}
 			
-			if(resultPages > 1) {
-				// update internal resultPages
-				_resultPages = resultPages;
+			// truncate buttons array
+			_buttons = new Array();
+			
+			// create range of _maxResultPages number of buttons for n result pages
+			var numSideButtons:uint = _maxResultPages / 2;
+			var rangeStart:Number;
+			var rangeEnd:Number;
+			
+			// calculate how many extra buttons we need left or right, depending on how 'far' we are to the left
+			// or to the right of the total amount of result pages.
+			var moreRightButtons:uint = numSideButtons - Math.min(currentPage, numSideButtons);
+			var moreLeftButtons:uint = numSideButtons - Math.min(totalResultPages - currentPage, numSideButtons); 
 				
-				trace('recreating pager buttons... ' + resultPages);
-				_buttons = new Array();
+			// calculate the range start and end numbers
+			rangeStart = Math.max(currentPage - numSideButtons - moreLeftButtons, 1);
+			rangeEnd = Math.min(currentPage + numSideButtons + moreRightButtons, totalResultPages);
+			trace('rangeStart: ' + rangeStart, 'rangeEnd:', rangeEnd);
+			
+			for (var i:uint = rangeStart; i <= rangeEnd; i++) {
+				var button:Button = new Button();
+				button.label = i.toString();
+				button.nameList.add(PinboredDesktopTheme.BUTTON_NUMBERED_PAGER_SMALL_DEFAULT);
+				button.addEventListener(Event.TRIGGERED, onNumberButtonHandler);
+				_buttons.push(button);
+				_buttonContainer.addChild(button);
+			}
+		}
+		
+		public function update(pageNumber:Number):void
+		{
+			trace('pager UPDATE called..');
+			
+			if (isActivated && pageNumber > 0) {
 				
-				// create first button
-				first = new Button();
-				first.label = '<< FIRST';
-				first.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
+				trace('pager UPDATE executed..');
 				
-				// add first listener ..haha <boring meta joke>
-				first.addEventListener(Event.TRIGGERED, onFirstHandler);
+				// recreate center buttons!
+				createResultPageButtons(numResultPages, pageNumber);
 				
-				_buttons.push(first);
-				_buttonContainer.addChild(first);
+				// re-add next and last buttons
+				_buttonContainer.removeChild(last);
+				_buttonContainer.removeChild(next);
+				_buttonContainer.addChild(next);
+				_buttonContainer.addChild(last);
 				
-				// create previous button
-				previous = new Button();
-				previous.label = '< PREV';
-				previous.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
+				// enable all buttons
+				first.isEnabled = true;
+				previous.isEnabled = true;
+				next.isEnabled = true;
+				last.isEnabled = true;
+				_buttons.forEach(function(button:Button, index:uint, array:Array):void {
+					button.isEnabled = true;
+				});
 				
-				// add previous listener ..haha <boring meta joke>
-				previous.addEventListener(Event.TRIGGERED, onPrevHandler);
-				
-				_buttons.push(previous);
-				_buttonContainer.addChild(previous);
-				
-				// create n number of buttons for n result pages
-				for (var i:uint = 1; i < resultPages + 1; i++) {
-					var button:Button = new Button();
-					button.label = i.toString();
-					button.nameList.add(PinboredDesktopTheme.BUTTON_NUMBERED_PAGER_SMALL_DEFAULT);
-					
-					// add button listener
-					button.addEventListener(Event.TRIGGERED, onNumberButtonHandler);
-					
-					_buttons.push(button);
-					_buttonContainer.addChild(button);
+				// disable buttons based on current page number
+				if(pageNumber == 1) {
+					first.isEnabled = false;
+					previous.isEnabled = false;
+				} else if(pageNumber == numResultPages) {
+					last.isEnabled = false;
+					next.isEnabled = false;
 				}
 				
-				// create next button
-				next = new Button();
-				next.label = 'NEXT >';
-				next.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
-				
-				// add button listener
-				next.addEventListener(Event.TRIGGERED, onNextHandler);
-				
-				_buttons.push(next);
-				_buttonContainer.addChild(next);
-				
-				// create last button
-				last = new Button();
-				last.label = 'LAST >>';
-				last.nameList.add(PinboredDesktopTheme.BUTTON_PAGER_SMALL_DEFAULT);
-				
-				// add button listener
-				last.addEventListener(Event.TRIGGERED, onLastHandler);
-				
-				_buttons.push(last);
-				_buttonContainer.addChild(last);
+				// highlight current page number button
+				_buttons.forEach(function(button:Button, index:uint, array:Array):void {
+					if(button.label == pageNumber.toString()) {
+						button.isEnabled = false;
+					}
+				});
 			}
 		}
 		

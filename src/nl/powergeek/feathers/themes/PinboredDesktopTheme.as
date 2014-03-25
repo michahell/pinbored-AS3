@@ -412,6 +412,8 @@ package nl.powergeek.feathers.themes
 			button.paddingLeft = button.paddingRight = 5;
 			
 			button.defaultLabelProperties.embedFonts = true;
+			button.disabledLabelProperties.embedFonts = true;
+			button.selectedDisabledLabelProperties.embedFonts = true;
 			
 			button.defaultLabelProperties.textFormat = TEXTFORMAT_PAGER;
 			button.disabledLabelProperties.textFormat = TEXTFORMAT_PAGER_DISABLED;
@@ -445,9 +447,14 @@ package nl.powergeek.feathers.themes
 			button.paddingLeft = button.paddingRight = 15;
 			
 			button.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
+			
 			button.defaultLabelProperties.embedFonts = true;
+			button.hoverLabelProperties.embedFonts = true;
+			button.disabledLabelProperties.embedFonts = true;
+			button.selectedDisabledLabelProperties.embedFonts = true;
 			
 			button.defaultLabelProperties.textFormat = this.darkUITextFormat;
+			button.hoverLabelProperties.textFormat = this.darkUITextFormat;
 			button.disabledLabelProperties.textFormat = this.darkUIDisabledTextFormat;
 			button.selectedDisabledLabelProperties.textFormat = this.darkUIDisabledTextFormat;
 			
@@ -479,7 +486,11 @@ package nl.powergeek.feathers.themes
 			button.paddingLeft = button.paddingRight = 15;
 			
 			button.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
+			
 			button.defaultLabelProperties.embedFonts = true;
+			button.hoverLabelProperties.embedFonts = true;
+			button.disabledLabelProperties.embedFonts = true;
+			button.selectedDisabledLabelProperties.embedFonts = true;
 			
 			button.defaultLabelProperties.textFormat = this.lightUITextFormat;
 			button.hoverLabelProperties.textFormat = this.lightUITextFormat;
@@ -514,7 +525,11 @@ package nl.powergeek.feathers.themes
 			button.paddingLeft = button.paddingRight = 15;
 			
 			button.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
+			
 			button.defaultLabelProperties.embedFonts = true;
+			button.hoverLabelProperties.embedFonts = true;
+			button.disabledLabelProperties.embedFonts = true;
+			button.selectedDisabledLabelProperties.embedFonts = true;
 			
 			button.defaultLabelProperties.textFormat = this.lightUITextFormat;
 			button.hoverLabelProperties.textFormat = this.lightUITextFormat;
@@ -549,7 +564,11 @@ package nl.powergeek.feathers.themes
 			button.paddingLeft = button.paddingRight = 15;
 			
 			button.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
+			
 			button.defaultLabelProperties.embedFonts = true;
+			button.hoverLabelProperties.embedFonts = true;
+			button.disabledLabelProperties.embedFonts = true;
+			button.selectedDisabledLabelProperties.embedFonts = true;
 			
 			button.defaultLabelProperties.textFormat = this.lightUITextFormat;
 			button.hoverLabelProperties.textFormat = this.lightUITextFormat;

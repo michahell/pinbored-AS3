@@ -119,7 +119,7 @@ package nl.powergeek.pinbored.screens
 				
 				// make paging control invisible PRE-EMPTIVE!
 				pagingControl.visible = false;
-				pagingControl.invalidate(INVALIDATION_FLAG_ALL);
+//				pagingControl.invalidate(INVALIDATION_FLAG_ALL);
 				
 				// filter on tags 
 				ListScreenModel.filter();
@@ -130,7 +130,7 @@ package nl.powergeek.pinbored.screens
 				// small timeout for update?
 				setTimeout(function():void {
 					// validate for list scroll height update
-					invalidate(INVALIDATION_FLAG_ALL);
+//					invalidate(INVALIDATION_FLAG_ALL);
 				}, 1000);
 					
 				if(ListScreenModel.rawBookmarkDataListFiltered.length > 0) {
@@ -184,7 +184,7 @@ package nl.powergeek.pinbored.screens
 			
 			// make paging control invisible PRE-EMPTIVE!
 			pagingControl.visible = false;
-			pagingControl.invalidate(INVALIDATION_FLAG_ALL);
+//			pagingControl.invalidate(INVALIDATION_FLAG_ALL);
 			
 			// filter
 			var searchString:String = TextInput(event.target).text;
@@ -197,7 +197,7 @@ package nl.powergeek.pinbored.screens
 			// small timeout for update?
 			setTimeout(function():void {
 				// validate for list scroll height update
-				invalidate(INVALIDATION_FLAG_ALL);
+//				invalidate(INVALIDATION_FLAG_ALL);
 			}, 1000);
 			
 			if(ListScreenModel.getFilteredBookmarks().length > 0) {
@@ -227,7 +227,7 @@ package nl.powergeek.pinbored.screens
 				setTimeout(function():void {
 					hideLoading();
 					// validate for list scroll height update
-					invalidate(INVALIDATION_FLAG_ALL);
+//					invalidate(INVALIDATION_FLAG_ALL);
 				}, 1000);
 			});
 			
@@ -236,8 +236,8 @@ package nl.powergeek.pinbored.screens
 			
 			// make paging control invisible
 			pagingControl.visible = false;
-			pagingControl.invalidate(INVALIDATION_FLAG_ALL);
-			invalidate(INVALIDATION_FLAG_ALL);
+//			pagingControl.invalidate(INVALIDATION_FLAG_ALL);
+//			invalidate(INVALIDATION_FLAG_ALL);
 			
 			// get all bookmarks
 			//PinboardService.GetAllBookmarks(['Webdevelopment']);
@@ -553,7 +553,7 @@ package nl.powergeek.pinbored.screens
 			this.isQuickHitAreaEnabled = false;
 			
 			// finally, validate panel for scroll container height update
-			invalidate(INVALIDATION_FLAG_ALL);
+//			invalidate(INVALIDATION_FLAG_ALL);
 		}
 		
 		override protected function draw():void
@@ -570,8 +570,6 @@ package nl.powergeek.pinbored.screens
 			
 			// update paging control
 			pagingControl.width = panel.width;
-			pagingControl.invalidate(INVALIDATION_FLAG_SIZE);
-			pagingControl.validate();
 			
 			// update list scrollcontainer and list width
 			listScrollContainer.width = panel.width;
@@ -579,9 +577,13 @@ package nl.powergeek.pinbored.screens
 			
 			// update _panelExcludedSpace
 			var listContainerHeight:Number = _panelExcludedSpace + pagingControl.height;
+			//var listContainerHeight:Number = panel.viewPort.height + pagingControl.height + searchTags.height;
 			
 			// update scrollcontainer height
 			this.listScrollContainer.height = panel.height - listContainerHeight - searchTags.height - 123;
+			//this.listScrollContainer.height = listContainerHeight;
+			
+			super.draw();
 		}
 
 	}
