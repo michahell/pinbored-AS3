@@ -18,11 +18,13 @@ Everything is provided AS-IS. Use this project in any way you wish, just not to 
 
 Roadmap V1
 ----------
+* show amount of bookmarks retrieved / number of pages in header
+
 * item renderer has, when collapsed, editing capabilities
 * edit animations
 * update request
+
 * update XML manifest for nice AIR package description etc.
-* show amount of bookmarks retrieved / number of pages in header
 * moar transitional interface design!
 
 * ~~paging bar for paging results in bookmark list screen~~

@@ -25,28 +25,35 @@ package nl.powergeek.feathers.components
 	
 	public class TagTextInput extends FeathersControl
 	{
+		// static consts
 		public static const
-			MAX_TAGS:uint = 3,
 			SEPARATOR_HEIGHT:uint = 1,
 			SEPARATOR_COLOR:uint = 0x000000,
 			SEPARATOR_ALPHA:Number = 0,
 			TAG_HEIGHT:uint = 28,
 			SEARCHBUTTON_HEIGHT:uint = TAG_HEIGHT + 6;
 		
+		// Factories
 		private var
-			_tagCount:Number = 0,
-			_tagContainer:LayoutGroup = new LayoutGroup(),
-			_tagsArray:Array = [],
-			_componentLayoutGroup:LayoutGroup = new LayoutGroup(),
-			_textInput:TextInput = new TextInput(),
 			_backgroundFactory:Function = defaultBackgroundFactory,
 			_tagFactory:Function = defaultTagFactory,
-			_background:DisplayObject,
 			_separatorFactoryTop:Function = defaultSeparatorFactoryTop,
-			_separatorFactoryBottom:Function = defaultSeparatorFactoryBottom,
-			separatorTop:DisplayObject,
-			separatorBottom:DisplayObject,
-			_searchButton:Button,
+			_separatorFactoryBottom:Function = defaultSeparatorFactoryBottom;
+			
+		// UI
+		private var
+			_tagContainer:LayoutGroup = new LayoutGroup(),
+			_componentLayoutGroup:LayoutGroup = new LayoutGroup(),
+			_textInput:TextInput = new TextInput(),
+			_background:DisplayObject,
+			_separatorTop:DisplayObject,
+			_separatorBottom:DisplayObject,
+			_searchButton:Button;
+		
+		// internal state
+		private var
+			_tagCount:Number = 0,
+			_tagsArray:Array = [],
 			_screenDPIscale:Number,
 			_padding:Number = 10,
 			_tagNames:Vector.<String> = new Vector.<String>,
@@ -56,6 +63,7 @@ package nl.powergeek.feathers.components
 			tagsChanged:Signal = new Signal(Vector.<String>),
 			searchTagsTriggered:Signal = new Signal(Vector.<String>);
 			
+		// setttings / options through params object in constructor
 		private var 
 			useBackground:Boolean = true,
 			useSeparators:Boolean = true,
@@ -106,10 +114,10 @@ package nl.powergeek.feathers.components
 			
 			// create separators
 			if(this.useSeparators == true) {
-				separatorTop = _separatorFactoryTop();
-				separatorBottom = _separatorFactoryBottom();
-				this.addChild(separatorTop);
-				this.addChild(separatorBottom);
+				_separatorTop = _separatorFactoryTop();
+				_separatorBottom = _separatorFactoryBottom();
+				this.addChild(_separatorTop);
+				this.addChild(_separatorBottom);
 			}
 			
 			// add component layout
@@ -129,7 +137,8 @@ package nl.powergeek.feathers.components
 			
 			// create and add textinput
 			this._textInput.prompt = this.textInputPrompt;
-			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+//			this._textInput.width = 200;
+//			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
 			this._textInput.padding = this._padding / 2;
 			
 			// add tag icon in front of tag text input
@@ -208,7 +217,7 @@ package nl.powergeek.feathers.components
 				var commaIndex:Number = text.indexOf(', ');
 				
 				// if we do not yet have reached the max. number of tags
-				if(this._tagCount < MAX_TAGS) {
+				if(this._tagCount < maxTags) {
 					
 					if(spaceIndex > -1 || commaIndex > -1) {
 						
@@ -230,7 +239,7 @@ package nl.powergeek.feathers.components
 						textInput.text = '';
 						
 						// and invalidate, need to redraw this thing
-						invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
+						//invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 					}
 				}
 			}
@@ -250,6 +259,7 @@ package nl.powergeek.feathers.components
 			_tagContainer.removeChild(this._textInput);
 			_tagContainer.addChild(tag);
 			_tagContainer.addChild(this._textInput);
+			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 			
 			// add tag text to tagText array for quick access
 			_tagNames.push(tag.text);
@@ -279,16 +289,22 @@ package nl.powergeek.feathers.components
 		
 		override protected function draw():void
 		{
+			trace('draw called');
+			
 			// phase 1 commit
 			_tagContainer.validate();
 			
 			// enable or disable tag input
-			if(this._tagCount < MAX_TAGS) {
-				this._textInput.isEnabled = true;
+			if(this.maxTags > 0) {
+				if(this._tagCount < maxTags) {
+					this._textInput.isEnabled = true;
+				} else {
+					// disable tag input
+					this._textInput.text = '';
+					this._textInput.isEnabled = false;
+				}
 			} else {
-				// disable tag input
-				this._textInput.text = '';
-				this._textInput.isEnabled = false;
+				this._textInput.isEnabled = true;
 			}
 			this._textInput.validate();
 			
@@ -306,13 +322,13 @@ package nl.powergeek.feathers.components
 			
 			// separators need to be on top and bottom
 			if(this.useSeparators == true) {
-				separatorTop.y = this.y;
-				separatorTop.width = _background.width;
+				_separatorTop.y = this.y;
+				_separatorTop.width = _background.width;
 			}
 			
 			// content in between
 			if(this.useSeparators == true) {
-				_componentLayoutGroup.y = separatorTop.y + separatorTop.height;
+				_componentLayoutGroup.y = _separatorTop.y + _separatorTop.height;
 			} else {
 				_componentLayoutGroup.y = 0;
 			}
@@ -323,14 +339,14 @@ package nl.powergeek.feathers.components
 			
 			// and bottom separator at the bottom
 			if(this.useSeparators == true) {
-				separatorBottom.y = _componentLayoutGroup.y + _componentLayoutGroup.height;
-				separatorBottom.width = _background.width;
+				_separatorBottom.y = _componentLayoutGroup.y + _componentLayoutGroup.height;
+				_separatorBottom.width = _background.width;
 			}
 			
-			this.width = Math.max(this.actualWidth, this.width);
+//			this.width = Math.max(this.actualWidth, this.width);
 			
 			if(this.useSeparators == true) {
-				this.height = this.separatorTop.height + this._componentLayoutGroup.height + this.separatorBottom.height;
+				this.height = this._separatorTop.height + this._componentLayoutGroup.height + this._separatorBottom.height;
 			} else {
 				this.height = this._componentLayoutGroup.height;
 			}

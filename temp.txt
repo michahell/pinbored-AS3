@@ -18,7 +18,7 @@ pinboard bookmark return JSON example:
     
 	  {
 	    "description": "AngularJS for mobile",
-	    "extended": "Mobile development with angular JS, cordova and some other stuff.",
+    	"extended": "Mobile development with angular JS, cordova and some other stuff.",
 	    "shared": "yes",
 	    "toread": "no",
 	    "tags": "angular programming Webdevelopment mobiledevelopment"

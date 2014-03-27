@@ -14,6 +14,7 @@ package nl.powergeek.pinbored.model
 	
 	import nl.powergeek.feathers.components.Tag;
 	import nl.powergeek.feathers.components.TagTextInput;
+	import nl.powergeek.feathers.components.TagTextInput2;
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	import nl.powergeek.pinbored.components.InteractiveIcon;
 	import nl.powergeek.pinbored.services.UrlChecker;
@@ -112,6 +113,7 @@ package nl.powergeek.pinbored.model
 			hiddenContent.scaleY = 0;
 			hiddenContent.height = 0;
 			hiddenContent.visible = false;
+			hiddenContent.touchable = true;
 			
 			// hidden content layout group
 			var hiddenContentLayout:AnchorLayout = new AnchorLayout();
@@ -127,14 +129,18 @@ package nl.powergeek.pinbored.model
 			};
 			
 			// add the tag editor
-			var tagEditor:TagTextInput = new TagTextInput(AppSettings.SCREEN_DPI_SCALE, tagTextOptions);
-			tagEditor.layoutData = new AnchorLayoutData(0, -5, NaN, -5);
+			var tagEditor:TagTextInput2 = new TagTextInput2(AppSettings.SCREEN_DPI_SCALE, tagTextOptions);
+			tagEditor.layoutData = new AnchorLayoutData(0, 0, NaN, -5);
+			// add tags to tag component
+			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
+				tagEditor.addTag(tag);
+			});
 			hiddenContent.addChild(tagEditor);
 			
 			// add the extended / description label
 			var extendedInput:TextInput = new TextInput();
-			extendedInput.height = 25;
-			extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+//			extendedInput.height = 35;
+//			extendedInput.nameList.add(PinboredDesktopTheme.TEXTAREA_TRANSLUCENT_BOX);
 			var extendedInputLd:AnchorLayoutData = new AnchorLayoutData();
 			extendedInputLd.topAnchorDisplayObject = tagEditor;
 			extendedInputLd.top = 5;
@@ -144,24 +150,25 @@ package nl.powergeek.pinbored.model
 			
 			if(this.extended.length > 0) {
 				extendedInput.text = this.extended;
-				trace('Using extended description');
-				trace('this.extended: ' + this.extended);
+				extendedInput.prompt = this.extended;
+				//trace('Using extended description');
+				//trace('this.extended: ' + this.extended);
 			} else {
 				extendedInput.text = '[no extended description]';
 			}
 			
 			hiddenContent.addChild(extendedInput);
 			
-			
 			// add the 'accept changes' button
-//			var modifyButton:Button = new Button();
-//			modifyButton.label = 'save changes';
-//			modifyButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_SUCCESS);
-//			var modifyButtonLd:AnchorLayoutData = new AnchorLayoutData();
-//			modifyButtonLd.topAnchorDisplayObject = tagEditor;
-//			modifyButtonLd.right = 5;
-//			modifyButton.layoutData = modifyButtonLd;
-//			hiddenContent.addChild(modifyButton);
+			var modifyButton:Button = new Button();
+			modifyButton.label = 'save changes';
+			modifyButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_SUCCESS);
+			var modifyButtonLd:AnchorLayoutData = new AnchorLayoutData();
+			modifyButtonLd.topAnchorDisplayObject = extendedInput;
+			modifyButtonLd.top = 5;
+			modifyButtonLd.right = 10;
+			modifyButton.layoutData = modifyButtonLd;
+			hiddenContent.addChild(modifyButton);
 			
 		}
 		

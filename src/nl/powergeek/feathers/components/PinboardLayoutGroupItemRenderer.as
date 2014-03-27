@@ -1,5 +1,7 @@
 package nl.powergeek.feathers.components 
 {
+	import com.greensock.TweenLite;
+	
 	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.renderers.LayoutGroupListItemRenderer;
@@ -22,11 +24,13 @@ package nl.powergeek.feathers.components
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
+	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.filters.ColorMatrixFilter;
 	
 	public class PinboardLayoutGroupItemRenderer extends LayoutGroupListItemRenderer
 	{
@@ -49,7 +53,9 @@ package nl.powergeek.feathers.components
 		private var
 			_hiddenContentHeight:Number = 0,
 			_currentState:String = STATE_UP,
-			touchID:int = -1;
+			touchID:int = -1,
+			defaultBackgroundColor:Number = 0x000000,
+			highlightBackgroundColor:Number = 0x4499FF;
 			
 		// bookmark signals
 		private var
@@ -70,7 +76,7 @@ package nl.powergeek.feathers.components
 			this.layout = new AnchorLayout();
 			
 			// add background
-			var bg:Quad = new Quad(10, 10, 0x000000);
+			var bg:Quad = new Quad(10, 10, defaultBackgroundColor);
 			bg.alpha = 0.3;
 			this.backgroundSkin = bg;
 			
@@ -394,6 +400,15 @@ package nl.powergeek.feathers.components
 				Starling.current.juggler.add(childTween);
 			}
 			
+			// tween background color back to default
+			if(backgroundSkin && contains(backgroundSkin)) {
+				var color:Object = {background:highlightBackgroundColor};
+				var testFunc:Function = function():void {
+					Quad(backgroundSkin).color = color.background;
+				};
+				TweenLite.to(color, PinboredDesktopTheme.LIST_ANIMATION_TIME, {hexColors:{background:defaultBackgroundColor}, onUpdate:testFunc});
+			}
+			
 			// tween out hidden content
 			setTimeout(function():void {
 				
@@ -418,14 +433,25 @@ package nl.powergeek.feathers.components
 			
 			// tween hiddenContent
 			var tween:Tween = new Tween(_hiddenContent, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
-			tween.animate("height", 80);
+			tween.animate("height", 120);
 			tween.animate("scaleY", 1);
 			tween.onComplete = function():void {
+				
+				// tween background color to highlight color
+				if(backgroundSkin && contains(backgroundSkin)) {
+					var color:Object = {background:Quad(backgroundSkin).color};
+					var testFunc:Function = function():void {
+						Quad(backgroundSkin).color = color.background;
+					};
+					TweenLite.to(color, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, {hexColors:{background:highlightBackgroundColor}, onUpdate:testFunc});
+				}
+				
 				// tween in all children
 				for(var n:uint = 0; n < _hiddenContent.numChildren; n++) {
 					var child:DisplayObject = _hiddenContent.getChildAt(n);
 					var childTween:Tween = new Tween(child, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
 					childTween.animate("alpha", 1);
+					childTween.animate("scaleY", 1);
 					Starling.current.juggler.add(childTween);
 					_hiddenContent.invalidate(INVALIDATION_FLAG_ALL);
 				}
@@ -464,25 +490,33 @@ package nl.powergeek.feathers.components
 			var realWidth:Number = this.width;
 			var realScaleX:Number = this.scaleX;
 			
-			//trace(realHeight, realWidth, realScaleX, realScaleY);
+			trace('IR: real height/width: ' + realHeight, realWidth);
 			
-//			if(realHeight > 0 && realWidth > 0) {
-//				
-//				//this.height = this.scaleY = this.width = this.scaleX = 0;
-//				//this.x = realWidth / 2;
-//				this.width = this.scaleX = 0;
-//				
-//				// tween params
-//				var tween:Tween = new Tween(this, PinboredDesktopTheme.LIST_ANIMATION_TIME, Transitions.EASE_IN);
-//				
-//				//tween.animate("height", realHeight);
-//				//tween.animate("scaleY", realScaleY);
-//				tween.animate("width",  realWidth);
-//				tween.animate("scaleX", realScaleX);
-//				//tween.animate("x", -realWidth / 2);
-//				
-//				Starling.current.juggler.add(tween);
-//			}
+			if(realHeight > 0 && realWidth > 0) {
+				
+//				this.height = this.scaleY = this.width = this.scaleX = 0;
+//				this.height = this.width = 0;
+//				this.height = this.scaleY = 0;
+				this.width = 0;
+				this.scaleX = 0;
+//				this.x = realWidth / 2;
+				
+				// tween params
+				var tween:Tween = new Tween(this, PinboredDesktopTheme.LIST_ANIMATION_TIME * 2, Transitions.EASE_IN);
+				
+//				tween.animate("height", realHeight);
+//				tween.animate("scaleY", realScaleY);
+				tween.animate("width",  realWidth);
+				tween.animate("scaleX", realScaleX);
+//				tween.animate("x", -realWidth / 2);
+				
+				Starling.current.juggler.add(tween);
+			}
+		}
+		
+		override protected function draw():void
+		{
+			super.draw();
 		}
 	}
 }

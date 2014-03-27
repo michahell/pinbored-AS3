@@ -116,6 +116,7 @@ package nl.powergeek.feathers.themes
 			TEXTINPUT_TRANSPARENT_BACKGROUND:String = 'pinbored-transparent-background-textinput',
 			TEXTINPUT_SEARCH:String = 'pinbored-search-textinput',
 			TEXTINPUT_TRANSLUCENT_BOX:String = 'pinbored-translucent-box-textinput',
+			TEXTAREA_TRANSLUCENT_BOX:String = 'pinbored-translucent-box-textarea',
 			
 			LABEL_TAG_TEXTRENDERER:String = 'pinbored-tag-label',
 			LABEL_DISCLAIMER:String = 'pinbored-disclaimer-label',
@@ -157,8 +158,16 @@ package nl.powergeek.feathers.themes
 			
 			TEXTFORMAT_PAGER:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xEEEEEE, true),
 			TEXTFORMAT_PAGER_DISABLED:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0x999999, true),
-			TEXTFORMAT_PAGER_DISABLED_HIGHLIGHT:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xAABBFF, true);
-
+			TEXTFORMAT_PAGER_DISABLED_HIGHLIGHT:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xAABBFF, true),
+		
+			TEXTFORMAT_BUTTON_DEFAULT:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xEEEEEE, true),
+			TEXTFORMAT_BUTTON_HOVER:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xEEEEEE, true),
+			TEXTFORMAT_BUTTON_DISABLED:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xEEEEEE, true),
+			
+			TEXTFORMAT_BUTTON_ALTERNATIVE_DEFAULT:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0x333333, true),
+			TEXTFORMAT_BUTTON_ALTERNATIVE_HOVER:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0x333333, true),
+			TEXTFORMAT_BUTTON_ALTERNATIVE_DISABLED:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0x333333, true);
+			
 		
 		public function PinboredDesktopTheme(container:DisplayObjectContainer=null, scaleToDPI:Boolean=true)
 		{
@@ -173,6 +182,7 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(TextInput, transparentTagTextInputInitializer, TEXTINPUT_TRANSPARENT_BACKGROUND);
 			this.setInitializerForClass(TextInput, pinboredSearchTextInputInitializer, TEXTINPUT_SEARCH);
 			this.setInitializerForClass(TextInput, pinboredTranslucentTextInputInitializer, TEXTINPUT_TRANSLUCENT_BOX);
+			this.setInitializerForClass(TextInput, pinboredTranslucentTextAreaInitializer, TEXTAREA_TRANSLUCENT_BOX);
 			
 			// custom quad buttons
 			this.setInitializerForClass(Button, quadContextPrimaryButtonInitializer, BUTTON_QUAD_CONTEXT_PRIMARY);
@@ -268,6 +278,39 @@ package nl.powergeek.feathers.themes
 				tr.wordWrap = true;
 				TEXTFORMAT_DISCLAIMER.align = TextFormatAlign.LEFT;
 				tr.textFormat = TEXTFORMAT_DISCLAIMER;
+				return tr;
+			}
+		}
+		
+		private function pinboredTranslucentTextAreaInitializer(textInput:TextInput):void
+		{
+			// draw quad
+			var backgroundSkin:Quad = new Quad(10, 10, 0x000000);
+			backgroundSkin.alpha = 0.1;
+			
+			// text input background
+			textInput.backgroundDisabledSkin = backgroundSkin;
+			textInput.backgroundEnabledSkin = backgroundSkin;
+			textInput.backgroundFocusedSkin = backgroundSkin;
+			textInput.backgroundSkin = backgroundSkin;
+			
+			textInput.padding = 10;
+			
+			textInput.textEditorFactory = function():ITextEditor {
+				var tfte:TextFieldTextEditor = new TextFieldTextEditor();
+				tfte.width = textInput.width;
+				tfte.height = textInput.height;
+				tfte.wordWrap = true;
+				tfte.textFormat = TEXTFORMAT_TAG;
+				return tfte;
+			}
+			
+			textInput.promptFactory = function():ITextRenderer {
+				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
+				tr.width = textInput.width;
+				tr.height = textInput.height;
+				tr.wordWrap = true;
+				tr.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
 				return tr;
 			}
 		}
@@ -455,10 +498,10 @@ package nl.powergeek.feathers.themes
 			button.disabledLabelProperties.embedFonts = true;
 			button.selectedDisabledLabelProperties.embedFonts = true;
 			
-			button.defaultLabelProperties.textFormat = this.darkUITextFormat;
-			button.hoverLabelProperties.textFormat = this.darkUITextFormat;
-			button.disabledLabelProperties.textFormat = this.darkUIDisabledTextFormat;
-			button.selectedDisabledLabelProperties.textFormat = this.darkUIDisabledTextFormat;
+			button.defaultLabelProperties.textFormat = TEXTFORMAT_BUTTON_ALTERNATIVE_DEFAULT;
+			button.hoverLabelProperties.textFormat = TEXTFORMAT_BUTTON_ALTERNATIVE_HOVER;
+			button.disabledLabelProperties.textFormat = TEXTFORMAT_BUTTON_ALTERNATIVE_DISABLED;
+			button.selectedDisabledLabelProperties.textFormat = TEXTFORMAT_BUTTON_ALTERNATIVE_DISABLED;
 			
 			// use hand cursor over button
 			button.useHandCursor = true;
@@ -494,10 +537,10 @@ package nl.powergeek.feathers.themes
 			button.disabledLabelProperties.embedFonts = true;
 			button.selectedDisabledLabelProperties.embedFonts = true;
 			
-			button.defaultLabelProperties.textFormat = this.lightUITextFormat;
-			button.hoverLabelProperties.textFormat = this.lightUITextFormat;
-			button.disabledLabelProperties.textFormat = this.lightUIDisabledTextFormat;
-			button.selectedDisabledLabelProperties.textFormat = this.lightUIDisabledTextFormat;
+			button.defaultLabelProperties.textFormat = TEXTFORMAT_BUTTON_DEFAULT;
+			button.hoverLabelProperties.textFormat = TEXTFORMAT_BUTTON_HOVER;
+			button.disabledLabelProperties.textFormat = TEXTFORMAT_BUTTON_DISABLED;
+			button.selectedDisabledLabelProperties.textFormat = TEXTFORMAT_BUTTON_DISABLED;
 			
 			// use hand cursor over button
 			button.useHandCursor = true;
@@ -533,10 +576,10 @@ package nl.powergeek.feathers.themes
 			button.disabledLabelProperties.embedFonts = true;
 			button.selectedDisabledLabelProperties.embedFonts = true;
 			
-			button.defaultLabelProperties.textFormat = this.lightUITextFormat;
-			button.hoverLabelProperties.textFormat = this.lightUITextFormat;
-			button.disabledLabelProperties.textFormat = this.lightUIDisabledTextFormat;
-			button.selectedDisabledLabelProperties.textFormat = this.lightUIDisabledTextFormat;
+			button.defaultLabelProperties.textFormat = TEXTFORMAT_BUTTON_DEFAULT;
+			button.hoverLabelProperties.textFormat = TEXTFORMAT_BUTTON_HOVER;
+			button.disabledLabelProperties.textFormat = TEXTFORMAT_BUTTON_DISABLED;
+			button.selectedDisabledLabelProperties.textFormat = TEXTFORMAT_BUTTON_DISABLED;
 			
 			// use hand cursor over button
 			button.useHandCursor = true;
@@ -572,10 +615,10 @@ package nl.powergeek.feathers.themes
 			button.disabledLabelProperties.embedFonts = true;
 			button.selectedDisabledLabelProperties.embedFonts = true;
 			
-			button.defaultLabelProperties.textFormat = this.lightUITextFormat;
-			button.hoverLabelProperties.textFormat = this.lightUITextFormat;
-			button.disabledLabelProperties.textFormat = this.lightUIDisabledTextFormat;
-			button.selectedDisabledLabelProperties.textFormat = this.lightUIDisabledTextFormat;
+			button.defaultLabelProperties.textFormat = TEXTFORMAT_BUTTON_DEFAULT;
+			button.hoverLabelProperties.textFormat = TEXTFORMAT_BUTTON_HOVER;
+			button.disabledLabelProperties.textFormat = TEXTFORMAT_BUTTON_DISABLED;
+			button.selectedDisabledLabelProperties.textFormat = TEXTFORMAT_BUTTON_DISABLED;
 			
 			// use hand cursor over button
 			button.useHandCursor = true;
@@ -593,7 +636,7 @@ package nl.powergeek.feathers.themes
 		{
 			// define background
 			var backgroundSkin:Quad = new Quad(10, 10, 0xFFFFFF);
-			backgroundSkin.alpha = 0;
+			backgroundSkin.alpha = 0.1;
 			
 			// text input background
 			textInput.backgroundDisabledSkin = backgroundSkin;

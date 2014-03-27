@@ -120,8 +120,7 @@ package nl.powergeek.pinbored.screens
 				if(ListScreenModel.rawBookmarkDataListFiltered.length > 0) {
 					displayInitialResultsPage(ListScreenModel.getFilteredBookmarks());
 				} else {
-					trace('no results after filtering...');
-					cleanBookmarkList();
+					displayNoResults();
 				}
 			});
 			
@@ -217,8 +216,7 @@ package nl.powergeek.pinbored.screens
 			if(ListScreenModel.getFilteredBookmarks().length > 0) {
 				displayInitialResultsPage(ListScreenModel.getFilteredBookmarks());
 			} else {
-				trace('no results after filtering...');
-				cleanBookmarkList();
+				displayNoResults();
 			}
 		}
 		
@@ -251,6 +249,16 @@ package nl.powergeek.pinbored.screens
 			// get all bookmarks
 			PinboardService.GetAllBookmarks(['Webdevelopment']);
 			//PinboardService.GetAllBookmarks();
+		}
+		
+		private function displayNoResults():void
+		{
+			trace('no results after filtering...');
+			cleanBookmarkList();
+			pagingControl.visible = false;
+			
+			pagingControl.invalidate(INVALIDATION_FLAG_ALL);
+			invalidate(INVALIDATION_FLAG_ALL);
 		}
 		
 		private function cleanBookmarkList():void {
@@ -378,9 +386,9 @@ package nl.powergeek.pinbored.screens
 			// remove item from list dataProvider
 			var bmIndex:Number = list.dataProvider.getItemIndex(bookmark);
 			list.dataProvider.removeItemAt(bmIndex);
-			
+			trace('also removing from filtered bookmark list');
 			// also delete item from rawBookMarkList
-			// TODO delete item from rawBookMarkList
+			ListScreenModel.removeFromLists(bookmark.bookmarkData);
 		}
 		
 		public function get onLoginScreenRequest():ISignal
@@ -542,7 +550,7 @@ package nl.powergeek.pinbored.screens
 			listLayout.hasVariableItemDimensions = true;
 			
 			// copied over from list initialize function
-			listLayout.useVirtualLayout = true;
+			listLayout.useVirtualLayout = false;
 			listLayout.manageVisibility = true;
 			listLayout.paddingTop = listLayout.paddingRight = listLayout.paddingBottom = listLayout.paddingLeft = 0;
 			listLayout.gap = 0;
@@ -551,6 +559,8 @@ package nl.powergeek.pinbored.screens
 			
 			// assign the listLayout to the list
 			this.list.layout = listLayout;
+			this.list.isQuickHitAreaEnabled = false;
+			this.list.isSelectable = false;
 			
 			// add a list for the bookmarks
 			this.list.itemRendererFactory = function():IListItemRenderer
@@ -560,18 +570,11 @@ package nl.powergeek.pinbored.screens
 				return renderer;
 			};
 			
-			this.list.isSelectable = false;
-			
 			// add list to panel
 			this.listScrollContainer.addChild(list);
 			var listBg:Quad = new Quad(50, 50, 0x000000);
 			listBg.alpha = 0.3;
 			this.list.backgroundSkin = this.list.backgroundDisabledSkin = listBg;
-			
-			this.isQuickHitAreaEnabled = false;
-			
-			// finally, validate panel for scroll container height update
-//			invalidate(INVALIDATION_FLAG_ALL);
 		}
 		
 		override protected function draw():void

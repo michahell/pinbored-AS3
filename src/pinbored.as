@@ -1,5 +1,8 @@
 package
 {
+	import com.greensock.*;
+	import com.greensock.plugins.*;
+	
 	import feathers.system.DeviceCapabilities;
 	
 	import flash.display.Sprite;
@@ -9,11 +12,12 @@ package
 	import flash.geom.Rectangle;
 	import flash.ui.ContextMenu;
 	
+	import nl.powergeek.pinbored.model.AppModel;
+	import nl.powergeek.pinbored.model.AppSettings;
+	
 	import starling.core.Starling;
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
-	import nl.powergeek.pinbored.model.AppModel;
-	import nl.powergeek.pinbored.model.AppSettings;
 	
 	[SWF(width="1024",height="768",frameRate="45",backgroundColor="#2f2f2f")]
 	public class pinbored extends Sprite
@@ -22,6 +26,10 @@ package
 		
 		public function pinbored()
 		{
+			// activate TintPlugin
+			//TweenPlugin.activate([TintPlugin]);
+			TweenPlugin.activate([HexColorsPlugin]);
+			
 			var menu:ContextMenu = new ContextMenu();
 			menu.hideBuiltInItems();
 			this.contextMenu = menu;

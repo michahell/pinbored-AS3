@@ -232,10 +232,19 @@ package nl.powergeek.pinbored.model
 		
 		public static function setCurrentTags(tags:Vector.<String>):void
 		{
-			trace('LSM tags updated: ' + tags.toString());
+			//trace('LSM tags updated: ' + tags.toString());
 			
 			// first store tags searched for
 			searchTags = tags;
+		}
+		
+		public static function removeFromLists(bookmarkData:Object):void
+		{
+			// remove from filtered bookmarks list
+			rawBookmarkDataListFiltered.splice(rawBookmarkDataListFiltered.indexOf(bookmarkData), 1);
+			
+			// remove from main bookmarks list
+			bookmarksList.splice(bookmarksList.indexOf(bookmarkData), 1);
 		}
 	}
 }
