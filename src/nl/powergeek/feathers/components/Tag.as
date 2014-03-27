@@ -7,6 +7,8 @@ package nl.powergeek.feathers.components
 	import feathers.textures.Scale3Textures;
 	
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
+	import nl.powergeek.pinbored.components.InteractiveIcon;
+	import nl.powergeek.pinbored.model.AppSettings;
 	
 	import org.osflash.signals.Signal;
 	
@@ -14,7 +16,6 @@ package nl.powergeek.feathers.components
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.textures.Texture;
-	import nl.powergeek.pinbored.components.InteractiveIcon;
 	
 	public class Tag extends FeathersControl
 	{
@@ -33,10 +34,10 @@ package nl.powergeek.feathers.components
 			removed:Signal = new Signal();
 			
 			
-		public function Tag(screenDPIscale:Number, text:String)
+		public function Tag(text:String, screenDPIscale:Number)
 		{
-			this._screenDPIscale = screenDPIscale;
 			this._text = text;
+			this._screenDPIscale = screenDPIscale;
 		}
 		
 		override protected function initialize():void {

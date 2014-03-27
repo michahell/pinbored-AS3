@@ -10,6 +10,7 @@ package nl.powergeek.feathers.components
 	
 	import flash.text.TextFormat;
 	import flash.text.TextFormatAlign;
+	import flash.utils.setTimeout;
 	
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	import nl.powergeek.pinbored.model.BookMark;
@@ -58,6 +59,8 @@ package nl.powergeek.feathers.components
 			
 		public var
 			isBeingEdited:Boolean = false;
+
+		private var hiddenContentBackground:Quad;
 		
 		public function PinboardLayoutGroupItemRenderer() { }
 		
@@ -154,15 +157,10 @@ package nl.powergeek.feathers.components
 			
 			if(this._data)
 			{
-				if(this._data.hasOwnProperty("extended") && String(this._data.extended).length > 0)
-					this._label.text = this._data.extended;
+				if(this._data.hasOwnProperty("description") && String(this._data.description).length > 0)
+					this._label.text = this._data.description;
 				else
-					this._label.text = '[ no extended description ]';
-				
-//				if(this._data.hasOwnProperty("href") && String(this._data.href).length > 0)
-//					this._href.text = this._data.href;
-//				else
-//					this._href.text = '[ no link ]';
+					this._label.text = '[ no description ]';
 				
 				if(this._data.hasOwnProperty("link") && String(this._data.link).length > 0)
 					this._href.text = this._data.link;
@@ -199,7 +197,7 @@ package nl.powergeek.feathers.components
 							// switch isBeingEdited property
 							if(isBeingEdited == false) {
 								isBeingEdited = true;
-								collapseSelf(BookMark(_data));
+								expandSelf(BookMark(_data));
 							} else if(isBeingEdited == true) {
 								isBeingEdited = false;
 								foldSelf(BookMark(_data));
@@ -208,11 +206,13 @@ package nl.powergeek.feathers.components
 					}
 				}
 			}
-			
 		}
+		
 		
 		override protected function preLayout():void
 		{
+			super.preLayout();
+			
 			if( this._backgroundSkin )
 			{
 				this._backgroundSkin.width = 0;
@@ -220,32 +220,36 @@ package nl.powergeek.feathers.components
 			}
 		}
 
+		
 		override protected function postLayout():void
 		{
+			super.postLayout();
+			
 			if( this._backgroundSkin )
 			{
 				this._backgroundSkin.width = this.actualWidth;
 				this._backgroundSkin.height = this.actualHeight;
-			}
-			
-			// color rows depending on even or uneven index
-			if(this.index % 2 == 0) {
-				// item has even index
-				Quad(this.backgroundSkin).setVertexColor(0, 0x333333);
-				Quad(this.backgroundSkin).setVertexColor(1, 0x333333);
-				Quad(this.backgroundSkin).setVertexColor(2, 0x333333);
-				Quad(this.backgroundSkin).setVertexColor(3, 0x333333);
-			} else {
-				// item has uneven index
-				Quad(this.backgroundSkin).setVertexColor(0, 0x222222);
-				Quad(this.backgroundSkin).setVertexColor(1, 0x222222);
-				Quad(this.backgroundSkin).setVertexColor(2, 0x222222);
-				Quad(this.backgroundSkin).setVertexColor(3, 0x222222);
+				
+				// color rows depending on even or uneven index
+				if(this.index % 2 == 0) {
+					// item has even index
+					Quad(this.backgroundSkin).setVertexColor(0, 0x333333);
+					Quad(this.backgroundSkin).setVertexColor(1, 0x333333);
+					Quad(this.backgroundSkin).setVertexColor(2, 0x333333);
+					Quad(this.backgroundSkin).setVertexColor(3, 0x333333);
+				} else {
+					// item has uneven index
+					Quad(this.backgroundSkin).setVertexColor(0, 0x222222);
+					Quad(this.backgroundSkin).setVertexColor(1, 0x222222);
+					Quad(this.backgroundSkin).setVertexColor(2, 0x222222);
+					Quad(this.backgroundSkin).setVertexColor(3, 0x222222);
+				}
 			}
 			
 			this._label.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);
 			this._href.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);
 		}
+		
 		
 		public function get padding():Number
 		{
@@ -328,13 +332,14 @@ package nl.powergeek.feathers.components
 				var accessoryLayoutData:AnchorLayoutData = new AnchorLayoutData();
 				accessoryLayoutData.top = this._padding;
 				accessoryLayoutData.right = this._padding * 2;
-				accessoryLayoutData.bottom = this._padding;
 				
 				this._accessory.layoutData = accessoryLayoutData;
 					
 				this.addChild(this._accessory);
 			}
 			
+			this.invalidate( INVALIDATION_FLAG_LAYOUT );
+			this.invalidate( INVALIDATION_FLAG_SIZE );
 			this.invalidate( INVALIDATION_FLAG_DATA );
 		}
 
@@ -363,6 +368,7 @@ package nl.powergeek.feathers.components
 				hiddenContentLayoutData.topAnchorDisplayObject = this._href;
 				hiddenContentLayoutData.top = this._padding;
 				hiddenContentLayoutData.left = this._padding;
+				hiddenContentLayoutData.right = this._padding;
 				hiddenContentLayoutData.bottom = this._padding;
 				
 				this._hiddenContent.layoutData = hiddenContentLayoutData;
@@ -372,46 +378,62 @@ package nl.powergeek.feathers.components
 			
 			this.invalidate( INVALIDATION_FLAG_LAYOUT );
 			this.invalidate( INVALIDATION_FLAG_SIZE );
+			this.invalidate( INVALIDATION_FLAG_DATA );
 		}
 		
 		private function foldSelf(bookmark:BookMark):void
 		{
-			dispatchEventWith(BookmarkEvent.BOOKMARK_FOLDING, true, bookmark);
+			dispatchEventWith(BookmarkEvent.BOOKMARK_FOLDING, false, bookmark);
+			_hiddenContent.visible = true;
 			
-			trace('hch Y: ' + this._hiddenContent.scaleY);
-			trace('hch height: ' + this._hiddenContent.height);
+			// tween out all children
+			for(var n:uint = 0; n < _hiddenContent.numChildren; n++) {
+				var child:DisplayObject = _hiddenContent.getChildAt(n);
+				var childTween:Tween = new Tween(child, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
+				childTween.animate("alpha", 0);
+				Starling.current.juggler.add(childTween);
+			}
 			
-			// tween params
-			var tween:Tween = new Tween(this._hiddenContent, PinboredDesktopTheme.LIST_ANIMATION_TIME, Transitions.EASE_OUT);
-			tween.animate("scaleY", 0);
-//			tween.animate("height", 0);
-			tween.onUpdate = function():void {
-				_hiddenContent.validate();
-				trace('hch Y: ' + _hiddenContent.scaleY);
-				trace('hch height: ' + _hiddenContent.height);
-			};
-			tween.onComplete = function():void {
-				_hiddenContent.visible = false;
-				dispatchEventWith(BookmarkEvent.BOOKMARK_FOLDED, true, bookmark);
-			};
+			// tween out hidden content
+			setTimeout(function():void {
+				
+				var tween:Tween = new Tween(_hiddenContent, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
+				tween.animate("height", 0);
+				tween.animate("scaleY", 0);
+				tween.onComplete = function():void {
+					_hiddenContent.visible = false;
+					dispatchEventWith(BookmarkEvent.BOOKMARK_FOLDED, false, bookmark);
+				};
+				
+				Starling.current.juggler.add(tween);
+				
+			}, (PinboredDesktopTheme.LIST_ANIMATION_TIME / 2) * 1000);
 			
-			Starling.current.juggler.add(tween);
 		}
 		
-		private function collapseSelf(bookmark:BookMark):void
+		private function expandSelf(bookmark:BookMark):void
 		{
-			dispatchEventWith(BookmarkEvent.BOOKMARK_COLLAPSING, true, bookmark);
+			dispatchEventWith(BookmarkEvent.BOOKMARK_EXPANDING, false, bookmark);
 			this._hiddenContent.visible = true;
 			
-			// tween params
-			var tween:Tween = new Tween(this._hiddenContent, PinboredDesktopTheme.LIST_ANIMATION_TIME, Transitions.EASE_OUT);
+			// tween hiddenContent
+			var tween:Tween = new Tween(_hiddenContent, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
+			tween.animate("height", 80);
 			tween.animate("scaleY", 1);
-			tween.animate("height", 40);
 			tween.onComplete = function():void {
-				dispatchEventWith(BookmarkEvent.BOOKMARK_COLLAPSED, true, bookmark);
-			};
+				// tween in all children
+				for(var n:uint = 0; n < _hiddenContent.numChildren; n++) {
+					var child:DisplayObject = _hiddenContent.getChildAt(n);
+					var childTween:Tween = new Tween(child, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
+					childTween.animate("alpha", 1);
+					Starling.current.juggler.add(childTween);
+					_hiddenContent.invalidate(INVALIDATION_FLAG_ALL);
+				}
+			}
 			
 			Starling.current.juggler.add(tween);
+			
+			dispatchEventWith(BookmarkEvent.BOOKMARK_EXPANDED, false, bookmark);
 		}
 		
 		private function removeSelf(bookmark:BookMark):void {
@@ -421,16 +443,46 @@ package nl.powergeek.feathers.components
 			
 			// tween params
 			var tween:Tween = new Tween(this, PinboredDesktopTheme.LIST_ANIMATION_TIME, Transitions.EASE_IN_BACK);
+			
 			tween.animate("height", 0);
 			tween.animate("scaleY", 0);
 			tween.animate("width",  0);
 			tween.animate("scaleX", 0);
 			tween.animate("x", this.width / 2);
+			
 			tween.onComplete = function():void {
-				dispatchEventWith(BookmarkEvent.BOOKMARK_DELETED, true, bookmark);
+				dispatchEventWith(BookmarkEvent.BOOKMARK_DELETED, false, bookmark);
 			};
 			
 			Starling.current.juggler.add(tween);
+		}
+		
+		public function addSelf():void {
+			
+			var realHeight:Number = this.height;
+			var realScaleY:Number = this.scaleY;
+			var realWidth:Number = this.width;
+			var realScaleX:Number = this.scaleX;
+			
+			//trace(realHeight, realWidth, realScaleX, realScaleY);
+			
+//			if(realHeight > 0 && realWidth > 0) {
+//				
+//				//this.height = this.scaleY = this.width = this.scaleX = 0;
+//				//this.x = realWidth / 2;
+//				this.width = this.scaleX = 0;
+//				
+//				// tween params
+//				var tween:Tween = new Tween(this, PinboredDesktopTheme.LIST_ANIMATION_TIME, Transitions.EASE_IN);
+//				
+//				//tween.animate("height", realHeight);
+//				//tween.animate("scaleY", realScaleY);
+//				tween.animate("width",  realWidth);
+//				tween.animate("scaleX", realScaleX);
+//				//tween.animate("x", -realWidth / 2);
+//				
+//				Starling.current.juggler.add(tween);
+//			}
 		}
 	}
 }

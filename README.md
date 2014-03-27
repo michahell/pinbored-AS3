@@ -23,9 +23,10 @@ Roadmap V1
 * update request
 * update XML manifest for nice AIR package description etc.
 * show amount of bookmarks retrieved / number of pages in header
-* able to search through all bookmark text
-* paging bar for paging results in bookmark list screen
+* moar transitional interface design!
 
+* ~~paging bar for paging results in bookmark list screen~~
+* ~~able to search through all bookmark text~~
 * ~~proper login screen~~
 * ~~login functionality~~
 * ~~item renderer icon scale fix~~

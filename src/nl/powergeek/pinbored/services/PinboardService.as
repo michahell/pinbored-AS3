@@ -79,10 +79,10 @@ package nl.powergeek.pinbored.services
 			};
 			
 			// build the request
-			var getBookmarks:RESTRequest = new RESTRequest(params);
+			var deleteBookmark:RESTRequest = new RESTRequest(params);
 			
 			// do the request (or dryrun it)
-			RESTClient.doRequest(getBookmarks, false);
+			RESTClient.doRequest(deleteBookmark, false);
 			
 			return deleteSignal;
 		}

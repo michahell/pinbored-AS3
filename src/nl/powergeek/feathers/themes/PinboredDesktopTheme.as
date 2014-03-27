@@ -13,6 +13,7 @@ package nl.powergeek.feathers.themes
 	import feathers.core.ITextEditor;
 	import feathers.core.ITextRenderer;
 	import feathers.core.PopUpManager;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.HorizontalLayout;
 	import feathers.themes.MetalWorksMobileTheme;
@@ -25,6 +26,7 @@ package nl.powergeek.feathers.themes
 	
 	import nl.powergeek.feathers.components.Pager;
 	import nl.powergeek.feathers.components.TagTextInput;
+	import nl.powergeek.pinbored.model.BookmarkEvent;
 	
 	import starling.display.DisplayObject;
 	import starling.display.DisplayObjectContainer;

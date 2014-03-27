@@ -82,6 +82,9 @@ package nl.powergeek.pinbored.screens
 		{
 			super.initialize();
 			
+			// set DPI global
+			AppSettings.SCREEN_DPI_SCALE = this.dpiScale;
+			
 			// create GUI
 			createGUI();
 			

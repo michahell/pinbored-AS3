@@ -38,9 +38,10 @@ package
 			
 			// create starling instance
 			this._starling = new Starling(App, stage);
-			this._starling.showStats = true;
-			if(AppSettings.SHOW_STATS)
+			if(AppSettings.SHOW_STATS) {
+				this._starling.showStats = true;
 				this._starling.showStatsAt(HAlign.LEFT, VAlign.BOTTOM);
+			}
 			
 			// set starling properties
 			this._starling.antiAliasing = AppSettings.ANTI_ALIAS;

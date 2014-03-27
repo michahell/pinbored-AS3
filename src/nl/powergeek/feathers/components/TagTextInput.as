@@ -51,17 +51,47 @@ package nl.powergeek.feathers.components
 			_padding:Number = 10,
 			_tagNames:Vector.<String> = new Vector.<String>,
 			_disAllowedStartChars:Array = [' ', ',', ', '];
-			
 		
 		public const
 			tagsChanged:Signal = new Signal(Vector.<String>),
 			searchTagsTriggered:Signal = new Signal(Vector.<String>);
-		
+			
+		private var 
+			useBackground:Boolean = true,
+			useSeparators:Boolean = true,
+			useKeys:Boolean = true,
+			maxTags:uint = 3,
+			textInputPrompt:String = 'add tags for filtering';
 
-		public function TagTextInput(screenDPIscale:Number)
+			
+		public function TagTextInput(screenDPIscale:Number, tagTextOptions:Object)
 		{
 			super();
 			this._screenDPIscale = screenDPIscale;
+			
+			if(tagTextOptions != null) {
+				
+				if(tagTextOptions.background == false) {
+					this.useBackground = false;
+				}
+				
+				if(tagTextOptions.separators == false) {
+					this.useSeparators = false;
+				}
+				
+				if(tagTextOptions.padding) {
+					this._padding = tagTextOptions.padding;
+				}
+				
+				if(tagTextOptions.maxTags != 3)
+					this.maxTags = tagTextOptions.maxTags;
+				
+				if(tagTextOptions.prompt && tagTextOptions.prompt.length > 0)
+					this.textInputPrompt = tagTextOptions.prompt;
+				
+				if(tagTextOptions.keys == false)
+					this.useKeys = false;
+			}
 		}
 		
 		override protected function initialize():void 
@@ -69,14 +99,18 @@ package nl.powergeek.feathers.components
 			super.initialize();
 			
 			// first create background
-			this._background = _backgroundFactory();
-			this.addChild(this._background);
+			if(this.useBackground == true) {
+				this._background = _backgroundFactory();
+				this.addChild(this._background);
+			}
 			
 			// create separators
-			separatorTop = _separatorFactoryTop();
-			separatorBottom = _separatorFactoryBottom();
-			this.addChild(separatorTop);
-			this.addChild(separatorBottom);
+			if(this.useSeparators == true) {
+				separatorTop = _separatorFactoryTop();
+				separatorBottom = _separatorFactoryBottom();
+				this.addChild(separatorTop);
+				this.addChild(separatorBottom);
+			}
 			
 			// add component layout
 			var componentLayoutData:AnchorLayout = new AnchorLayout();
@@ -94,7 +128,7 @@ package nl.powergeek.feathers.components
 			_tagContainer.layout = tagLayout;
 			
 			// create and add textinput
-			this._textInput.prompt = "add tags for filtering";
+			this._textInput.prompt = this.textInputPrompt;
 			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
 			this._textInput.padding = this._padding / 2;
 			
@@ -111,7 +145,12 @@ package nl.powergeek.feathers.components
 			
 			// add listeners
 			this._textInput.addEventListener(Event.CHANGE, textInputHandler);
-			this._tagContainer.addEventListener(KeyboardEvent.KEY_DOWN, keyInputHandler);
+			
+			// add keyboard listeners
+			if(this.useKeys == true) {
+				this._tagContainer.addEventListener(KeyboardEvent.KEY_DOWN, keyInputHandler);
+			}
+			
 			this._tagContainer.addChild(this._textInput);
 			
 			// add tag layout group
@@ -147,7 +186,7 @@ package nl.powergeek.feathers.components
 			}
 			
 			if(event.keyCode == Keyboard.ENTER) {
-//				searchTagsTriggered.dispatch(this._tagNames);
+				//searchTagsTriggered.dispatch(this._tagNames);
 			}
 		}
 		
@@ -197,7 +236,7 @@ package nl.powergeek.feathers.components
 			}
 		}
 		
-		private function addTag(tagText:String):void
+		public function addTag(tagText:String):void
 		{
 			// create the tag and add it to the list o tags
 			var tag:Tag = _tagFactory(tagText);
@@ -223,7 +262,7 @@ package nl.powergeek.feathers.components
 			_tagCount++;
 		}
 		
-		private function removeTag(tag:Tag):void {
+		public function removeTag(tag:Tag):void {
 			// remove from display list
 			_tagContainer.removeChild(tag);
 			// remove from tags array
@@ -257,35 +296,52 @@ package nl.powergeek.feathers.components
 			_componentLayoutGroup.width = this.width;
 			_componentLayoutGroup.height = this._tagContainer.height;
 			
-			_background.width = _componentLayoutGroup.width;
-			_background.height = _componentLayoutGroup.height;
+			if(this.useBackground == true) {
+				_background.width = _componentLayoutGroup.width;
+				_background.height = _componentLayoutGroup.height;
+			}
 			
 			// resize textinput to remaining width between tags and search button
 			this._textInput.width = _componentLayoutGroup.width - (_tagContainer.width - _textInput.width) - _searchButton.width;
 			
 			// separators need to be on top and bottom
-			separatorTop.y = this.y;
-			separatorTop.width = _background.width;
+			if(this.useSeparators == true) {
+				separatorTop.y = this.y;
+				separatorTop.width = _background.width;
+			}
 			
 			// content in between
-			_componentLayoutGroup.y = separatorTop.y + separatorTop.height;
-			_background.y = _componentLayoutGroup.y;
+			if(this.useSeparators == true) {
+				_componentLayoutGroup.y = separatorTop.y + separatorTop.height;
+			} else {
+				_componentLayoutGroup.y = 0;
+			}
+			
+			if(this.useBackground == true) {
+				_background.y = _componentLayoutGroup.y;
+			}
 			
 			// and bottom separator at the bottom
-			separatorBottom.y = _componentLayoutGroup.y + _componentLayoutGroup.height;
-			separatorBottom.width = _background.width;
+			if(this.useSeparators == true) {
+				separatorBottom.y = _componentLayoutGroup.y + _componentLayoutGroup.height;
+				separatorBottom.width = _background.width;
+			}
 			
 			this.width = Math.max(this.actualWidth, this.width);
-			this.height = this.separatorTop.height + this._componentLayoutGroup.height + this.separatorBottom.height;
+			
+			if(this.useSeparators == true) {
+				this.height = this.separatorTop.height + this._componentLayoutGroup.height + this.separatorBottom.height;
+			} else {
+				this.height = this._componentLayoutGroup.height;
+			}
 			
 			// phase 3 layout
 			_searchButton.validate();
-			
 		}
 		
 		private function defaultTagFactory(text:String):Tag
 		{
-			return new Tag(_screenDPIscale, text);
+			return new Tag(text, _screenDPIscale);
 		}
 		
 		public function get tagFactory():Function
@@ -300,8 +356,6 @@ package nl.powergeek.feathers.components
 		
 		private function defaultBackgroundFactory():DisplayObject
 		{
-//			return new Quad(100, 100, 0x464646);
-			
 			var bg:Quad = new Quad(10, 10, 0x000000);
 			bg.alpha = 0.2;
 			return bg;
@@ -350,7 +404,5 @@ package nl.powergeek.feathers.components
 		{
 			_separatorFactoryBottom = value;
 		}
-
-
 	}
 }

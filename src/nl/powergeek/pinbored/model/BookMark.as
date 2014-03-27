@@ -1,12 +1,19 @@
 package nl.powergeek.pinbored.model
 {
 	import feathers.controls.Button;
+	import feathers.controls.Label;
 	import feathers.controls.LayoutGroup;
+	import feathers.controls.ScrollContainer;
+	import feathers.controls.TextInput;
 	import feathers.data.ListCollection;
+	import feathers.layout.AnchorLayout;
+	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
 	
 	import flash.utils.setTimeout;
 	
+	import nl.powergeek.feathers.components.Tag;
+	import nl.powergeek.feathers.components.TagTextInput;
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	import nl.powergeek.pinbored.components.InteractiveIcon;
 	import nl.powergeek.pinbored.services.UrlChecker;
@@ -15,6 +22,7 @@ package nl.powergeek.pinbored.model
 	import org.osflash.signals.Signal;
 	
 	import starling.display.Image;
+	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.textures.Texture;
 
@@ -106,28 +114,60 @@ package nl.powergeek.pinbored.model
 			hiddenContent.visible = false;
 			
 			// hidden content layout group
-			var hiddenContentLayout:HorizontalLayout = new HorizontalLayout();
-			hiddenContentLayout.gap = 5;
-			hiddenContentLayout.padding = 5;
+			var hiddenContentLayout:AnchorLayout = new AnchorLayout();
 			hiddenContent.layout = hiddenContentLayout;
 			
-			// add some test content to see how this works
-			var mockButton:Button = new Button();
-			mockButton.label = 'phat mock button';
-			mockButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_SUCCESS);
+			var tagTextOptions:Object = {
+				separators : false,
+				background : true,
+				padding : 0,
+				keys : false,
+				prompt : 'add tag',
+				maxTags : Number.POSITIVE_INFINITY
+			};
 			
-			var mockButton2:Button = new Button();
-			mockButton2.label = 'phat mock button 22';
-			mockButton2.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
+			// add the tag editor
+			var tagEditor:TagTextInput = new TagTextInput(AppSettings.SCREEN_DPI_SCALE, tagTextOptions);
+			tagEditor.layoutData = new AnchorLayoutData(0, -5, NaN, -5);
+			hiddenContent.addChild(tagEditor);
 			
-			hiddenContent.addChild(mockButton);
-			hiddenContent.addChild(mockButton2);
+			// add the extended / description label
+			var extendedInput:TextInput = new TextInput();
+			extendedInput.height = 25;
+			extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+			var extendedInputLd:AnchorLayoutData = new AnchorLayoutData();
+			extendedInputLd.topAnchorDisplayObject = tagEditor;
+			extendedInputLd.top = 5;
+			extendedInputLd.left = -5;
+			extendedInputLd.right = -5;
+			extendedInput.layoutData = extendedInputLd;
+			
+			if(this.extended.length > 0) {
+				extendedInput.text = this.extended;
+				trace('Using extended description');
+				trace('this.extended: ' + this.extended);
+			} else {
+				extendedInput.text = '[no extended description]';
+			}
+			
+			hiddenContent.addChild(extendedInput);
+			
+			
+			// add the 'accept changes' button
+//			var modifyButton:Button = new Button();
+//			modifyButton.label = 'save changes';
+//			modifyButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_SUCCESS);
+//			var modifyButtonLd:AnchorLayoutData = new AnchorLayoutData();
+//			modifyButtonLd.topAnchorDisplayObject = tagEditor;
+//			modifyButtonLd.right = 5;
+//			modifyButton.layoutData = modifyButtonLd;
+//			hiddenContent.addChild(modifyButton);
+			
 		}
 		
 		private function editTriggeredHandler(event:Event):void
 		{
 			const button:Button = Button(event.currentTarget);
-			// button.isEnabled = false;
 			editTapped.dispatch(this);
 		}
 		

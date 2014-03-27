@@ -154,8 +154,6 @@ package nl.powergeek.feathers.components
 				
 				isActivated = true;
 			}
-			
-//			invalidate(INVALIDATION_FLAG_ALL);
 		}
 		
 		private function createResultPageButtons(totalResultPages:Number, currentPage:Number = 1):void
@@ -186,7 +184,7 @@ package nl.powergeek.feathers.components
 			// calculate the range start and end numbers
 			rangeStart = Math.max(currentPage - numSideButtons - moreLeftButtons, 1);
 			rangeEnd = Math.min(currentPage + numSideButtons + moreRightButtons, totalResultPages);
-			trace('rangeStart: ' + rangeStart, 'rangeEnd:', rangeEnd);
+			//trace('rangeStart: ' + rangeStart, 'rangeEnd:', rangeEnd);
 			
 			for (var i:uint = rangeStart; i <= rangeEnd; i++) {
 				var button:Button = new Button();
@@ -200,11 +198,7 @@ package nl.powergeek.feathers.components
 		
 		public function update(pageNumber:Number):void
 		{
-			trace('pager UPDATE called..');
-			
 			if (isActivated && pageNumber > 0) {
-				
-				trace('pager UPDATE executed..');
 				
 				// recreate center buttons!
 				createResultPageButtons(numResultPages, pageNumber);

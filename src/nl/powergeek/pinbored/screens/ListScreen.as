@@ -65,10 +65,13 @@ package nl.powergeek.pinbored.screens
 			listScrollContainer:ScrollContainer,
 			list:List = new List(),
 			_backgroundImage:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.BACKGROUND2(), false)),
-			_panelExcludedSpace:uint = 0;
+			header:PinboredHeader,
+			footer:ScrollContainer,
+			searchBookmarks:TextInput;
 		
 		private var
 			_onLoginScreenRequest:Signal = new Signal( ListScreen );
+
 		
 		public function ListScreen()
 		{
@@ -93,33 +96,14 @@ package nl.powergeek.pinbored.screens
 			owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, onTransitionComplete);
 			
 			// setup list delete listener
-			list.addEventListener(BookmarkEvent.BOOKMARK_DELETED, function(event:starling.events.Event):void {
-				trace('receiving BOOKMARK_DELETED event from custom item renderer...');
-				var deletedBookmark:BookMark = BookMark(event.data);
-				removeBookmarkFromList(deletedBookmark);
-			});
-			
-			list.addEventListener(BookmarkEvent.BOOKMARK_COLLAPSING, function(event:starling.events.Event):void {
-				trace('receiving BOOKMARK_COLLAPSING event from custom item renderer...');
-				var collapsedBookmark:BookMark = BookMark(event.data);
-				// TODO stuff with collapsing bookmark
-			});
-			
-			list.addEventListener(BookmarkEvent.BOOKMARK_FOLDING, function(event:starling.events.Event):void {
-				trace('receiving BOOKMARK_FOLDING event from custom item renderer...');
-				var foldedBookmark:BookMark = BookMark(event.data);
-				// TODO stuff with folding bookmark
-			});
+			list.addEventListener( FeathersEventType.RENDERER_ADD, listRendererAddHandler );
+			list.addEventListener( FeathersEventType.RENDERER_REMOVE, listRendererRemoveHandler );
 			
 			// when searched for tags, update the bookmarks list
 			searchTags.searchTagsTriggered.add(function(tagNames:Vector.<String>):void {
 				
 				// show loading icon
 				showLoading();
-				
-				// make paging control invisible PRE-EMPTIVE!
-				pagingControl.visible = false;
-//				pagingControl.invalidate(INVALIDATION_FLAG_ALL);
 				
 				// filter on tags 
 				ListScreenModel.filter();
@@ -130,7 +114,7 @@ package nl.powergeek.pinbored.screens
 				// small timeout for update?
 				setTimeout(function():void {
 					// validate for list scroll height update
-//					invalidate(INVALIDATION_FLAG_ALL);
+					invalidate(INVALIDATION_FLAG_ALL);
 				}, 1000);
 					
 				if(ListScreenModel.rawBookmarkDataListFiltered.length > 0) {
@@ -168,27 +152,57 @@ package nl.powergeek.pinbored.screens
 			});
 			
 			ListScreenModel.resultPageChanged.add(function(pageNumber:Number):void {
-				pagingControl.update(pageNumber);
+				if(pagingControl.visible == true)
+					pagingControl.update(pageNumber);
 			});
 			
 			// get all bookmarks and populate list control
 			getInitialData();
 		}
 		
+		private function listRendererAddHandler( event:starling.events.Event, itemRenderer:PinboardLayoutGroupItemRenderer ):void
+		{
+//			itemRenderer.addSelf();
+			
+			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_DELETED, function(event:starling.events.Event):void {
+				trace('receiving BOOKMARK_DELETED event from custom item renderer...');
+				var deletedBookmark:BookMark = BookMark(event.data);
+				removeBookmarkFromList(deletedBookmark);
+			});
+			
+			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_EXPANDING, function(event:starling.events.Event):void {
+				trace('receiving BOOKMARK_EXPANDING event from custom item renderer...');
+				var collapsedBookmark:BookMark = BookMark(event.data);
+				// TODO stuff with collapsing bookmark
+			});
+			
+			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_FOLDING, function(event:starling.events.Event):void {
+				trace('receiving BOOKMARK_FOLDING event from custom item renderer...');
+				var foldedBookmark:BookMark = BookMark(event.data);
+				// TODO stuff with folding bookmark
+			});
+		}
+		
+		private function listRendererRemoveHandler( event:starling.events.Event, itemRenderer:PinboardLayoutGroupItemRenderer ):void
+		{
+			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_EXPANDING);
+			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_EXPANDED);
+			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_FOLDING);
+			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_FOLDED);
+			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_DELETED);
+			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_EDITED);
+		}
+		
 		private function searchBookmarksHandler(event:starling.events.Event):void
 		{
-			trace('entered search key word');
+			//trace('entered search key word');
 			
 			// show loading icon
 			showLoading();
 			
-			// make paging control invisible PRE-EMPTIVE!
-			pagingControl.visible = false;
-//			pagingControl.invalidate(INVALIDATION_FLAG_ALL);
-			
 			// filter
 			var searchString:String = TextInput(event.target).text;
-			trace('searchString: ' + searchString);
+			//trace('searchString: ' + searchString);
 			ListScreenModel.filter(searchString);
 			
 			// show loading icon
@@ -197,7 +211,7 @@ package nl.powergeek.pinbored.screens
 			// small timeout for update?
 			setTimeout(function():void {
 				// validate for list scroll height update
-//				invalidate(INVALIDATION_FLAG_ALL);
+				invalidate(INVALIDATION_FLAG_ALL);
 			}, 1000);
 			
 			if(ListScreenModel.getFilteredBookmarks().length > 0) {
@@ -227,21 +241,16 @@ package nl.powergeek.pinbored.screens
 				setTimeout(function():void {
 					hideLoading();
 					// validate for list scroll height update
-//					invalidate(INVALIDATION_FLAG_ALL);
+					invalidate(INVALIDATION_FLAG_ALL);
 				}, 1000);
 			});
 			
 			// show loading icon
 			showLoading();
 			
-			// make paging control invisible
-			pagingControl.visible = false;
-//			pagingControl.invalidate(INVALIDATION_FLAG_ALL);
-//			invalidate(INVALIDATION_FLAG_ALL);
-			
 			// get all bookmarks
-			//PinboardService.GetAllBookmarks(['Webdevelopment']);
-			PinboardService.GetAllBookmarks();
+			PinboardService.GetAllBookmarks(['Webdevelopment']);
+			//PinboardService.GetAllBookmarks();
 		}
 		
 		private function cleanBookmarkList():void {
@@ -273,6 +282,14 @@ package nl.powergeek.pinbored.screens
 						// update the bookmark by confirming delete
 						tappedBookmark.deleteConfirmed.dispatch();
 					});
+					
+					// mock delete
+					setTimeout(function():void{
+						trace('[MOCK] bookmark delete request completed.');
+						// update the bookmark by confirming delete
+						tappedBookmark.deleteConfirmed.dispatch();
+					}, 500);
+					
 				});
 				
 			});
@@ -286,10 +303,16 @@ package nl.powergeek.pinbored.screens
 			// create a new array collection pager and get number of result pages
 			var resultPages:Number = ListScreenModel.createArrayCollectionPager(array);
 			
-			trace('pagingControl visible! ' + resultPages);
-			// make paging control visible
-			pagingControl.visible = true;
-			pagingControl.activate(resultPages);
+			if(resultPages > 1) {
+				// make paging control visible
+				pagingControl.visible = true;
+				pagingControl.activate(resultPages);
+			} else {
+				pagingControl.visible = false;
+			}
+			
+			pagingControl.invalidate(INVALIDATION_FLAG_ALL);
+			invalidate(INVALIDATION_FLAG_ALL);
 			
 			// display initial results
 			displayFirstResultsPage();
@@ -378,7 +401,7 @@ package nl.powergeek.pinbored.screens
 			this.panel.headerFactory = function():PinboredHeader
 			{
 				// const header:Header = new Header();
-				const header:PinboredHeader = new PinboredHeader();
+				header = new PinboredHeader();
 				header.title = "Bookmarks list";
 				header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
 				header.padding = 0;
@@ -392,7 +415,7 @@ package nl.powergeek.pinbored.screens
 					return titleRenderer;
 				}
 				
-				const searchBookmarks:TextInput = new TextInput();
+				searchBookmarks = new TextInput();
 				searchBookmarks.nameList.add(PinboredDesktopTheme.TEXTINPUT_SEARCH);
 				searchBookmarks.prompt = "search any keyword and hit enter...";
 				searchBookmarks.width = 500;
@@ -404,18 +427,16 @@ package nl.powergeek.pinbored.screens
 				
 				header.rightItems = new <DisplayObject>[searchBookmarks];
 				
-				_panelExcludedSpace += Math.max(header.height, searchBookmarks.height);
-				
 				return header;
 			}
 				
 			// panel footer
 			panel.footerFactory = function():ScrollContainer
 			{ 
-				var container:ScrollContainer = new ScrollContainer();
-				container.nameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
-				container.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
-				container.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
+				footer = new ScrollContainer();
+				footer.nameList.add( ScrollContainer.ALTERNATE_NAME_TOOLBAR );
+				footer.horizontalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
+				footer.verticalScrollPolicy = ScrollContainer.SCROLL_POLICY_OFF;
 								
 				// create logo
 				var alpha:Number = 0.3;
@@ -485,13 +506,10 @@ package nl.powergeek.pinbored.screens
 				rightItems.addChild(rightTextGroup);
 				
 				// add the left AND right items to the container
-				container.addChild(leftItems);
-				container.addChild(rightItems);
+				footer.addChild(leftItems);
+				footer.addChild(rightItems);
 				
-				// update _panelExcludedSpace
-				_panelExcludedSpace += Math.max(container.height, leftItems.height, rightItems.height);
-				
-				return container;
+				return footer;
 			}
 				
 			this.panel.padding = 0;
@@ -504,7 +522,7 @@ package nl.powergeek.pinbored.screens
 			this.panel.layout = panelLayout;
 			
 			// add the tag search 'bar'
-			this.searchTags = new TagTextInput(this._dpiScale);
+			this.searchTags = new TagTextInput(this._dpiScale, null);
 			this.searchTags.width = this.width;
 			this.panel.addChild(this.searchTags);
 			
@@ -575,13 +593,15 @@ package nl.powergeek.pinbored.screens
 			listScrollContainer.width = panel.width;
 			list.width = panel.width;
 			
-			// update _panelExcludedSpace
-			var listContainerHeight:Number = _panelExcludedSpace + pagingControl.height;
-			//var listContainerHeight:Number = panel.viewPort.height + pagingControl.height + searchTags.height;
+			// update listcontainerHeight
+			var listContainerHeight:Number = 0;
+			
+			if(header && footer && pagingControl && searchTags)
+				listContainerHeight = header.height + footer.height + pagingControl.height + searchTags.height + 1;
 			
 			// update scrollcontainer height
-			this.listScrollContainer.height = panel.height - listContainerHeight - searchTags.height - 123;
-			//this.listScrollContainer.height = listContainerHeight;
+			//this.listScrollContainer.height = panel.height - listContainerHeight - searchTags.height - 123;
+			this.listScrollContainer.height = panel.height - listContainerHeight;
 			
 			super.draw();
 		}
