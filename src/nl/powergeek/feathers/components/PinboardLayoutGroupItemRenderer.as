@@ -34,26 +34,21 @@ package nl.powergeek.feathers.components
 	
 	public class PinboardLayoutGroupItemRenderer extends LayoutGroupListItemRenderer
 	{
-		public static const 
-			STATE_UP:String = "up",
-			STATE_DOWN:String = "down",
-			STATE_HOVER:String = "hover";
-			
 		// content
 		private var
 			_label:Label,
 			_href:Label,
 			_accessory:LayoutGroup,
 			_hiddenContent:LayoutGroup,
-			_icons:LayoutGroup,
+//			_icons:LayoutGroup,
 			_padding:Number = 0,
 			_backgroundSkin:DisplayObject;
 		
 		// state
 		private var
 			_hiddenContentHeight:Number = 0,
-			_currentState:String = STATE_UP,
-			touchID:int = -1,
+//			_currentState:String = STATE_UP,
+//			touchID:int = -1,
 			defaultBackgroundColor:Number = 0x000000,
 			highlightBackgroundColor:Number = 0x4499FF;
 			
@@ -66,7 +61,6 @@ package nl.powergeek.feathers.components
 		public var
 			isBeingEdited:Boolean = false;
 
-		private var hiddenContentBackground:Quad;
 		
 		public function PinboardLayoutGroupItemRenderer() { }
 		
@@ -100,62 +94,62 @@ package nl.powergeek.feathers.components
 			this.addChild(this._href);
 			
 			// add touch handling
-			this.addEventListener(TouchEvent.TOUCH, touchHandler);
+//			this.addEventListener(TouchEvent.TOUCH, touchHandler);
 			
 			// set quick hit enabled to false
 			this.isQuickHitAreaEnabled = false;
 		}
 		
-		private function touchHandler(event:TouchEvent):void
-		{
-			if(!this._isEnabled)
-			{
-				// if we were disabled while tracking touches, clear the touch id.
-				this.touchID = -1;
-				
-				// the button should return to the up state, if it is disabled.
-				// you may also use a separate disabled state, if you prefer.
-				this.currentState = STATE_UP;
-				return;
-			}
-			
-			if( this.touchID >= 0 )
-			{
-				// a touch has begun, so we'll ignore all other touches.
-				
-				var touch:Touch = event.getTouch( this, null, this.touchID );
-				if( !touch )
-				{
-					// this should not happen.
-					return;
-				}
-				
-				if( touch.phase == TouchPhase.ENDED )
-				{
-					this.currentState = STATE_UP;
-					
-					// the touch has ended, so now we can start watching for a new one.
-					this.touchID = -1;
-				}
-				return;
-			}
-			else
-			{
-				// we aren't tracking another touch, so let's look for a new one.
-				
-				touch = event.getTouch( this, TouchPhase.BEGAN );
-				if( !touch )
-				{
-					// we only care about the began phase. ignore all other phases.
-					return;
-				}
-				
-				this.currentState = STATE_DOWN;
-				
-				// save the touch ID so that we can track this touch's phases.
-				this.touchID = touch.id;
-			}
-		}
+//		private function touchHandler(event:TouchEvent):void
+//		{
+//			if(!this._isEnabled)
+//			{
+//				// if we were disabled while tracking touches, clear the touch id.
+//				this.touchID = -1;
+//				
+//				// the button should return to the up state, if it is disabled.
+//				// you may also use a separate disabled state, if you prefer.
+//				this.currentState = STATE_UP;
+//				return;
+//			}
+//			
+//			if( this.touchID >= 0 )
+//			{
+//				// a touch has begun, so we'll ignore all other touches.
+//				
+//				var touch:Touch = event.getTouch( this, null, this.touchID );
+//				if( !touch )
+//				{
+//					// this should not happen.
+//					return;
+//				}
+//				
+//				if( touch.phase == TouchPhase.ENDED )
+//				{
+//					this.currentState = STATE_UP;
+//					
+//					// the touch has ended, so now we can start watching for a new one.
+//					this.touchID = -1;
+//				}
+//				return;
+//			}
+//			else
+//			{
+//				// we aren't tracking another touch, so let's look for a new one.
+//				
+//				touch = event.getTouch( this, TouchPhase.BEGAN );
+//				if( !touch )
+//				{
+//					// we only care about the began phase. ignore all other phases.
+//					return;
+//				}
+//				
+//				this.currentState = STATE_DOWN;
+//				
+//				// save the touch ID so that we can track this touch's phases.
+//				this.touchID = touch.id;
+//			}
+//		}
 		
 		override protected function commitData():void
 		{
@@ -226,6 +220,10 @@ package nl.powergeek.feathers.components
 			}
 		}
 
+		override protected function draw():void
+		{
+			super.draw();
+		}
 		
 		override protected function postLayout():void
 		{
@@ -237,18 +235,30 @@ package nl.powergeek.feathers.components
 				this._backgroundSkin.height = this.actualHeight;
 				
 				// color rows depending on even or uneven index
-				if(this.index % 2 == 0) {
-					// item has even index
-					Quad(this.backgroundSkin).setVertexColor(0, 0x333333);
-					Quad(this.backgroundSkin).setVertexColor(1, 0x333333);
-					Quad(this.backgroundSkin).setVertexColor(2, 0x333333);
-					Quad(this.backgroundSkin).setVertexColor(3, 0x333333);
+				if(isBeingEdited == false) {
+					if(this.index % 2 == 0) {
+						// item has even index
+						Quad(this.backgroundSkin).color = 0x333333;
+					} else {
+						// item has uneven index
+						Quad(this.backgroundSkin).color = 0x222222;
+					}
+				// or if currently highlighted the highlight bg color
 				} else {
-					// item has uneven index
-					Quad(this.backgroundSkin).setVertexColor(0, 0x222222);
-					Quad(this.backgroundSkin).setVertexColor(1, 0x222222);
-					Quad(this.backgroundSkin).setVertexColor(2, 0x222222);
-					Quad(this.backgroundSkin).setVertexColor(3, 0x222222);
+					Quad(this.backgroundSkin).color = highlightBackgroundColor;
+				}
+			}
+			
+			if( this.hiddenContent )
+			{
+				if (_hiddenContent.height > 0 && _hiddenContentHeight == 0){
+					trace('hidden content height: ' + _hiddenContent.height);
+					_hiddenContentHeight = _hiddenContent.height;
+					if( isBeingEdited == false ) {
+//						_hiddenContent.scaleY = 0;
+						_hiddenContent.height = 0;
+						_hiddenContent.visible = false;
+					}
 				}
 			}
 			
@@ -272,20 +282,20 @@ package nl.powergeek.feathers.components
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
 		
-		public function get currentState():String
-		{
-			return this._currentState;
-		}
-		
-		public function set currentState( value:String ):void
-		{
-			if( this._currentState == value )
-			{
-				return;
-			}
-			this._currentState = value;
-			this.invalidate( INVALIDATION_FLAG_STATE );
-		}
+//		public function get currentState():String
+//		{
+//			return this._currentState;
+//		}
+//		
+//		public function set currentState( value:String ):void
+//		{
+//			if( this._currentState == value )
+//			{
+//				return;
+//			}
+//			this._currentState = value;
+//			this.invalidate( INVALIDATION_FLAG_STATE );
+//		}
 		
 		public function get backgroundSkin():DisplayObject
 		{
@@ -433,7 +443,7 @@ package nl.powergeek.feathers.components
 			
 			// tween hiddenContent
 			var tween:Tween = new Tween(_hiddenContent, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
-			tween.animate("height", 120);
+			tween.animate("height", _hiddenContentHeight);
 			tween.animate("scaleY", 1);
 			tween.onComplete = function():void {
 				
@@ -451,7 +461,6 @@ package nl.powergeek.feathers.components
 					var child:DisplayObject = _hiddenContent.getChildAt(n);
 					var childTween:Tween = new Tween(child, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
 					childTween.animate("alpha", 1);
-					childTween.animate("scaleY", 1);
 					Starling.current.juggler.add(childTween);
 					_hiddenContent.invalidate(INVALIDATION_FLAG_ALL);
 				}
@@ -512,11 +521,6 @@ package nl.powergeek.feathers.components
 				
 				Starling.current.juggler.add(tween);
 			}
-		}
-		
-		override protected function draw():void
-		{
-			super.draw();
 		}
 	}
 }

@@ -386,9 +386,10 @@ package nl.powergeek.pinbored.screens
 			// remove item from list dataProvider
 			var bmIndex:Number = list.dataProvider.getItemIndex(bookmark);
 			list.dataProvider.removeItemAt(bmIndex);
-			trace('also removing from filtered bookmark list');
+			
 			// also delete item from rawBookMarkList
-			ListScreenModel.removeFromLists(bookmark.bookmarkData);
+//			trace('also removing from filtered bookmark list');
+//			ListScreenModel.removeFromLists(bookmark.bookmarkData);
 		}
 		
 		public function get onLoginScreenRequest():ISignal

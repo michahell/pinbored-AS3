@@ -185,6 +185,7 @@ package nl.powergeek.pinbored.screens
 			// create a password input
 			passwordInput = new TextInput();
 			passwordInput.width = 170;
+			passwordInput.displayAsPassword = true;
 			passwordInput.prompt = 'pinboard password';
 			passwordInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			this.loginBoxInner.addChild(passwordInput);

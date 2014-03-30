@@ -82,7 +82,7 @@ package nl.powergeek.pinbored.services
 			var deleteBookmark:RESTRequest = new RESTRequest(params);
 			
 			// do the request (or dryrun it)
-			RESTClient.doRequest(deleteBookmark, false);
+			RESTClient.doRequest(deleteBookmark, true);
 			
 			return deleteSignal;
 		}

@@ -19,7 +19,7 @@ package
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
 	
-	[SWF(width="1024",height="768",frameRate="45",backgroundColor="#2f2f2f")]
+	[SWF(width="1024",height="768",frameRate="60",backgroundColor="#2f2f2f")]
 	public class pinbored extends Sprite
 	{
 		private var _starling:Starling;

@@ -19,6 +19,7 @@ package nl.powergeek.pinbored.model
 	import nl.powergeek.pinbored.components.InteractiveIcon;
 	import nl.powergeek.pinbored.services.UrlChecker;
 	import nl.powergeek.pinbored.services.UrlCheckerFactory;
+	import nl.powergeek.utils.XorSignal;
 	
 	import org.osflash.signals.Signal;
 	
@@ -36,7 +37,9 @@ package nl.powergeek.pinbored.model
 			_iconTags:InteractiveIcon,
 			_iconHeart:InteractiveIcon,
 			_iconCross:InteractiveIcon,
-			_urlChecker:UrlChecker;
+			_urlChecker:UrlChecker,
+			_revertButton:Button,
+			_modifyButton:Button;
 			
 		public var
 			bookmarkData: Object,
@@ -46,7 +49,8 @@ package nl.powergeek.pinbored.model
 			extended:String,
 			tags:Vector.<String>,
 			accessory: LayoutGroup,
-			hiddenContent: LayoutGroup;
+			hiddenContent: LayoutGroup,
+			isChanged:Boolean = false;
 			
 		public const
 			staleConfirmed:Signal = new Signal(),
@@ -55,6 +59,20 @@ package nl.powergeek.pinbored.model
 			deleteTapped:Signal = new Signal(),
 			deleteConfirmed:Signal = new Signal(),
 			editConfirmed:Signal = new Signal();
+			
+		// editing specific signals
+		public const
+			dataChanged:XorSignal = new XorSignal(),
+			descriptionChanged:Signal = new Signal(String),
+			hrefChanged:Signal = new Signal(String),
+			linkChanged:Signal = new Signal(String),
+			extendedChanged:Signal = new Signal(String),
+			tagsChanged:Signal = new Signal(Vector.<String>);
+			
+		private var 
+			isLinkChanged:Boolean = false,
+			isDescriptionChanged:Boolean = false,
+			isExtendedChanged:Boolean = false;
 			
 			
 		public function BookMark(bookmarkData:Object)
@@ -110,66 +128,206 @@ package nl.powergeek.pinbored.model
 			
 			// create hidden content
 			hiddenContent = new LayoutGroup();
-			hiddenContent.scaleY = 0;
-			hiddenContent.height = 0;
-			hiddenContent.visible = false;
 			hiddenContent.touchable = true;
 			
 			// hidden content layout group
 			var hiddenContentLayout:AnchorLayout = new AnchorLayout();
 			hiddenContent.layout = hiddenContentLayout;
 			
+			// add description editor
+			var descriptionInput:TextInput = new TextInput();
+			descriptionInput.textEditorProperties.multiline = true;
+			descriptionInput.padding = 5;
+			
+			if(this.description.length > 0) {
+				descriptionInput.text = description;
+				descriptionInput.prompt = description;
+			} else {
+//				descriptionInput.text = '[no description]';
+				descriptionInput.prompt = '[ enter description ]';
+			}
+			
+//			descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			descriptionInput.addEventListener(Event.CHANGE, descriptionInputHandler);
+			var descriptionInputLd:AnchorLayoutData = new AnchorLayoutData(0, 10, NaN, 0);
+			descriptionInput.layoutData = descriptionInputLd;
+			hiddenContent.addChild(descriptionInput);
+			
+			// add link editor
+			var linkInput:TextInput = new TextInput();
+			linkInput.textEditorProperties.multiline = true;
+			linkInput.padding = 5;
+			
+			if(this.href.length > 0) {
+				linkInput.text = href;
+				linkInput.prompt = href;
+			} else {
+//				linkInput.text = '[no link]';
+				linkInput.prompt = '[ enter link ]';
+			}
+			
+//			linkInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			linkInput.addEventListener(Event.CHANGE, linkInputHandler);
+			var lild:AnchorLayoutData = new AnchorLayoutData();
+			lild.topAnchorDisplayObject = descriptionInput;
+			lild.top = 5;
+			lild.left = 0;
+			lild.right = 10;
+			linkInput.layoutData = lild;
+			hiddenContent.addChild(linkInput);
+			
+			// add the extended / description label
+			var extendedInput:TextInput = new TextInput();
+			extendedInput.textEditorProperties.multiline = true;
+			extendedInput.padding = 5;
+			
+			if(this.extended.length > 0) {
+				extendedInput.text = this.extended;
+				extendedInput.prompt = this.extended;
+			} else {
+//				extendedInput.text = '[no extended description]';
+				extendedInput.prompt = '[ enter extended description ]';
+			}
+			
+//			extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			extendedInput.addEventListener(Event.CHANGE, extendedInputHandler);
+			var extendedInputLd:AnchorLayoutData = new AnchorLayoutData();
+			extendedInputLd.topAnchorDisplayObject = linkInput;
+			extendedInputLd.top = 5;
+			extendedInputLd.left = 0;
+			extendedInputLd.right = 10;
+			extendedInput.layoutData = extendedInputLd;
+			
+			
+			hiddenContent.addChild(extendedInput);
+			
+			// tag editor options
 			var tagTextOptions:Object = {
 				separators : false,
 				background : true,
 				padding : 0,
+				tagPadding : 20,
 				keys : false,
 				prompt : 'add tag',
-				maxTags : Number.POSITIVE_INFINITY
+				maxTags : 0
 			};
 			
 			// add the tag editor
 			var tagEditor:TagTextInput2 = new TagTextInput2(AppSettings.SCREEN_DPI_SCALE, tagTextOptions);
-			tagEditor.layoutData = new AnchorLayoutData(0, 0, NaN, -5);
+			var teld:AnchorLayoutData = new AnchorLayoutData();
+			teld.topAnchorDisplayObject = extendedInput;
+			teld.left = 0;
+			teld.right = 10;
+			teld.top = 5;
+			tagEditor.layoutData = teld;
 			// add tags to tag component
 			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
 				tagEditor.addTag(tag);
 			});
 			hiddenContent.addChild(tagEditor);
 			
-			// add the extended / description label
-			var extendedInput:TextInput = new TextInput();
-//			extendedInput.height = 35;
-//			extendedInput.nameList.add(PinboredDesktopTheme.TEXTAREA_TRANSLUCENT_BOX);
-			var extendedInputLd:AnchorLayoutData = new AnchorLayoutData();
-			extendedInputLd.topAnchorDisplayObject = tagEditor;
-			extendedInputLd.top = 5;
-			extendedInputLd.left = -5;
-			extendedInputLd.right = -5;
-			extendedInput.layoutData = extendedInputLd;
-			
-			if(this.extended.length > 0) {
-				extendedInput.text = this.extended;
-				extendedInput.prompt = this.extended;
-				//trace('Using extended description');
-				//trace('this.extended: ' + this.extended);
-			} else {
-				extendedInput.text = '[no extended description]';
-			}
-			
-			hiddenContent.addChild(extendedInput);
-			
 			// add the 'accept changes' button
-			var modifyButton:Button = new Button();
-			modifyButton.label = 'save changes';
-			modifyButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_SUCCESS);
+			_modifyButton = new Button();
+			_modifyButton.label = 'save changes';
+//			_modifyButton.paddingBottom = 10;
+			_modifyButton.isEnabled = false;
+			_modifyButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
+			_modifyButton.addEventListener(Event.TRIGGERED, modifyButtonTriggeredHandler);
 			var modifyButtonLd:AnchorLayoutData = new AnchorLayoutData();
-			modifyButtonLd.topAnchorDisplayObject = extendedInput;
-			modifyButtonLd.top = 5;
+			modifyButtonLd.topAnchorDisplayObject = tagEditor;
+			modifyButtonLd.top = 10;
 			modifyButtonLd.right = 10;
-			modifyButton.layoutData = modifyButtonLd;
-			hiddenContent.addChild(modifyButton);
+			modifyButtonLd.bottom = 5;
+			_modifyButton.layoutData = modifyButtonLd;
+			hiddenContent.addChild(_modifyButton);
 			
+			// add the 'revert changes' button
+			_revertButton = new Button();
+			_revertButton.label = 'revert changes';
+//			_revertButton.paddingBottom = 10;
+			_revertButton.isEnabled = false;
+			_revertButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_DELETE);
+			_revertButton.addEventListener(Event.TRIGGERED, revertButtonTriggeredHandler);
+			var rbld:AnchorLayoutData = new AnchorLayoutData();
+			rbld.topAnchorDisplayObject = tagEditor;
+			rbld.top = 10;
+			rbld.rightAnchorDisplayObject = _modifyButton;
+			rbld.right = 5;
+			rbld.bottom = 5;
+			_revertButton.layoutData = rbld;
+			hiddenContent.addChild(_revertButton);
+			
+			// add signals to Xor Signal
+			dataChanged.addSignal(descriptionChanged);
+			dataChanged.addSignal(hrefChanged);
+			dataChanged.addSignal(extendedChanged);
+			dataChanged.addSignal(tagsChanged);
+			
+			dataChanged.add(function():void {
+				trace('data changed called.');
+				if(isLinkChanged == true || isDescriptionChanged == true || isExtendedChanged == true) {
+					trace('data changed - enabling buttons...');
+					isChanged = true;
+					_revertButton.isEnabled = true;
+					_modifyButton.isEnabled = true;
+				} else {
+					trace('data changed - disabling buttons...');
+					isChanged = false;
+					_revertButton.isEnabled = false;
+					_modifyButton.isEnabled = false;
+				}
+			});
+		}
+		
+		private function revertButtonTriggeredHandler(event:Event):void
+		{
+			isChanged = false;
+			//TODO revert
+		}
+		
+		private function modifyButtonTriggeredHandler(event:Event):void
+		{
+			isChanged = false;
+			//TODO save
+		}
+		
+		private function descriptionInputHandler(event:Event):void
+		{
+			var text:String = TextInput(event.target).text;
+			trace('description changed: ' + text);
+			
+			if(description != text)
+				isDescriptionChanged = true;
+			else
+				isDescriptionChanged = false;
+			
+			descriptionChanged.dispatch(text);
+		}
+		
+		private function linkInputHandler(event:Event):void
+		{
+			var text:String = TextInput(event.target).text;
+			trace('href changed: ' + text);
+			
+			if(href != text)
+				isLinkChanged = true;
+			else
+				isLinkChanged = false;
+				
+			linkChanged.dispatch(text);
+		}
+		
+		private function extendedInputHandler(event:Event):void
+		{
+			var text:String = TextInput(event.target).text;
+			trace('extended description changed: ' + text);
+			
+			if(extended != text)
+				isExtendedChanged = true;
+			else 
+				isExtendedChanged = false;
+			
+			extendedChanged.dispatch(text);
 		}
 		
 		private function editTriggeredHandler(event:Event):void

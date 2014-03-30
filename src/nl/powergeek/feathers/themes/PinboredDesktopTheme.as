@@ -562,7 +562,7 @@ package nl.powergeek.feathers.themes
 //			hoverSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.hoverSkin = hoverSkin;
 			
-			var disabledSkin:Quad = new Quad(10, 10, 0xFFFFFF);
+			var disabledSkin:Quad = new Quad(10, 10, 0xEAB0AE);
 //			disabledSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.disabledSkin = disabledSkin;
 			
@@ -637,6 +637,7 @@ package nl.powergeek.feathers.themes
 			// define background
 			var backgroundSkin:Quad = new Quad(10, 10, 0xFFFFFF);
 			backgroundSkin.alpha = 0.1;
+			backgroundSkin.touchable = false;
 			
 			// text input background
 			textInput.backgroundDisabledSkin = backgroundSkin;

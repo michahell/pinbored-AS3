@@ -138,7 +138,7 @@ package nl.powergeek.feathers.components
 			// create and add textinput
 			this._textInput.prompt = this.textInputPrompt;
 //			this._textInput.width = 200;
-//			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
 			this._textInput.padding = this._padding / 2;
 			
 			// add tag icon in front of tag text input

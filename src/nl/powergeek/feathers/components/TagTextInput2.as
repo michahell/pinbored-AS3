@@ -48,7 +48,7 @@ package nl.powergeek.feathers.components
 			_background:DisplayObject,
 			_separatorTop:DisplayObject,
 			_separatorBottom:DisplayObject,
-			_searchButton:Button;
+			_revertButton:Button;
 		
 		// internal state
 		private var
@@ -69,7 +69,8 @@ package nl.powergeek.feathers.components
 			useSeparators:Boolean = true,
 			useKeys:Boolean = true,
 			maxTags:uint = 3,
-			textInputPrompt:String = 'add tags for filtering';
+			textInputPrompt:String = 'add tags for filtering',
+			tagPadding:Number = 20;
 
 			
 		public function TagTextInput2(screenDPIscale:Number, tagTextOptions:Object)
@@ -89,6 +90,10 @@ package nl.powergeek.feathers.components
 				
 				if(tagTextOptions.padding) {
 					this._padding = tagTextOptions.padding;
+				}
+				
+				if(tagTextOptions.tagPadding) {
+					this.tagPadding = tagTextOptions.tagPadding;
 				}
 				
 				if(tagTextOptions.maxTags != 3)
@@ -141,8 +146,7 @@ package nl.powergeek.feathers.components
 			
 			// create and add textinput
 			this._textInput.prompt = this.textInputPrompt;
-//			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
-			this._textInput.width = 300;
+			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
 			this._textInput.padding = this._padding / 2;
 			var layoutData:AnchorLayoutData = new AnchorLayoutData();
 			layoutData.leftAnchorDisplayObject = _tagContainer;
@@ -172,17 +176,20 @@ package nl.powergeek.feathers.components
 			this._componentLayoutGroup.addChild(this._textInput);
 			
 			// create searchbutton
-			_searchButton = new Button();
-			_searchButton.label = 'search & filter';
-			_searchButton.height = SEARCHBUTTON_HEIGHT;
-			_searchButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
-			_searchButton.addEventListener(Event.TRIGGERED, searchButtonTriggeredHandler); 
+			_revertButton = new Button();
+			_revertButton.label = 'revert';
+			_revertButton.height = SEARCHBUTTON_HEIGHT;
+			_revertButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
+			_revertButton.addEventListener(Event.TRIGGERED, searchButtonTriggeredHandler); 
 				
 			var buttonLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			buttonLayoutData.verticalCenter = 0;
 			buttonLayoutData.right = this._padding;
-			_searchButton.layoutData = buttonLayoutData;
-			this._componentLayoutGroup.addChild(this._searchButton);
+			_revertButton.layoutData = buttonLayoutData;
+			this._componentLayoutGroup.addChild(this._revertButton);
+			
+			// and invalidate, need to redraw this thing
+			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 		}
 		
 		private function searchButtonTriggeredHandler():void
@@ -197,10 +204,6 @@ package nl.powergeek.feathers.components
 					if(_tagNames.length > 0)
 						removeTag(_tagsArray[_tagsArray.length - 1]);
 				}
-			}
-			
-			if(event.keyCode == Keyboard.ENTER) {
-				//searchTagsTriggered.dispatch(this._tagNames);
 			}
 		}
 		
@@ -222,7 +225,7 @@ package nl.powergeek.feathers.components
 				var commaIndex:Number = text.indexOf(', ');
 				
 				// if we do not yet have reached the max. number of tags
-				if(this._tagCount < maxTags) {
+				if(this._tagCount < maxTags || maxTags == 0) {
 					
 					if(spaceIndex > -1 || commaIndex > -1) {
 						
@@ -244,7 +247,7 @@ package nl.powergeek.feathers.components
 						textInput.text = '';
 						
 						// and invalidate, need to redraw this thing
-						//invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
+						invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 					}
 				}
 			}
@@ -254,6 +257,7 @@ package nl.powergeek.feathers.components
 		{
 			// create the tag and add it to the list o tags
 			var tag:Tag = _tagFactory(tagText);
+			tag.padding = tagPadding;
 			
 			// add listener to tag removed signal
 			tag.removed.addOnce(function():void {
@@ -261,10 +265,7 @@ package nl.powergeek.feathers.components
 			});
 			
 			// quickly remove the textInput, then add the tag, then re-add the textInput!
-//			_tagContainer.removeChild(this._textInput);
 			_tagContainer.addChild(tag);
-//			_tagContainer.addChild(this._textInput);
-//			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 			
 			// add tag text to tagText array for quick access
 			_tagNames.push(tag.text);
@@ -296,24 +297,11 @@ package nl.powergeek.feathers.components
 		{
 			// phase 1 commit
 			_tagContainer.validate();
-			
-			// enable or disable tag input
-			if(this.maxTags > 0) {
-				if(this._tagCount < maxTags) {
-					this._textInput.isEnabled = true;
-				} else {
-					// disable tag input
-					this._textInput.text = '';
-					this._textInput.isEnabled = false;
-				}
-			} else {
-				this._textInput.isEnabled = true;
-			}
 			this._textInput.validate();
 			
 			// phase 2 measurements
 			_componentLayoutGroup.width = this.width;
-			_componentLayoutGroup.height = this._tagContainer.height;
+			_componentLayoutGroup.height = Math.max(this._tagContainer.height, TAG_HEIGHT + this._padding + this.tagPadding / 2);
 			
 			if(this.useBackground == true) {
 				_background.width = _componentLayoutGroup.width;
@@ -321,7 +309,8 @@ package nl.powergeek.feathers.components
 			}
 			
 			// resize textinput to remaining width between tags and search button
-			this._textInput.width = Math.min(500, _componentLayoutGroup.width - (_tagContainer.width - _textInput.width) - _searchButton.width);
+			this._textInput.width = _componentLayoutGroup.width - _tagContainer.width - _revertButton.width - this._padding * 3;
+			this._textInput.invalidate(INVALIDATION_FLAG_SIZE);
 			
 			// separators need to be on top and bottom
 			if(this.useSeparators == true) {
