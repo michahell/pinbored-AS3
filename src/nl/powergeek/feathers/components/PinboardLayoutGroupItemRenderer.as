@@ -7,6 +7,7 @@ package nl.powergeek.feathers.components
 	import feathers.controls.renderers.LayoutGroupListItemRenderer;
 	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.ITextRenderer;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	
@@ -36,19 +37,16 @@ package nl.powergeek.feathers.components
 	{
 		// content
 		private var
-			_label:Label,
-			_href:Label,
+			_description:Label,
+			_link:Label,
 			_accessory:LayoutGroup,
 			_hiddenContent:LayoutGroup,
-//			_icons:LayoutGroup,
 			_padding:Number = 0,
 			_backgroundSkin:DisplayObject;
 		
 		// state
 		private var
 			_hiddenContentHeight:Number = 0,
-//			_currentState:String = STATE_UP,
-//			touchID:int = -1,
 			defaultBackgroundColor:Number = 0x000000,
 			highlightBackgroundColor:Number = 0x4499FF;
 			
@@ -56,12 +54,13 @@ package nl.powergeek.feathers.components
 		private var
 			_deleteConfirmed:Signal,
 			_editTapped:Signal,
-			_editConfirmed:Signal;
+			_editConfirmed:Signal,
+			_dataChanged:Signal;
 			
 		public var
 			isBeingEdited:Boolean = false;
-
 		
+			
 		public function PinboardLayoutGroupItemRenderer() { }
 		
 		override protected function initialize():void
@@ -75,82 +74,28 @@ package nl.powergeek.feathers.components
 			this.backgroundSkin = bg;
 			
 			// add bookmark label description
-			this._label = new Label();
+			this._description = new Label();
 			var labelLayoutData:AnchorLayoutData = new AnchorLayoutData();
 			labelLayoutData.top = this._padding;
 			labelLayoutData.left = this._padding;
-			this._label.layoutData = labelLayoutData;
-			this._label.nameList.add(PinboredDesktopTheme.LABEL_BOOKMARK_DESCRIPTION);
-			this.addChild(this._label);
+			this._description.layoutData = labelLayoutData;
+			this._description.nameList.add(PinboredDesktopTheme.LABEL_BOOKMARK_DESCRIPTION);
+			this.addChild(this._description);
 			
 			// add bookmark url label
-			this._href = new Label();
+			this._link = new Label();
 			var hrefLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			hrefLayoutData.topAnchorDisplayObject = this._label;
+			hrefLayoutData.topAnchorDisplayObject = this._description;
 			hrefLayoutData.top = this._padding / 6;
 			hrefLayoutData.left = this._padding;
-			this._href.layoutData = hrefLayoutData;
-			this._href.nameList.add(PinboredDesktopTheme.LABEL_BOOKMARK_HREF);
-			this.addChild(this._href);
-			
-			// add touch handling
-//			this.addEventListener(TouchEvent.TOUCH, touchHandler);
+			this._link.layoutData = hrefLayoutData;
+			this._link.nameList.add(PinboredDesktopTheme.LABEL_BOOKMARK_HREF);
+			this.addChild(this._link);
 			
 			// set quick hit enabled to false
 			this.isQuickHitAreaEnabled = false;
 		}
-		
-//		private function touchHandler(event:TouchEvent):void
-//		{
-//			if(!this._isEnabled)
-//			{
-//				// if we were disabled while tracking touches, clear the touch id.
-//				this.touchID = -1;
-//				
-//				// the button should return to the up state, if it is disabled.
-//				// you may also use a separate disabled state, if you prefer.
-//				this.currentState = STATE_UP;
-//				return;
-//			}
-//			
-//			if( this.touchID >= 0 )
-//			{
-//				// a touch has begun, so we'll ignore all other touches.
-//				
-//				var touch:Touch = event.getTouch( this, null, this.touchID );
-//				if( !touch )
-//				{
-//					// this should not happen.
-//					return;
-//				}
-//				
-//				if( touch.phase == TouchPhase.ENDED )
-//				{
-//					this.currentState = STATE_UP;
-//					
-//					// the touch has ended, so now we can start watching for a new one.
-//					this.touchID = -1;
-//				}
-//				return;
-//			}
-//			else
-//			{
-//				// we aren't tracking another touch, so let's look for a new one.
-//				
-//				touch = event.getTouch( this, TouchPhase.BEGAN );
-//				if( !touch )
-//				{
-//					// we only care about the began phase. ignore all other phases.
-//					return;
-//				}
-//				
-//				this.currentState = STATE_DOWN;
-//				
-//				// save the touch ID so that we can track this touch's phases.
-//				this.touchID = touch.id;
-//			}
-//		}
-		
+
 		override protected function commitData():void
 		{
 			// trace('commitData of item at index: ' + this.index);
@@ -158,14 +103,14 @@ package nl.powergeek.feathers.components
 			if(this._data)
 			{
 				if(this._data.hasOwnProperty("description") && String(this._data.description).length > 0)
-					this._label.text = this._data.description;
+					this._description.text = this._data.description;
 				else
-					this._label.text = '[ no description ]';
+					this._description.text = '[ no description ]';
 				
 				if(this._data.hasOwnProperty("link") && String(this._data.link).length > 0)
-					this._href.text = this._data.link;
+					this._link.text = this._data.link;
 				else
-					this._href.text = '[ no link ]';
+					this._link.text = '[ no link ]';
 				
 				if(this._data.hasOwnProperty("accessory")) {
 					this.accessory = this._data.accessory;
@@ -182,7 +127,7 @@ package nl.powergeek.feathers.components
 					// attach delete listener IF there are none yet
 					if(this._deleteConfirmed.numListeners == 0) {
 						this._deleteConfirmed.addOnce(function():void{
-							removeSelf(BookMark(_data));
+							deleteSelf(BookMark(_data));
 						});
 					}
 				}
@@ -205,9 +150,17 @@ package nl.powergeek.feathers.components
 						});
 					}
 				}
+				
+				// add editbutton listener
+				if(this._data.hasOwnProperty("dataChanged")) {
+					this._dataChanged = this._data.dataChanged;
+					this._dataChanged.add(function():void {
+						//trace('IR firing!');
+						invalidate(INVALIDATION_FLAG_ALL);
+					});
+				}
 			}
 		}
-		
 		
 		override protected function preLayout():void
 		{
@@ -249,21 +202,8 @@ package nl.powergeek.feathers.components
 				}
 			}
 			
-			if( this.hiddenContent )
-			{
-				if (_hiddenContent.height > 0 && _hiddenContentHeight == 0){
-					trace('hidden content height: ' + _hiddenContent.height);
-					_hiddenContentHeight = _hiddenContent.height;
-					if( isBeingEdited == false ) {
-//						_hiddenContent.scaleY = 0;
-						_hiddenContent.height = 0;
-						_hiddenContent.visible = false;
-					}
-				}
-			}
-			
-			this._label.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);
-			this._href.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);
+			this._description.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);
+			this._link.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);
 		}
 		
 		
@@ -281,21 +221,6 @@ package nl.powergeek.feathers.components
 			this._padding = value;
 			this.invalidate(INVALIDATION_FLAG_LAYOUT);
 		}
-		
-//		public function get currentState():String
-//		{
-//			return this._currentState;
-//		}
-//		
-//		public function set currentState( value:String ):void
-//		{
-//			if( this._currentState == value )
-//			{
-//				return;
-//			}
-//			this._currentState = value;
-//			this.invalidate( INVALIDATION_FLAG_STATE );
-//		}
 		
 		public function get backgroundSkin():DisplayObject
 		{
@@ -381,7 +306,7 @@ package nl.powergeek.feathers.components
 			if(this._hiddenContent)
 			{
 				var hiddenContentLayoutData:AnchorLayoutData = new AnchorLayoutData();
-				hiddenContentLayoutData.topAnchorDisplayObject = this._href;
+				hiddenContentLayoutData.topAnchorDisplayObject = this._link;
 				hiddenContentLayoutData.top = this._padding;
 				hiddenContentLayoutData.left = this._padding;
 				hiddenContentLayoutData.right = this._padding;
@@ -397,27 +322,33 @@ package nl.powergeek.feathers.components
 			this.invalidate( INVALIDATION_FLAG_DATA );
 		}
 		
+		
+		public function instaCollapse():void
+		{
+			if( this.hiddenContent )
+			{
+				if (_hiddenContent.height > 0 && _hiddenContentHeight == 0){
+					//trace('hidden content height: ' + _hiddenContent.height);
+					_hiddenContentHeight = _hiddenContent.height;
+				}
+				if( isBeingEdited == false ) {
+					_hiddenContent.height = 0;
+					hiddenContentFadeOut();
+					_hiddenContent.visible = false;
+				}
+			}
+		}
+		
 		private function foldSelf(bookmark:BookMark):void
 		{
 			dispatchEventWith(BookmarkEvent.BOOKMARK_FOLDING, false, bookmark);
 			_hiddenContent.visible = true;
 			
-			// tween out all children
-			for(var n:uint = 0; n < _hiddenContent.numChildren; n++) {
-				var child:DisplayObject = _hiddenContent.getChildAt(n);
-				var childTween:Tween = new Tween(child, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
-				childTween.animate("alpha", 0);
-				Starling.current.juggler.add(childTween);
-			}
+			// fade out hidden content children
+			hiddenContentFadeOut();
 			
 			// tween background color back to default
-			if(backgroundSkin && contains(backgroundSkin)) {
-				var color:Object = {background:highlightBackgroundColor};
-				var testFunc:Function = function():void {
-					Quad(backgroundSkin).color = color.background;
-				};
-				TweenLite.to(color, PinboredDesktopTheme.LIST_ANIMATION_TIME, {hexColors:{background:defaultBackgroundColor}, onUpdate:testFunc});
-			}
+			tweenBackgroundColor(highlightBackgroundColor, defaultBackgroundColor);
 			
 			// tween out hidden content
 			setTimeout(function():void {
@@ -447,23 +378,11 @@ package nl.powergeek.feathers.components
 			tween.animate("scaleY", 1);
 			tween.onComplete = function():void {
 				
-				// tween background color to highlight color
-				if(backgroundSkin && contains(backgroundSkin)) {
-					var color:Object = {background:Quad(backgroundSkin).color};
-					var testFunc:Function = function():void {
-						Quad(backgroundSkin).color = color.background;
-					};
-					TweenLite.to(color, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, {hexColors:{background:highlightBackgroundColor}, onUpdate:testFunc});
-				}
+				// fade out hidden content children
+				hiddenContentFadeIn();
 				
-				// tween in all children
-				for(var n:uint = 0; n < _hiddenContent.numChildren; n++) {
-					var child:DisplayObject = _hiddenContent.getChildAt(n);
-					var childTween:Tween = new Tween(child, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
-					childTween.animate("alpha", 1);
-					Starling.current.juggler.add(childTween);
-					_hiddenContent.invalidate(INVALIDATION_FLAG_ALL);
-				}
+				// tween background color back to default
+				tweenBackgroundColor(Quad(backgroundSkin).color, highlightBackgroundColor);
 			}
 			
 			Starling.current.juggler.add(tween);
@@ -471,7 +390,7 @@ package nl.powergeek.feathers.components
 			dispatchEventWith(BookmarkEvent.BOOKMARK_EXPANDED, false, bookmark);
 		}
 		
-		private function removeSelf(bookmark:BookMark):void {
+		private function deleteSelf(bookmark:BookMark):void {
 			
 			// first flatten self
 			flatten();
@@ -492,34 +411,83 @@ package nl.powergeek.feathers.components
 			Starling.current.juggler.add(tween);
 		}
 		
-		public function addSelf():void {
-			
+		public function addSelf():void
+		{
+			// get the item real sizes
 			var realHeight:Number = this.height;
 			var realScaleY:Number = this.scaleY;
 			var realWidth:Number = this.width;
 			var realScaleX:Number = this.scaleX;
 			
-			trace('IR: real height/width: ' + realHeight, realWidth);
+//			trace('IR: real height/width: ' + realHeight, realWidth);
+//			trace('IR: real height - _hiddenContentHeight: ', realHeight - _hiddenContentHeight, realWidth);
+			
+			var fakeRealHeight:Number = realHeight - _hiddenContentHeight;
 			
 			if(realHeight > 0 && realWidth > 0) {
 				
-//				this.height = this.scaleY = this.width = this.scaleX = 0;
-//				this.height = this.width = 0;
-//				this.height = this.scaleY = 0;
 				this.width = 0;
 				this.scaleX = 0;
-//				this.x = realWidth / 2;
+//				this.height = 0;
+//				this.scaleY = 0;
 				
 				// tween params
-				var tween:Tween = new Tween(this, PinboredDesktopTheme.LIST_ANIMATION_TIME * 2, Transitions.EASE_IN);
+				var tween:Tween = new Tween(this, PinboredDesktopTheme.LIST_ANIMATION_TIME, Transitions.EASE_IN);
 				
-//				tween.animate("height", realHeight);
-//				tween.animate("scaleY", realScaleY);
 				tween.animate("width",  realWidth);
 				tween.animate("scaleX", realScaleX);
-//				tween.animate("x", -realWidth / 2);
+//				tween.animate("height",  realHeight);
+//				tween.animate("scaleY", realScaleY);
+//				tween.onComplete = function():void {
+//					// reset scaleY children
+//					for(var n:uint = 0; n < _hiddenContent.numChildren; n++) {
+//						var child:DisplayObject = _hiddenContent.getChildAt(n);
+//						child.scaleY = 1;
+//						_hiddenContent.invalidate(INVALIDATION_FLAG_ALL);
+//					}
+//				};
 				
 				Starling.current.juggler.add(tween);
+			}
+		}
+		
+		public function removeSelf():void
+		{
+			trace('IR being removed...');
+		}
+		
+		private function tweenBackgroundColor(fromColor:uint, toColor:uint):void
+		{
+			if(backgroundSkin && contains(backgroundSkin)) {
+				
+				var color:Object = {background:fromColor};
+				
+				var testFunc:Function = function():void {
+					Quad(backgroundSkin).color = color.background;
+				};
+				
+				TweenLite.to(color, PinboredDesktopTheme.LIST_ANIMATION_TIME, {hexColors:{background:toColor}, onUpdate:testFunc});
+			}
+		}
+		
+		private function hiddenContentFadeOut():void
+		{
+			hiddenContentFade(0);
+		}
+		
+		private function hiddenContentFadeIn():void
+		{
+			hiddenContentFade(1);
+		}
+		
+		private function hiddenContentFade(alpha:Number):void
+		{
+			// tween out all children
+			for(var n:uint = 0; n < _hiddenContent.numChildren; n++) {
+				var child:DisplayObject = _hiddenContent.getChildAt(n);
+				var childTween:Tween = new Tween(child, PinboredDesktopTheme.LIST_ANIMATION_TIME / 2, Transitions.EASE_OUT);
+				childTween.animate("alpha", alpha);
+				Starling.current.juggler.add(childTween);
 			}
 		}
 	}

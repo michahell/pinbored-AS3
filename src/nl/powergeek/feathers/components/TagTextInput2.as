@@ -145,8 +145,10 @@ package nl.powergeek.feathers.components
 //			this._tagContainer.validate();
 			
 			// create and add textinput
+//			trace('tagEditor _textInput is editable? ' + _textInput.isEditable);
+//			trace('tagEditor _textInput is enabled? ' + _textInput.isEnabled);
 			this._textInput.prompt = this.textInputPrompt;
-			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+//			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
 			this._textInput.padding = this._padding / 2;
 			var layoutData:AnchorLayoutData = new AnchorLayoutData();
 			layoutData.leftAnchorDisplayObject = _tagContainer;
@@ -253,7 +255,7 @@ package nl.powergeek.feathers.components
 			}
 		}
 		
-		public function addTag(tagText:String):void
+		public function addTag(tagText:String, notify:Boolean = true):void
 		{
 			// create the tag and add it to the list o tags
 			var tag:Tag = _tagFactory(tagText);
@@ -272,29 +274,51 @@ package nl.powergeek.feathers.components
 			_tagsArray.push(tag);
 			
 			// fire tagsChanged signal
-			tagsChanged.dispatch(_tagNames);
+			if(notify == true)
+				tagsChanged.dispatch(_tagNames);
 			
 			// increment tagCount
 			_tagCount++;
+			
+			// and invalidate, need to redraw this thing
+			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 		}
 		
-		public function removeTag(tag:Tag):void {
+		public function removeTag(tag:Tag, notify:Boolean = true):void
+		{
 			// remove from display list
 			_tagContainer.removeChild(tag);
+			
 			// remove from tags array
 			_tagsArray.splice(_tagsArray.indexOf(tag), 1);
+			
 			// remove from tagNames
 			_tagNames.splice(_tagNames.indexOf(tag.text), 1);
+			
 			// decrement tagCount
 			_tagCount--;
+			
+			// fire tagsChanged signal
+			if(notify == true)
+				tagsChanged.dispatch(_tagNames);
+			
 			// update component
 			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
-			// fire tagsChanged signal
-			tagsChanged.dispatch(_tagNames);
+		}
+		
+		public function removeAllTags():void
+		{
+			if(_tagsArray && _tagsArray.length > 0) {
+				_tagsArray.forEach(function(tag:Tag, index:uint, array:Array):void{
+					removeTag(tag, false);
+				});
+			}
 		}
 		
 		override protected function draw():void
 		{
+//			trace('tag text input 2 draw called');
+			
 			// phase 1 commit
 			_tagContainer.validate();
 			this._textInput.validate();
@@ -309,8 +333,12 @@ package nl.powergeek.feathers.components
 			}
 			
 			// resize textinput to remaining width between tags and search button
-			this._textInput.width = _componentLayoutGroup.width - _tagContainer.width - _revertButton.width - this._padding * 3;
-			this._textInput.invalidate(INVALIDATION_FLAG_SIZE);
+			var tfWidth:Number = _componentLayoutGroup.width - _tagContainer.width - _revertButton.width - this._padding * 3;
+			if(this._textInput.width != tfWidth) {
+				this._textInput.width = tfWidth; 
+				this._textInput.invalidate(INVALIDATION_FLAG_SIZE);
+				invalidate(INVALIDATION_FLAG_ALL);
+			}
 			
 			// separators need to be on top and bottom
 			if(this.useSeparators == true) {

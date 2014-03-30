@@ -637,10 +637,14 @@ package nl.powergeek.feathers.themes
 			// define background
 			var backgroundSkin:Quad = new Quad(10, 10, 0xFFFFFF);
 			backgroundSkin.alpha = 0.1;
-			backgroundSkin.touchable = false;
+//			backgroundSkin.touchable = false;
+			
+			var backgroundDisabledSkin:Quad = new Quad(10, 10, 0xFFCCCC);
+			backgroundDisabledSkin.alpha = 0.1;
+//			backgroundDisabledSkin.touchable = false;
 			
 			// text input background
-			textInput.backgroundDisabledSkin = backgroundSkin;
+			textInput.backgroundDisabledSkin = backgroundDisabledSkin;
 			textInput.backgroundEnabledSkin = backgroundSkin;
 			textInput.backgroundFocusedSkin = backgroundSkin;
 			textInput.backgroundSkin = backgroundSkin;

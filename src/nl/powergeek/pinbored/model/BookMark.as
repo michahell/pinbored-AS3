@@ -30,7 +30,7 @@ package nl.powergeek.pinbored.model
 
 	public class BookMark
 	{
-		
+		// UI related
 		private var
 			_icons:LayoutGroup = new LayoutGroup(),
 			_iconCheckmark:InteractiveIcon,
@@ -39,8 +39,13 @@ package nl.powergeek.pinbored.model
 			_iconCross:InteractiveIcon,
 			_urlChecker:UrlChecker,
 			_revertButton:Button,
-			_modifyButton:Button;
+			_modifyButton:Button,
+			_tagEditor:TagTextInput2,
+			_extendedInput:TextInput,
+			_hrefInput:TextInput,
+			_descriptionInput:TextInput;
 			
+		// data related
 		public var
 			bookmarkData: Object,
 			href:String,
@@ -49,8 +54,7 @@ package nl.powergeek.pinbored.model
 			extended:String,
 			tags:Vector.<String>,
 			accessory: LayoutGroup,
-			hiddenContent: LayoutGroup,
-			isChanged:Boolean = false;
+			hiddenContent: LayoutGroup;
 			
 		public const
 			staleConfirmed:Signal = new Signal(),
@@ -68,9 +72,13 @@ package nl.powergeek.pinbored.model
 			linkChanged:Signal = new Signal(String),
 			extendedChanged:Signal = new Signal(String),
 			tagsChanged:Signal = new Signal(Vector.<String>);
-			
+		
+		// state related
 		private var 
+			isChanged:Boolean = false,
+			isHrefChanged:Boolean = false,
 			isLinkChanged:Boolean = false,
+			isTagsChanged:Boolean = false,
 			isDescriptionChanged:Boolean = false,
 			isExtendedChanged:Boolean = false;
 			
@@ -135,71 +143,74 @@ package nl.powergeek.pinbored.model
 			hiddenContent.layout = hiddenContentLayout;
 			
 			// add description editor
-			var descriptionInput:TextInput = new TextInput();
-			descriptionInput.textEditorProperties.multiline = true;
-			descriptionInput.padding = 5;
+			_descriptionInput = new TextInput();
+//			trace('_descriptionInput is editable? ' + _descriptionInput.isEditable);
+//			trace('_descriptionInput is enabled? ' + _descriptionInput.isEnabled);
+			_descriptionInput.textEditorProperties.multiline = true;
+			_descriptionInput.padding = 5;
 			
 			if(this.description.length > 0) {
-				descriptionInput.text = description;
-				descriptionInput.prompt = description;
+				_descriptionInput.text = description;
+				_descriptionInput.prompt = description;
 			} else {
-//				descriptionInput.text = '[no description]';
-				descriptionInput.prompt = '[ enter description ]';
+				_descriptionInput.prompt = '[ enter description ]';
 			}
 			
-//			descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
-			descriptionInput.addEventListener(Event.CHANGE, descriptionInputHandler);
+//			_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			_descriptionInput.addEventListener(Event.CHANGE, descriptionInputHandler);
 			var descriptionInputLd:AnchorLayoutData = new AnchorLayoutData(0, 10, NaN, 0);
-			descriptionInput.layoutData = descriptionInputLd;
-			hiddenContent.addChild(descriptionInput);
+			_descriptionInput.layoutData = descriptionInputLd;
+			hiddenContent.addChild(_descriptionInput);
 			
 			// add link editor
-			var linkInput:TextInput = new TextInput();
-			linkInput.textEditorProperties.multiline = true;
-			linkInput.padding = 5;
+			_hrefInput = new TextInput();
+//			trace('_hrefInput is editable? ' + _hrefInput.isEditable);
+//			trace('_hrefInput is enabled? ' + _hrefInput.isEnabled);
+			_hrefInput.textEditorProperties.multiline = true;
+			_hrefInput.padding = 5;
 			
 			if(this.href.length > 0) {
-				linkInput.text = href;
-				linkInput.prompt = href;
+				_hrefInput.text = href;
+				_hrefInput.prompt = href;
 			} else {
-//				linkInput.text = '[no link]';
-				linkInput.prompt = '[ enter link ]';
+				_hrefInput.prompt = '[ enter link ]';
 			}
 			
-//			linkInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
-			linkInput.addEventListener(Event.CHANGE, linkInputHandler);
-			var lild:AnchorLayoutData = new AnchorLayoutData();
-			lild.topAnchorDisplayObject = descriptionInput;
-			lild.top = 5;
-			lild.left = 0;
-			lild.right = 10;
-			linkInput.layoutData = lild;
-			hiddenContent.addChild(linkInput);
+//			_hrefInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			_hrefInput.addEventListener(Event.CHANGE, hrefInputHandler);
+			var hild:AnchorLayoutData = new AnchorLayoutData();
+			hild.topAnchorDisplayObject = _descriptionInput;
+			hild.top = 5;
+			hild.left = 0;
+			hild.right = 10;
+			_hrefInput.layoutData = hild;
+			hiddenContent.addChild(_hrefInput);
 			
 			// add the extended / description label
-			var extendedInput:TextInput = new TextInput();
-			extendedInput.textEditorProperties.multiline = true;
-			extendedInput.padding = 5;
+			_extendedInput = new TextInput();
+//			trace('_extendedInput is editable? ' + _extendedInput.isEditable);
+//			trace('_extendedInput is enabled? ' + _extendedInput.isEnabled);
+			_extendedInput.textEditorProperties.multiline = true;
+			_extendedInput.padding = 5;
 			
 			if(this.extended.length > 0) {
-				extendedInput.text = this.extended;
-				extendedInput.prompt = this.extended;
+				_extendedInput.text = this.extended;
+				_extendedInput.prompt = this.extended;
 			} else {
-//				extendedInput.text = '[no extended description]';
-				extendedInput.prompt = '[ enter extended description ]';
+				_extendedInput.prompt = '[ enter extended description ]';
 			}
 			
-//			extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
-			extendedInput.addEventListener(Event.CHANGE, extendedInputHandler);
+//			_extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			_extendedInput.addEventListener(Event.CHANGE, extendedInputHandler);
 			var extendedInputLd:AnchorLayoutData = new AnchorLayoutData();
-			extendedInputLd.topAnchorDisplayObject = linkInput;
+			extendedInputLd.topAnchorDisplayObject = _hrefInput;
 			extendedInputLd.top = 5;
 			extendedInputLd.left = 0;
 			extendedInputLd.right = 10;
-			extendedInput.layoutData = extendedInputLd;
+			_extendedInput.layoutData = extendedInputLd;
 			
 			
-			hiddenContent.addChild(extendedInput);
+			hiddenContent.addChild(_extendedInput);
 			
 			// tag editor options
 			var tagTextOptions:Object = {
@@ -213,28 +224,28 @@ package nl.powergeek.pinbored.model
 			};
 			
 			// add the tag editor
-			var tagEditor:TagTextInput2 = new TagTextInput2(AppSettings.SCREEN_DPI_SCALE, tagTextOptions);
+			_tagEditor = new TagTextInput2(AppSettings.SCREEN_DPI_SCALE, tagTextOptions);
+			_tagEditor.tagsChanged.add(tagEditorHandler);
 			var teld:AnchorLayoutData = new AnchorLayoutData();
-			teld.topAnchorDisplayObject = extendedInput;
+			teld.topAnchorDisplayObject = _extendedInput;
 			teld.left = 0;
 			teld.right = 10;
 			teld.top = 5;
-			tagEditor.layoutData = teld;
+			_tagEditor.layoutData = teld;
 			// add tags to tag component
 			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
-				tagEditor.addTag(tag);
+				_tagEditor.addTag(tag, false);
 			});
-			hiddenContent.addChild(tagEditor);
+			hiddenContent.addChild(_tagEditor);
 			
 			// add the 'accept changes' button
 			_modifyButton = new Button();
 			_modifyButton.label = 'save changes';
-//			_modifyButton.paddingBottom = 10;
 			_modifyButton.isEnabled = false;
 			_modifyButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
 			_modifyButton.addEventListener(Event.TRIGGERED, modifyButtonTriggeredHandler);
 			var modifyButtonLd:AnchorLayoutData = new AnchorLayoutData();
-			modifyButtonLd.topAnchorDisplayObject = tagEditor;
+			modifyButtonLd.topAnchorDisplayObject = _tagEditor;
 			modifyButtonLd.top = 10;
 			modifyButtonLd.right = 10;
 			modifyButtonLd.bottom = 5;
@@ -244,12 +255,11 @@ package nl.powergeek.pinbored.model
 			// add the 'revert changes' button
 			_revertButton = new Button();
 			_revertButton.label = 'revert changes';
-//			_revertButton.paddingBottom = 10;
 			_revertButton.isEnabled = false;
 			_revertButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_DELETE);
 			_revertButton.addEventListener(Event.TRIGGERED, revertButtonTriggeredHandler);
 			var rbld:AnchorLayoutData = new AnchorLayoutData();
-			rbld.topAnchorDisplayObject = tagEditor;
+			rbld.topAnchorDisplayObject = _tagEditor;
 			rbld.top = 10;
 			rbld.rightAnchorDisplayObject = _modifyButton;
 			rbld.right = 5;
@@ -260,29 +270,41 @@ package nl.powergeek.pinbored.model
 			// add signals to Xor Signal
 			dataChanged.addSignal(descriptionChanged);
 			dataChanged.addSignal(hrefChanged);
+			dataChanged.addSignal(linkChanged);
 			dataChanged.addSignal(extendedChanged);
 			dataChanged.addSignal(tagsChanged);
 			
-			dataChanged.add(function():void {
-				trace('data changed called.');
-				if(isLinkChanged == true || isDescriptionChanged == true || isExtendedChanged == true) {
-					trace('data changed - enabling buttons...');
-					isChanged = true;
-					_revertButton.isEnabled = true;
-					_modifyButton.isEnabled = true;
-				} else {
-					trace('data changed - disabling buttons...');
-					isChanged = false;
-					_revertButton.isEnabled = false;
-					_modifyButton.isEnabled = false;
-				}
-			});
+			// add data changed general handler
+			dataChanged.add(dataChangedHandler);
+		}
+		
+		private function dataChangedHandler():void 
+		{
+			trace('data changed called.');
+			//trace('changed: ', isLinkChanged, isHrefChanged, isDescriptionChanged, isExtendedChanged, isTagsChanged);
+			
+			if(isLinkChanged == true || isHrefChanged == true || isDescriptionChanged == true || isExtendedChanged == true || isTagsChanged == true) {
+				isChanged = true;
+				_revertButton.isEnabled = true;
+				_modifyButton.isEnabled = true;
+			} else {
+				isChanged = false;
+				_revertButton.isEnabled = false;
+				_modifyButton.isEnabled = false;
+			}
 		}
 		
 		private function revertButtonTriggeredHandler(event:Event):void
 		{
-			isChanged = false;
-			//TODO revert
+			_hrefInput.text = href;
+			_extendedInput.text = extended;
+			_descriptionInput.text = description;
+			
+			_tagEditor.removeAllTags();
+			
+			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
+				_tagEditor.addTag(tag);
+			});
 		}
 		
 		private function modifyButtonTriggeredHandler(event:Event):void
@@ -291,10 +313,22 @@ package nl.powergeek.pinbored.model
 			//TODO save
 		}
 		
+		private function tagEditorHandler(changedTags:Vector.<String>):void
+		{
+			//trace('tags changed: ' + 'changed tags: ', changedTags.toString(), 'tags: ', tags.toString());
+			
+			if(tags.toString() != changedTags.toString())
+				isTagsChanged = true;
+			else
+				isTagsChanged = false;
+			
+			tagsChanged.dispatch(tags);
+		}
+		
 		private function descriptionInputHandler(event:Event):void
 		{
 			var text:String = TextInput(event.target).text;
-			trace('description changed: ' + text);
+			//trace('description changed: ' + text);
 			
 			if(description != text)
 				isDescriptionChanged = true;
@@ -304,23 +338,23 @@ package nl.powergeek.pinbored.model
 			descriptionChanged.dispatch(text);
 		}
 		
-		private function linkInputHandler(event:Event):void
+		private function hrefInputHandler(event:Event):void
 		{
 			var text:String = TextInput(event.target).text;
-			trace('href changed: ' + text);
+			//trace('href changed: ' + text);
 			
 			if(href != text)
-				isLinkChanged = true;
+				isHrefChanged = true;
 			else
-				isLinkChanged = false;
+				isHrefChanged = false;
 				
-			linkChanged.dispatch(text);
+			hrefChanged.dispatch(text);
 		}
 		
 		private function extendedInputHandler(event:Event):void
 		{
 			var text:String = TextInput(event.target).text;
-			trace('extended description changed: ' + text);
+			//trace('extended description changed: ' + text);
 			
 			if(extended != text)
 				isExtendedChanged = true;
@@ -364,7 +398,7 @@ package nl.powergeek.pinbored.model
 		{
 			const button:Button = Button(event.currentTarget);
 			if(button.label == 'delete') {
-				button.label = 'CONFIRM';
+				button.label = 'confirm';
 				setTimeout(function():void {
 					button.label = 'delete';
 				}, 2000);

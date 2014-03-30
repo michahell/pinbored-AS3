@@ -24,6 +24,7 @@ package nl.powergeek.pinbored.screens
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	import flash.text.TextFormat;
+	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
 	import nl.powergeek.REST.RESTClient;
@@ -46,6 +47,7 @@ package nl.powergeek.pinbored.screens
 	import org.osflash.signals.Signal;
 	import org.osmf.layout.HorizontalAlign;
 	
+	import starling.animation.DelayedCall;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -161,7 +163,10 @@ package nl.powergeek.pinbored.screens
 		
 		private function listRendererAddHandler( event:starling.events.Event, itemRenderer:PinboardLayoutGroupItemRenderer ):void
 		{
-//			itemRenderer.addSelf();
+			itemRenderer.addEventListener(FeathersEventType.CREATION_COMPLETE, function(event:starling.events.Event):void {
+				itemRenderer.instaCollapse();
+//				itemRenderer.addSelf();
+			});
 			
 			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_DELETED, function(event:starling.events.Event):void {
 				trace('receiving BOOKMARK_DELETED event from custom item renderer...');
@@ -190,6 +195,8 @@ package nl.powergeek.pinbored.screens
 			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_FOLDED);
 			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_DELETED);
 			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_EDITED);
+			
+			itemRenderer.removeSelf();
 		}
 		
 		private function searchBookmarksHandler(event:starling.events.Event):void
@@ -208,10 +215,10 @@ package nl.powergeek.pinbored.screens
 			hideLoading();
 			
 			// small timeout for update?
-			setTimeout(function():void {
-				// validate for list scroll height update
-				invalidate(INVALIDATION_FLAG_ALL);
-			}, 1000);
+//			setTimeout(function():void {
+//				// validate for list scroll height update
+//				invalidate(INVALIDATION_FLAG_ALL);
+//			}, 1000);
 			
 			if(ListScreenModel.getFilteredBookmarks().length > 0) {
 				displayInitialResultsPage(ListScreenModel.getFilteredBookmarks());
@@ -302,8 +309,29 @@ package nl.powergeek.pinbored.screens
 				
 			});
 			
-			// update the list's dataprovider
-			list.dataProvider = new ListCollection(ListScreenModel.bookmarksList);
+			// update the list's dataprovider one by one
+			updateDataProvider(ListScreenModel.bookmarksList);
+				
+			// update the list's dataprovider with all items at once
+			//list.dataProvider = new ListCollection(ListScreenModel.bookmarksList);
+		}
+		
+		private function updateDataProvider(bookmarksList:Array):void
+		{
+			var copy:Array = bookmarksList.slice();
+			
+			var functor:Function = function():void {
+				if(copy && copy.length > 0)
+					list.dataProvider.addItem(copy.pop());
+				else
+					Starling.juggler.remove(delayedCall);		
+			};
+			
+			var delayedCall:DelayedCall = new DelayedCall(functor, 1/10);
+			delayedCall.repeatCount = 0;
+
+			list.dataProvider = new ListCollection();
+			Starling.juggler.add(delayedCall);
 		}
 		
 		private function displayInitialResultsPage(array:Array):void
@@ -409,7 +437,6 @@ package nl.powergeek.pinbored.screens
 			
 			this.panel.headerFactory = function():PinboredHeader
 			{
-				// const header:Header = new Header();
 				header = new PinboredHeader();
 				header.title = "Bookmarks list";
 				header.titleAlign = Header.TITLE_ALIGN_PREFER_LEFT;
