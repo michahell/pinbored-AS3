@@ -15,6 +15,7 @@ package nl.powergeek.pinbored.screens
 	import feathers.controls.text.TextFieldTextRenderer;
 	import feathers.core.ITextRenderer;
 	import feathers.data.ListCollection;
+	import feathers.events.CollectionEventType;
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
@@ -24,12 +25,12 @@ package nl.powergeek.pinbored.screens
 	import flash.net.URLRequest;
 	import flash.net.URLVariables;
 	import flash.text.TextFormat;
+	import flash.utils.clearTimeout;
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
 	import nl.powergeek.REST.RESTClient;
 	import nl.powergeek.REST.RESTRequest;
-	import nl.powergeek.feathers.components.AppScreen;
 	import nl.powergeek.feathers.components.Pager;
 	import nl.powergeek.feathers.components.PinboardLayoutGroupItemRenderer;
 	import nl.powergeek.feathers.components.PinboredHeader;
@@ -48,6 +49,7 @@ package nl.powergeek.pinbored.screens
 	import org.osmf.layout.HorizontalAlign;
 	
 	import starling.animation.DelayedCall;
+	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.DisplayObject;
@@ -72,6 +74,8 @@ package nl.powergeek.pinbored.screens
 			searchBookmarks:TextInput;
 		
 		private var
+			_listFadeRef:uint,
+			_listFadeChanged:Signal = new Signal( Number ),
 			_onLoginScreenRequest:Signal = new Signal( ListScreen );
 
 		
@@ -107,6 +111,9 @@ package nl.powergeek.pinbored.screens
 				// show loading icon
 				showLoading();
 				
+				// set list to zero alpha
+				list.alpha = 0;
+				
 				// filter on tags 
 				ListScreenModel.filter();
 				
@@ -114,10 +121,7 @@ package nl.powergeek.pinbored.screens
 				hideLoading();
 				
 				// small timeout for update?
-				setTimeout(function():void {
-					// validate for list scroll height update
-					invalidate(INVALIDATION_FLAG_ALL);
-				}, 1000);
+				updateScrollContainerHeight();
 					
 				if(ListScreenModel.rawBookmarkDataListFiltered.length > 0) {
 					displayInitialResultsPage(ListScreenModel.getFilteredBookmarks());
@@ -128,28 +132,40 @@ package nl.powergeek.pinbored.screens
 			
 			// listen to Tag input signals
 			searchTags.tagsChanged.add(function(tags:Vector.<String>):void {
-				ListScreenModel.setCurrentTags(tags);
+				listFade(0).addOnce(function():void {
+					ListScreenModel.setCurrentTags(tags);
+				});
 			});
 			
 			// listen to Pager signals
 			pagingControl.firstPageRequested.add(function():void {
-				displayFirstResultsPage();
+				listFade(0).addOnce(function():void {
+					displayFirstResultsPage();
+				});
 			});
 			
 			pagingControl.previousPageRequested.add(function():void {
-				displayPreviousResultsPage();
+				listFade(0).addOnce(function():void {
+					displayPreviousResultsPage();
+				});
 			});
 			
 			pagingControl.numberedPageRequested.add(function(number:Number):void {
-				displayNumberedResultsPage(number);
+				listFade(0).addOnce(function():void {
+					displayNumberedResultsPage(number);
+				});
 			});
 			
 			pagingControl.nextPageRequested.add(function():void {
-				displayNextResultsPage();
+				listFade(0).addOnce(function():void {
+					displayNextResultsPage();
+				});
 			});
 			
 			pagingControl.lastPageRequested.add(function():void {
-				displayLastResultsPage();
+				listFade(0).addOnce(function():void {
+					displayLastResultsPage();
+				});
 			});
 			
 			ListScreenModel.resultPageChanged.add(function(pageNumber:Number):void {
@@ -163,10 +179,16 @@ package nl.powergeek.pinbored.screens
 		
 		private function listRendererAddHandler( event:starling.events.Event, itemRenderer:PinboardLayoutGroupItemRenderer ):void
 		{
-			itemRenderer.addEventListener(FeathersEventType.CREATION_COMPLETE, function(event:starling.events.Event):void {
+			trace('list IR added.');
+			listFadePostPoned(1);
+			
+			if(itemRenderer.isCreated != true) {
+				itemRenderer.addEventListener(FeathersEventType.CREATION_COMPLETE, function(event:starling.events.Event):void {
+					itemRenderer.instaCollapse();
+				});
+			} else {
 				itemRenderer.instaCollapse();
-//				itemRenderer.addSelf();
-			});
+			}
 			
 			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_DELETED, function(event:starling.events.Event):void {
 				trace('receiving BOOKMARK_DELETED event from custom item renderer...');
@@ -189,22 +211,47 @@ package nl.powergeek.pinbored.screens
 		
 		private function listRendererRemoveHandler( event:starling.events.Event, itemRenderer:PinboardLayoutGroupItemRenderer ):void
 		{
-			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_EXPANDING);
-			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_EXPANDED);
-			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_FOLDING);
-			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_FOLDED);
-			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_DELETED);
-			itemRenderer.removeEventListeners(BookmarkEvent.BOOKMARK_EDITED);
+			trace('list IR removed.');
+			itemRenderer.removeEventListeners();
+		}
+		
+		private function listFadePostPoned(alpha:Number):void
+		{
+			// clear the timeout reference if it exists
+			if(_listFadeRef != 0)
+				clearTimeout(_listFadeRef);
 			
-			itemRenderer.removeSelf();
+			// set the timeout process
+			_listFadeRef = setTimeout(function():void {
+				listFade(alpha);
+			}, 500);
+		}
+		
+		private function listFade(alpha:Number):Signal
+		{
+			trace('list fade called, to alpha: ' + alpha);
+			
+			// tween params
+			var tween:Tween = new Tween(list, PinboredDesktopTheme.LIST_ANIMATION_TIME, Transitions.EASE_OUT);
+			tween.animate("alpha", alpha);
+			
+			// completed
+			tween.onComplete = function():void {
+				_listFadeChanged.dispatch(alpha);
+			};
+			
+			Starling.current.juggler.add(tween);
+			
+			return _listFadeChanged;
 		}
 		
 		private function searchBookmarksHandler(event:starling.events.Event):void
 		{
-			//trace('entered search key word');
-			
 			// show loading icon
 			showLoading();
+			
+			// set list to zero alpha
+			list.alpha = 0;
 			
 			// filter
 			var searchString:String = TextInput(event.target).text;
@@ -215,10 +262,7 @@ package nl.powergeek.pinbored.screens
 			hideLoading();
 			
 			// small timeout for update?
-//			setTimeout(function():void {
-//				// validate for list scroll height update
-//				invalidate(INVALIDATION_FLAG_ALL);
-//			}, 1000);
+			updateScrollContainerHeight();
 			
 			if(ListScreenModel.getFilteredBookmarks().length > 0) {
 				displayInitialResultsPage(ListScreenModel.getFilteredBookmarks());
@@ -236,26 +280,33 @@ package nl.powergeek.pinbored.screens
 				
 				parsedResponse.forEach(function(bookmark:Object, index:int, array:Array):void {
 					// quick href field replace (for auto-linking with hypertextfieldtextrenderer
-					bookmark.link = '<a href=\"' + bookmark.href + '\">' + bookmark.href + '</a>';
 					ListScreenModel.rawBookmarkDataList.push(bookmark);
 				});
 				
 				displayInitialResultsPage(ListScreenModel.rawBookmarkDataList);
 				
-				// hide loading icon
-				setTimeout(function():void {
-					hideLoading();
-					// validate for list scroll height update
-					invalidate(INVALIDATION_FLAG_ALL);
-				}, 1000);
+				// small timeout for update?
+				updateScrollContainerHeight();
 			});
 			
 			// show loading icon
 			showLoading();
 			
+			// set list to zero alpha
+			list.alpha = 0;
+			
 			// get all bookmarks
-			PinboardService.GetAllBookmarks(['Webdevelopment']);
-			//PinboardService.GetAllBookmarks();
+			//PinboardService.GetAllBookmarks(['Webdevelopment']);
+			PinboardService.GetAllBookmarks();
+		}
+		
+		private function updateScrollContainerHeight():void
+		{
+			setTimeout(function():void {
+				hideLoading();
+				// validate for list scroll height update
+				invalidate(INVALIDATION_FLAG_ALL);
+			}, 1000);
 		}
 		
 		private function displayNoResults():void
@@ -299,7 +350,7 @@ package nl.powergeek.pinbored.screens
 					});
 					
 					// mock delete
-					setTimeout(function():void{
+					setTimeout(function():void {
 						trace('[MOCK] bookmark delete request completed.');
 						// update the bookmark by confirming delete
 						tappedBookmark.deleteConfirmed.dispatch();
@@ -310,10 +361,15 @@ package nl.powergeek.pinbored.screens
 			});
 			
 			// update the list's dataprovider one by one
-			updateDataProvider(ListScreenModel.bookmarksList);
-				
+			//updateDataProvider(ListScreenModel.bookmarksList);
+			
 			// update the list's dataprovider with all items at once
-			//list.dataProvider = new ListCollection(ListScreenModel.bookmarksList);
+			list.dataProvider = new ListCollection(ListScreenModel.bookmarksList);
+		}
+		
+		private function onListReset(event:starling.events.Event):void
+		{
+			trace('list reset!');
 		}
 		
 		private function updateDataProvider(bookmarksList:Array):void
@@ -578,7 +634,7 @@ package nl.powergeek.pinbored.screens
 			listLayout.hasVariableItemDimensions = true;
 			
 			// copied over from list initialize function
-			listLayout.useVirtualLayout = false;
+			listLayout.useVirtualLayout = true;
 			listLayout.manageVisibility = true;
 			listLayout.paddingTop = listLayout.paddingRight = listLayout.paddingBottom = listLayout.paddingLeft = 0;
 			listLayout.gap = 0;
@@ -589,6 +645,9 @@ package nl.powergeek.pinbored.screens
 			this.list.layout = listLayout;
 			this.list.isQuickHitAreaEnabled = false;
 			this.list.isSelectable = false;
+			
+			this.list.addEventListener(FeathersEventType.SCROLL_START, onScrollStart);
+			this.list.addEventListener(FeathersEventType.SCROLL_COMPLETE, onScrollComplete);
 			
 			// add a list for the bookmarks
 			this.list.itemRendererFactory = function():IListItemRenderer
@@ -603,6 +662,23 @@ package nl.powergeek.pinbored.screens
 			var listBg:Quad = new Quad(50, 50, 0x000000);
 			listBg.alpha = 0.3;
 			this.list.backgroundSkin = this.list.backgroundDisabledSkin = listBg;
+		}
+		
+		private function onScrollStart(event:starling.events.Event):void
+		{
+			trace('list scroll started');
+			this.list.addEventListener(starling.events.Event.SCROLL, onScrollHandler);
+		}
+		
+		private function onScrollComplete(event:starling.events.Event):void
+		{
+			trace('list scroll completed');
+			this.list.removeEventListener(starling.events.Event.SCROLL, onScrollHandler);
+		}
+		
+		private function onScrollHandler(event:starling.events.Event):void
+		{
+			trace('list scrolling...');
 		}
 		
 		override protected function draw():void

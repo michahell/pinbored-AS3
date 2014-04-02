@@ -151,7 +151,7 @@ package nl.powergeek.feathers.components
 					}
 				}
 				
-				// add editbutton listener
+				// add general data changed listener
 				if(this._data.hasOwnProperty("dataChanged")) {
 					this._dataChanged = this._data.dataChanged;
 					this._dataChanged.add(function():void {
@@ -328,10 +328,10 @@ package nl.powergeek.feathers.components
 			if( this.hiddenContent )
 			{
 				if (_hiddenContent.height > 0 && _hiddenContentHeight == 0){
-					//trace('hidden content height: ' + _hiddenContent.height);
 					_hiddenContentHeight = _hiddenContent.height;
 				}
 				if( isBeingEdited == false ) {
+					trace('insta collapsing HC!');
 					_hiddenContent.height = 0;
 					hiddenContentFadeOut();
 					_hiddenContent.visible = false;

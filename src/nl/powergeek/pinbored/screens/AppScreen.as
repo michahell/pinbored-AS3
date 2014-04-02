@@ -1,4 +1,4 @@
-package nl.powergeek.feathers.components
+package nl.powergeek.pinbored.screens
 {
 	import feathers.controls.Screen;
 	import feathers.core.PopUpManager;
@@ -59,15 +59,18 @@ package nl.powergeek.feathers.components
 		
 		public function hideLoading():void {
 			
-			var tween:Tween = new Tween(loadingIcon, PinboredDesktopTheme.ANIMATION_TIME, Transitions.EASE_OUT);
-			//tween.animate("y", loadingIcon.y - 30);
-			tween.animate("alpha", 0);
-			tween.onComplete = function():void {
-				loadingIcon.visible = false;
-				PopUpManager.removePopUp(loadingIcon, false);
-			};
-			
-			Starling.current.juggler.add(tween);
+			if(loadingIcon.alpha > 0) {
+				
+				var tween:Tween = new Tween(loadingIcon, PinboredDesktopTheme.ANIMATION_TIME, Transitions.EASE_OUT);
+				//tween.animate("y", loadingIcon.y - 30);
+				tween.animate("alpha", 0);
+				tween.onComplete = function():void {
+					loadingIcon.visible = false;
+					PopUpManager.removePopUp(loadingIcon, false);
+				};
+				
+				Starling.current.juggler.add(tween);
+			}
 		}
 	}
 }

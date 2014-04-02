@@ -12,6 +12,7 @@ package
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
 	import feathers.layout.VerticalLayout;
+	import feathers.motion.transitions.ScreenFadeTransitionManager;
 	import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
 	import feathers.system.DeviceCapabilities;
 	import feathers.themes.MetalWorksMobileTheme;
@@ -35,7 +36,8 @@ package
 		
 		private var 
 			_navigator:ScreenNavigator,
-			_transitionManager:ScreenSlidingStackTransitionManager;
+			_transitionManager:ScreenFadeTransitionManager;
+//			_transitionManager:ScreenSlidingStackTransitionManager;
 		
 		public function App()
 		{	
@@ -57,7 +59,8 @@ package
 			this._navigator = new ScreenNavigator();
 			this.addChild(this._navigator);
 			
-			this._transitionManager = new ScreenSlidingStackTransitionManager( this._navigator );
+//			this._transitionManager = new ScreenSlidingStackTransitionManager( this._navigator );
+			this._transitionManager = new ScreenFadeTransitionManager( this._navigator );
 			this._transitionManager.duration = 0.75;
 			this._transitionManager.ease = Transitions.EASE_IN_OUT;
 			

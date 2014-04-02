@@ -5,6 +5,7 @@ package nl.powergeek.pinbored.model
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.ScrollContainer;
 	import feathers.controls.TextInput;
+	import feathers.core.FeathersControl;
 	import feathers.data.ListCollection;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
@@ -87,7 +88,11 @@ package nl.powergeek.pinbored.model
 		{
 			this.bookmarkData = bookmarkData;
 			this.href = bookmarkData.href;
-			this.link = bookmarkData.link;
+			
+			// automagically populate the link field
+			setLink(this.href);
+			
+//			this.link = bookmarkData.link;
 			this.description = bookmarkData.description;
 			this.extended = bookmarkData.extended;
 			this.tags = Vector.<String>(String(bookmarkData.tags).split(" "));
@@ -144,8 +149,6 @@ package nl.powergeek.pinbored.model
 			
 			// add description editor
 			_descriptionInput = new TextInput();
-//			trace('_descriptionInput is editable? ' + _descriptionInput.isEditable);
-//			trace('_descriptionInput is enabled? ' + _descriptionInput.isEnabled);
 			_descriptionInput.textEditorProperties.multiline = true;
 			_descriptionInput.padding = 5;
 			
@@ -156,7 +159,7 @@ package nl.powergeek.pinbored.model
 				_descriptionInput.prompt = '[ enter description ]';
 			}
 			
-//			_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			_descriptionInput.addEventListener(Event.CHANGE, descriptionInputHandler);
 			var descriptionInputLd:AnchorLayoutData = new AnchorLayoutData(0, 10, NaN, 0);
 			_descriptionInput.layoutData = descriptionInputLd;
@@ -164,8 +167,6 @@ package nl.powergeek.pinbored.model
 			
 			// add link editor
 			_hrefInput = new TextInput();
-//			trace('_hrefInput is editable? ' + _hrefInput.isEditable);
-//			trace('_hrefInput is enabled? ' + _hrefInput.isEnabled);
 			_hrefInput.textEditorProperties.multiline = true;
 			_hrefInput.padding = 5;
 			
@@ -176,7 +177,7 @@ package nl.powergeek.pinbored.model
 				_hrefInput.prompt = '[ enter link ]';
 			}
 			
-//			_hrefInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			_hrefInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			_hrefInput.addEventListener(Event.CHANGE, hrefInputHandler);
 			var hild:AnchorLayoutData = new AnchorLayoutData();
 			hild.topAnchorDisplayObject = _descriptionInput;
@@ -188,8 +189,6 @@ package nl.powergeek.pinbored.model
 			
 			// add the extended / description label
 			_extendedInput = new TextInput();
-//			trace('_extendedInput is editable? ' + _extendedInput.isEditable);
-//			trace('_extendedInput is enabled? ' + _extendedInput.isEnabled);
 			_extendedInput.textEditorProperties.multiline = true;
 			_extendedInput.padding = 5;
 			
@@ -200,7 +199,7 @@ package nl.powergeek.pinbored.model
 				_extendedInput.prompt = '[ enter extended description ]';
 			}
 			
-//			_extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			_extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			_extendedInput.addEventListener(Event.CHANGE, extendedInputHandler);
 			var extendedInputLd:AnchorLayoutData = new AnchorLayoutData();
 			extendedInputLd.topAnchorDisplayObject = _hrefInput;
@@ -248,7 +247,7 @@ package nl.powergeek.pinbored.model
 			modifyButtonLd.topAnchorDisplayObject = _tagEditor;
 			modifyButtonLd.top = 10;
 			modifyButtonLd.right = 10;
-			modifyButtonLd.bottom = 5;
+			modifyButtonLd.bottom = 10;
 			_modifyButton.layoutData = modifyButtonLd;
 			hiddenContent.addChild(_modifyButton);
 			
@@ -263,7 +262,7 @@ package nl.powergeek.pinbored.model
 			rbld.top = 10;
 			rbld.rightAnchorDisplayObject = _modifyButton;
 			rbld.right = 5;
-			rbld.bottom = 5;
+			rbld.bottom = 10;
 			_revertButton.layoutData = rbld;
 			hiddenContent.addChild(_revertButton);
 			
@@ -276,6 +275,11 @@ package nl.powergeek.pinbored.model
 			
 			// add data changed general handler
 			dataChanged.add(dataChangedHandler);
+		}
+		
+		private function setLink(href:String):void
+		{
+			link = '<a href=\"' + href + '\">' + href + '</a>';
 		}
 		
 		private function dataChangedHandler():void 
@@ -330,6 +334,9 @@ package nl.powergeek.pinbored.model
 			var text:String = TextInput(event.target).text;
 			//trace('description changed: ' + text);
 			
+			// update straight away
+			//description = text;
+			
 			if(description != text)
 				isDescriptionChanged = true;
 			else
@@ -342,6 +349,9 @@ package nl.powergeek.pinbored.model
 		{
 			var text:String = TextInput(event.target).text;
 			//trace('href changed: ' + text);
+			
+			// update straight away
+			//href = text;
 			
 			if(href != text)
 				isHrefChanged = true;

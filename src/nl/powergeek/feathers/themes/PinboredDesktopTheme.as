@@ -300,6 +300,7 @@ package nl.powergeek.feathers.themes
 				var tfte:TextFieldTextEditor = new TextFieldTextEditor();
 				tfte.width = textInput.width;
 				tfte.height = textInput.height;
+				tfte.embedFonts = true;
 				tfte.wordWrap = true;
 				tfte.textFormat = TEXTFORMAT_TAG;
 				return tfte;
@@ -309,6 +310,7 @@ package nl.powergeek.feathers.themes
 				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
 				tr.width = textInput.width;
 				tr.height = textInput.height;
+				tr.embedFonts = true;
 				tr.wordWrap = true;
 				tr.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
 				return tr;
@@ -319,7 +321,7 @@ package nl.powergeek.feathers.themes
 		{
 			// draw quad
 			var backgroundSkin:Quad = new Quad(10, 10, 0x000000);
-			backgroundSkin.alpha = 0.3;
+			backgroundSkin.alpha = 0.2;
 			
 			// text input background
 			input.backgroundDisabledSkin = backgroundSkin;
@@ -332,6 +334,7 @@ package nl.powergeek.feathers.themes
 			input.textEditorFactory = function():ITextEditor {
 				var tfte:TextFieldTextEditor = new TextFieldTextEditor();
 				tfte.width = input.width;
+				tfte.embedFonts = true;
 				tfte.textFormat = TEXTFORMAT_TAG;
 				return tfte;
 			}
@@ -339,6 +342,7 @@ package nl.powergeek.feathers.themes
 			input.promptFactory = function():ITextRenderer {
 				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
 				tr.width = input.width;
+				tr.embedFonts = true;
 				tr.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
 				return tr;
 			}
@@ -636,7 +640,7 @@ package nl.powergeek.feathers.themes
 		{
 			// define background
 			var backgroundSkin:Quad = new Quad(10, 10, 0xFFFFFF);
-			backgroundSkin.alpha = 0.1;
+			backgroundSkin.alpha = 0;
 //			backgroundSkin.touchable = false;
 			
 			var backgroundDisabledSkin:Quad = new Quad(10, 10, 0xFFCCCC);
@@ -649,16 +653,19 @@ package nl.powergeek.feathers.themes
 			textInput.backgroundFocusedSkin = backgroundSkin;
 			textInput.backgroundSkin = backgroundSkin;
 			
+			textInput.promptProperties.embedFonts = true;
+			textInput.textEditorProperties.embedFonts = true;
+			
 			textInput.textEditorFactory = function():ITextEditor {
 				var tfte:TextFieldTextEditor = new TextFieldTextEditor();
-				tfte.width = textInput.width;
+//				tfte.width = textInput.width;
 				tfte.textFormat = TEXTFORMAT_TAG;
 				return tfte;
 			}
 				
 			textInput.promptFactory = function():ITextRenderer {
 				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
-				tr.width = textInput.width;
+//				tr.width = textInput.width;
 				tr.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
 				return tr;
 			}

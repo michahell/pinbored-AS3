@@ -142,17 +142,15 @@ package nl.powergeek.feathers.components
 			
 			// add tag layout group
 			this._componentLayoutGroup.addChild(_tagContainer);
-//			this._tagContainer.validate();
 			
 			// create and add textinput
-//			trace('tagEditor _textInput is editable? ' + _textInput.isEditable);
-//			trace('tagEditor _textInput is enabled? ' + _textInput.isEnabled);
 			this._textInput.prompt = this.textInputPrompt;
 //			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
 			this._textInput.padding = this._padding / 2;
 			var layoutData:AnchorLayoutData = new AnchorLayoutData();
 			layoutData.leftAnchorDisplayObject = _tagContainer;
 			layoutData.left = 5;
+			layoutData.right = 10;
 			layoutData.verticalCenter = 0;
 			this._textInput.layoutData = layoutData;
 			
@@ -177,26 +175,8 @@ package nl.powergeek.feathers.components
 			
 			this._componentLayoutGroup.addChild(this._textInput);
 			
-			// create searchbutton
-			_revertButton = new Button();
-			_revertButton.label = 'revert';
-			_revertButton.height = SEARCHBUTTON_HEIGHT;
-			_revertButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
-			_revertButton.addEventListener(Event.TRIGGERED, searchButtonTriggeredHandler); 
-				
-			var buttonLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			buttonLayoutData.verticalCenter = 0;
-			buttonLayoutData.right = this._padding;
-			_revertButton.layoutData = buttonLayoutData;
-			this._componentLayoutGroup.addChild(this._revertButton);
-			
 			// and invalidate, need to redraw this thing
 			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
-		}
-		
-		private function searchButtonTriggeredHandler():void
-		{
-			searchTagsTriggered.dispatch(this._tagNames);
 		}
 		
 		private function keyInputHandler(event:KeyboardEvent):void
@@ -308,10 +288,8 @@ package nl.powergeek.feathers.components
 		
 		public function removeAllTags():void
 		{
-			if(_tagsArray && _tagsArray.length > 0) {
-				_tagsArray.forEach(function(tag:Tag, index:uint, array:Array):void{
-					removeTag(tag, false);
-				});
+			while(_tagsArray && _tagsArray.length > 0) {
+				removeTag(_tagsArray[0], false);	
 			}
 		}
 		
@@ -333,12 +311,12 @@ package nl.powergeek.feathers.components
 			}
 			
 			// resize textinput to remaining width between tags and search button
-			var tfWidth:Number = _componentLayoutGroup.width - _tagContainer.width - _revertButton.width - this._padding * 3;
-			if(this._textInput.width != tfWidth) {
-				this._textInput.width = tfWidth; 
-				this._textInput.invalidate(INVALIDATION_FLAG_SIZE);
-				invalidate(INVALIDATION_FLAG_ALL);
-			}
+//			var tfWidth:Number = _componentLayoutGroup.width - _tagContainer.width - _revertButton.width - this._padding * 3;
+//			if(this._textInput.width != tfWidth) {
+//				this._textInput.width = tfWidth; 
+//				this._textInput.invalidate(INVALIDATION_FLAG_SIZE);
+//				invalidate(INVALIDATION_FLAG_ALL);
+//			}
 			
 			// separators need to be on top and bottom
 			if(this.useSeparators == true) {
