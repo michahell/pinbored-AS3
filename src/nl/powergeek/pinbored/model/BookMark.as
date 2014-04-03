@@ -68,7 +68,7 @@ package nl.powergeek.pinbored.model
 			link:String,
 			// these 2 layoutgroups have to be public for the item renderer.
 			accessory: LayoutGroup,
-			hiddenContent: LayoutGroup;
+			hiddenContent2: LayoutGroup;
 			
 		public const
 			staleConfirmed:Signal = new Signal(),
@@ -154,12 +154,12 @@ package nl.powergeek.pinbored.model
 			accessory.addChild(deleteButton);
 			
 			// create hidden content
-			hiddenContent = new LayoutGroup();
-			hiddenContent.touchable = true;
+			hiddenContent2 = new LayoutGroup();
+			hiddenContent2.touchable = true;
 			
 			// hidden content layout group
 			var hiddenContentLayout:AnchorLayout = new AnchorLayout();
-			hiddenContent.layout = hiddenContentLayout;
+			hiddenContent2.layout = hiddenContentLayout;
 			
 			// add description editor
 			_descriptionInput = new TextInput();
@@ -177,7 +177,7 @@ package nl.powergeek.pinbored.model
 			_descriptionInput.addEventListener(Event.CHANGE, descriptionInputHandler);
 			var descriptionInputLd:AnchorLayoutData = new AnchorLayoutData(0, 10, NaN, 0);
 			_descriptionInput.layoutData = descriptionInputLd;
-			hiddenContent.addChild(_descriptionInput);
+			hiddenContent2.addChild(_descriptionInput);
 			
 			// add link editor
 			_hrefInput = new TextInput();
@@ -199,7 +199,7 @@ package nl.powergeek.pinbored.model
 			hild.left = 0;
 			hild.right = 10;
 			_hrefInput.layoutData = hild;
-			hiddenContent.addChild(_hrefInput);
+			hiddenContent2.addChild(_hrefInput);
 			
 			// add the extended / description label
 			_extendedInput = new TextInput();
@@ -223,7 +223,7 @@ package nl.powergeek.pinbored.model
 			_extendedInput.layoutData = extendedInputLd;
 			
 			
-			hiddenContent.addChild(_extendedInput);
+			hiddenContent2.addChild(_extendedInput);
 			
 			// tag editor options
 			var tagTextOptions:Object = {
@@ -249,7 +249,7 @@ package nl.powergeek.pinbored.model
 			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
 				_tagEditor.addTag(tag, false);
 			});
-			hiddenContent.addChild(_tagEditor);
+			hiddenContent2.addChild(_tagEditor);
 			
 			// add the 'accept changes' button
 			_modifyButton = new Button();
@@ -263,7 +263,7 @@ package nl.powergeek.pinbored.model
 			modifyButtonLd.right = 10;
 			modifyButtonLd.bottom = 10;
 			_modifyButton.layoutData = modifyButtonLd;
-			hiddenContent.addChild(_modifyButton);
+			hiddenContent2.addChild(_modifyButton);
 			
 			// add the 'revert changes' button
 			_revertButton = new Button();
@@ -278,7 +278,7 @@ package nl.powergeek.pinbored.model
 			rbld.right = 5;
 			rbld.bottom = 10;
 			_revertButton.layoutData = rbld;
-			hiddenContent.addChild(_revertButton);
+			hiddenContent2.addChild(_revertButton);
 			
 			// add signals to Xor Signal
 			dataChanged.addSignal(descriptionChanged);
