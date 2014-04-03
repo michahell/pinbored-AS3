@@ -19,7 +19,7 @@ package nl.powergeek.REST
 			format:String = '',
 			data:String = '',
 			payload:URLRequest = null,
-			signal:Signal = null,
+			signalSuccess:Signal = null,
 			signalError:Signal = null,
 			callback:Function = null,
 			callbackError:Function = null,
@@ -45,8 +45,8 @@ package nl.powergeek.REST
 				throw new Error('Either the (local) url property or the \'urlOverride\' property has to be set!');
 			
 			// optional request signal
-			if(params.signal && params.signal != null)
-				signal = params.signal;
+			if(params.signalSuccess && params.signalSuccess != null)
+				signalSuccess = params.signalSuccess;
 			
 			// optional request callback
 			if(params.callback && params.callback != null)

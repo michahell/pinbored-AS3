@@ -48,12 +48,25 @@ package nl.powergeek.pinbored.model
 			
 		// data related
 		public var
+			// raw data object
 			bookmarkData: Object,
+			// data
 			href:String,
-			link:String,
 			description:String,
 			extended:String,
 			tags:Vector.<String>,
+			shared:String,
+			toread:String,
+			// new data (when modifying)
+			href_new:String,
+			description_new:String,
+			extended_new:String,
+			tags_new:Vector.<String>,
+			shared_new:String,
+			toread_new:String,
+			// generated from data
+			link:String,
+			// these 2 layoutgroups have to be public for the item renderer.
 			accessory: LayoutGroup,
 			hiddenContent: LayoutGroup;
 			
@@ -82,20 +95,21 @@ package nl.powergeek.pinbored.model
 			isTagsChanged:Boolean = false,
 			isDescriptionChanged:Boolean = false,
 			isExtendedChanged:Boolean = false;
+			public var bookmarkData_new:Object;
 			
 			
 		public function BookMark(bookmarkData:Object)
 		{
 			this.bookmarkData = bookmarkData;
 			this.href = bookmarkData.href;
-			
-			// automagically populate the link field
-			setLink(this.href);
-			
-//			this.link = bookmarkData.link;
 			this.description = bookmarkData.description;
 			this.extended = bookmarkData.extended;
 			this.tags = Vector.<String>(String(bookmarkData.tags).split(" "));
+			this.shared = bookmarkData.shared;
+			this.toread = bookmarkData.toread;
+			
+			// automagically populate the link field
+			setLink(this.href);
 			
 			this._icons.layout = new HorizontalLayout();
 			
@@ -159,7 +173,7 @@ package nl.powergeek.pinbored.model
 				_descriptionInput.prompt = '[ enter description ]';
 			}
 			
-			_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+//			_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			_descriptionInput.addEventListener(Event.CHANGE, descriptionInputHandler);
 			var descriptionInputLd:AnchorLayoutData = new AnchorLayoutData(0, 10, NaN, 0);
 			_descriptionInput.layoutData = descriptionInputLd;
@@ -177,7 +191,7 @@ package nl.powergeek.pinbored.model
 				_hrefInput.prompt = '[ enter link ]';
 			}
 			
-			_hrefInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+//			_hrefInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			_hrefInput.addEventListener(Event.CHANGE, hrefInputHandler);
 			var hild:AnchorLayoutData = new AnchorLayoutData();
 			hild.topAnchorDisplayObject = _descriptionInput;
@@ -199,7 +213,7 @@ package nl.powergeek.pinbored.model
 				_extendedInput.prompt = '[ enter extended description ]';
 			}
 			
-			_extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+//			_extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			_extendedInput.addEventListener(Event.CHANGE, extendedInputHandler);
 			var extendedInputLd:AnchorLayoutData = new AnchorLayoutData();
 			extendedInputLd.topAnchorDisplayObject = _hrefInput;
@@ -277,6 +291,16 @@ package nl.powergeek.pinbored.model
 			dataChanged.add(dataChangedHandler);
 		}
 		
+		
+		public function removeUrlChecker():void
+		{
+			this._urlChecker = null;
+		}
+		
+		public function toString():String {
+			return '' + this.href + ', ' + this.extended + ', ' + this.tags.toString();
+		}
+		
 		private function setLink(href:String):void
 		{
 			link = '<a href=\"' + href + '\">' + href + '</a>';
@@ -298,28 +322,10 @@ package nl.powergeek.pinbored.model
 			}
 		}
 		
-		private function revertButtonTriggeredHandler(event:Event):void
-		{
-			_hrefInput.text = href;
-			_extendedInput.text = extended;
-			_descriptionInput.text = description;
-			
-			_tagEditor.removeAllTags();
-			
-			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
-				_tagEditor.addTag(tag);
-			});
-		}
-		
-		private function modifyButtonTriggeredHandler(event:Event):void
-		{
-			isChanged = false;
-			//TODO save
-		}
-		
 		private function tagEditorHandler(changedTags:Vector.<String>):void
 		{
-			//trace('tags changed: ' + 'changed tags: ', changedTags.toString(), 'tags: ', tags.toString());
+			// store new value
+			tags_new = changedTags;
 			
 			if(tags.toString() != changedTags.toString())
 				isTagsChanged = true;
@@ -332,10 +338,9 @@ package nl.powergeek.pinbored.model
 		private function descriptionInputHandler(event:Event):void
 		{
 			var text:String = TextInput(event.target).text;
-			//trace('description changed: ' + text);
 			
-			// update straight away
-			//description = text;
+			// store new value
+			description_new = text;
 			
 			if(description != text)
 				isDescriptionChanged = true;
@@ -348,10 +353,9 @@ package nl.powergeek.pinbored.model
 		private function hrefInputHandler(event:Event):void
 		{
 			var text:String = TextInput(event.target).text;
-			//trace('href changed: ' + text);
 			
-			// update straight away
-			//href = text;
+			// store new value
+			href_new = text;
 			
 			if(href != text)
 				isHrefChanged = true;
@@ -364,7 +368,9 @@ package nl.powergeek.pinbored.model
 		private function extendedInputHandler(event:Event):void
 		{
 			var text:String = TextInput(event.target).text;
-			//trace('extended description changed: ' + text);
+			
+			// store new value
+			extended_new = text;
 			
 			if(extended != text)
 				isExtendedChanged = true;
@@ -391,10 +397,23 @@ package nl.powergeek.pinbored.model
 				
 				if(stale) {
 					bookmark.staleConfirmed.dispatch();
+					
+					// remove icon if exists
+					if(_icons.contains(_iconCross))
+						_icons.removeChild(_icons);
+					
+					// add icon
 					_icons.addChild(_iconCross);
 					_iconCross.setActive();
+					
 				} else {
 					bookmark.notStaleConfirmed.dispatch();
+					
+					// remove icon if exists
+					if(_icons.contains(_iconCheckmark))
+						_icons.removeChild(_iconCheckmark);
+					
+					// add icon
 					_icons.addChild(_iconCheckmark);
 					_iconCheckmark.setActive();
 				}
@@ -418,13 +437,38 @@ package nl.powergeek.pinbored.model
 			}
 		}
 		
-		public function removeUrlChecker():void
+		private function revertButtonTriggeredHandler(event:Event):void
 		{
-			this._urlChecker = null;
+			_hrefInput.text = href;
+			_extendedInput.text = extended;
+			_descriptionInput.text = description;
+			
+			_tagEditor.removeAllTags();
+			
+			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
+				_tagEditor.addTag(tag);
+			});
 		}
 		
-		public function toString():String {
-			return '' + this.href + ', ' + this.extended + ', ' + this.tags.toString();
+		private function modifyButtonTriggeredHandler(event:Event):void
+		{
+			isChanged = false;
+			
+			// check for modifications
+			href_new = (href_new == null) ? href : href_new;
+			description_new = (description_new == null) ? description : description_new;
+			extended_new = (extended_new == null) ? extended : extended_new;
+			tags_new = (tags_new == null) ? tags : tags_new;
+			
+			// temp workaround because shared and toread are not yet modifiable
+			shared_new = (shared_new == null) ? shared : shared_new;
+			toread_new = (toread_new == null) ? toread : toread_new;
+			
+			// notify that edit request should be performed
+			editConfirmed.dispatch(this);
+			
+			// collapse item renderer
+			editTapped.dispatch(this);
 		}
 	}
 }

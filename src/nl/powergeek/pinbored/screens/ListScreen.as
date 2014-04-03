@@ -199,13 +199,11 @@ package nl.powergeek.pinbored.screens
 			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_EXPANDING, function(event:starling.events.Event):void {
 				trace('receiving BOOKMARK_EXPANDING event from custom item renderer...');
 				var collapsedBookmark:BookMark = BookMark(event.data);
-				// TODO stuff with collapsing bookmark
 			});
 			
 			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_FOLDING, function(event:starling.events.Event):void {
 				trace('receiving BOOKMARK_FOLDING event from custom item renderer...');
 				var foldedBookmark:BookMark = BookMark(event.data);
-				// TODO stuff with folding bookmark
 			});
 		}
 		
@@ -279,7 +277,6 @@ package nl.powergeek.pinbored.screens
 				var parsedResponse:Object = JSON.parse(event.target.data as String);
 				
 				parsedResponse.forEach(function(bookmark:Object, index:int, array:Array):void {
-					// quick href field replace (for auto-linking with hypertextfieldtextrenderer
 					ListScreenModel.rawBookmarkDataList.push(bookmark);
 				});
 				
@@ -325,6 +322,7 @@ package nl.powergeek.pinbored.screens
 			ListScreenModel.bookmarksList.forEach(function(bm:BookMark, index:uint, array:Array):void {
 				bm.editTapped..removeAll();
 				bm.deleteTapped.removeAll();
+				bm.editConfirmed.removeAll();
 				bm.staleConfirmed.removeAll();
 				bm.notStaleConfirmed.removeAll();
 			});
@@ -340,22 +338,43 @@ package nl.powergeek.pinbored.screens
 				
 				// if bookmark DELETE is tapped
 				bm.deleteTapped.addOnce(function(tappedBookmark:BookMark):void {
-					trace('bookmark delete tapped!');
-					// execute request and attach listener to returned signal
-					var returnSignal:Signal = PinboardService.deleteBookmark(tappedBookmark);
-					returnSignal.addOnce(function():void {
+					
+					var requestCompleted:Function = function(event:flash.events.Event):void {
 						trace('bookmark delete request completed.');
 						// update the bookmark by confirming delete
 						tappedBookmark.deleteConfirmed.dispatch();
-					});
+					}
 					
-					// mock delete
-					setTimeout(function():void {
-						trace('[MOCK] bookmark delete request completed.');
-						// update the bookmark by confirming delete
-						tappedBookmark.deleteConfirmed.dispatch();
-					}, 500);
+					var requestFailed:Function = function(event:flash.events.Event):void {
+						trace('bookmark delete request failed.');
+					}
 					
+					// execute request and attach listener to returned signal
+					PinboardService.deleteBookmark(tappedBookmark, false).then(requestCompleted, requestFailed);
+					
+					// mock deleted confirmed
+//					setTimeout(function():void {
+//						trace('[MOCK] bookmark delete request completed.');
+//						// update the bookmark by confirming delete
+//						tappedBookmark.deleteConfirmed.dispatch();
+//					}, 500);
+					
+				});
+				
+				bm.editConfirmed.add(function(editedBookmark:BookMark):void {
+					
+					var requestCompleted:Function = function(event:flash.events.Event):void {
+						trace('bookmark update request completed.');
+						ListScreenModel.updateInLists(editedBookmark);
+						list.dataProvider.updateItemAt(list.dataProvider.getItemIndex(editedBookmark.bookmarkData));
+					};
+					
+					var requestFailed:Function = function(event:flash.events.Event):void {
+						trace('bookmark update request failed.');
+					};
+					
+					// execute request and attach promise functions
+					PinboardService.updateBookmark(editedBookmark, false).then(requestCompleted, requestFailed);
 				});
 				
 			});

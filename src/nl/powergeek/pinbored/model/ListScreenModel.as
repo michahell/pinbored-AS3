@@ -246,5 +246,19 @@ package nl.powergeek.pinbored.model
 			// remove from main bookmarks list
 			bookmarksList.splice(bookmarksList.indexOf(bookmarkData), 1);
 		}
+		
+		public static function updateInLists(bm:BookMark):void
+		{
+			var index1:int = rawBookmarkDataListFiltered.indexOf(bm.bookmarkData);
+			var index2:int = bookmarksList.indexOf(bm.bookmarkData);
+			
+			// update item in filtered bookmarks list
+			if(index1 != -1)
+				rawBookmarkDataListFiltered.splice(index1, 1, bm.bookmarkData_new);
+			
+			// update item in main bookmarks list
+			if(index2 != -1)
+				bookmarksList.splice(index2, 1, bm.bookmarkData_new);
+		}
 	}
 }

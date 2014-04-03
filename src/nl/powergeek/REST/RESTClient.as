@@ -1,5 +1,8 @@
 package nl.powergeek.REST
 {
+	import com.codecatalyst.promise.Deferred;
+	import com.codecatalyst.promise.Promise;
+	
 	import flash.events.Event;
 	import flash.events.HTTPStatusEvent;
 	import flash.events.IOErrorEvent;
@@ -9,6 +12,8 @@ package nl.powergeek.REST
 	import flash.net.URLRequest;
 	import flash.net.URLRequestMethod;
 	import flash.net.URLVariables;
+	
+	import org.osflash.signals.Signal;
 
 	public class RESTClient
 	{
@@ -76,8 +81,8 @@ package nl.powergeek.REST
 				loader.removeEventListener(event.type, arguments.callee);
 				
 				// dispatch signal if present
-				if(restrequest.signal != null)
-					restrequest.signal.dispatch(event);
+				if(restrequest.signalSuccess != null)
+					restrequest.signalSuccess.dispatch(event);
 				
 				// call callback if present
 				if(restrequest.callback != null)
@@ -122,8 +127,25 @@ package nl.powergeek.REST
 			return restrequest;
 		}
 		
-		public static function doDirectRequest(urlRequest:URLRequest):void {
+		public static function doPromiseRequest(params:Object, dryrun:Boolean, deferred:Deferred):void
+		{
+			// 'future' signals
+			var success:Signal = new Signal(Event);
+			var error:Signal = new Signal(Event);
 			
+			// add signals to request
+			params.signalSuccess = success;
+			params.signalError = error;
+			
+			// build the request
+			var request:RESTRequest = new RESTRequest(params);
+			
+			// attach listeners to request complete and request fail
+			success.addOnce(function(event:Event):void { deferred.resolve(event); });
+			error.addOnce(function(event:Event):void { deferred.reject(event); });
+			
+			// do the request (or dryrun it)
+			RESTClient.doRequest(request, dryrun);
 		}
 		
 		protected static function ioErrorHandler(event:IOErrorEvent):void

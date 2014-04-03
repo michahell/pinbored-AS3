@@ -40,11 +40,19 @@ package nl.powergeek.feathers.themes
 	public class PinboredDesktopTheme extends MetalWorksMobileTheme
 	{
 		// embedded fonts
-		[Embed(source="assets/fonts/pinbored/OpenSans-Light.ttf", fontName="OpenSansLight", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
+//		[Embed(source="assets/fonts/pinbored/OpenSans-Light.ttf", fontName="OpenSansLight", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
+//		private static const OpenSansLight:Class;
+//		public static var OpenSansLightFont:Font = new OpenSansLight();
+//		
+//		[Embed(source="assets/fonts/pinbored/OpenSans-Bold.ttf", fontName="OpenSansBold", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
+//		private static const OpenSansBold:Class;
+//		public static var OpenSansBoldFont:Font = new OpenSansBold();
+		
+		[Embed(source="assets/fonts/pinbored/OpenSans-Light.ttf", fontName="OpenSansLight", mimeType="application/x-font", embedAsCFF="false")]
 		private static const OpenSansLight:Class;
 		public static var OpenSansLightFont:Font = new OpenSansLight();
 		
-		[Embed(source="assets/fonts/pinbored/OpenSans-Bold.ttf", fontName="OpenSansBold", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
+		[Embed(source="assets/fonts/pinbored/OpenSans-Bold.ttf", fontName="OpenSansBold", fontWeight="bold", mimeType="application/x-font", embedAsCFF="false")]
 		private static const OpenSansBold:Class;
 		public static var OpenSansBoldFont:Font = new OpenSansBold();
 		
@@ -153,7 +161,6 @@ package nl.powergeek.feathers.themes
 			TEXTFORMAT_SCREEN_TITLE:TextFormat = new TextFormat(OpenSansLightFont.fontName, 20, 0xEEEEEE, false),
 			
 			TEXTFORMAT_BOOKMARK_DESCRIPTION:TextFormat = new TextFormat(OpenSansLightFont.fontName, 13, 0xEEEEEE, false),
-			//TEXTFORMAT_BOOKMARK_HREF:TextFormat = new TextFormat(OpenSansLightFont.fontName, 12, 0xBBBBBB, false),
 			TEXTFORMAT_BOOKMARK_HREF:TextFormat = new TextFormat(OpenSansLightFont.fontName, 12, 0x55BBFF, false, null, true),
 			
 			TEXTFORMAT_PAGER:TextFormat = new TextFormat(OpenSansBoldFont.fontName, 10, 0xEEEEEE, true),
@@ -203,14 +210,6 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(Label, bookmarkLabelInitializer, LABEL_BOOKMARK_DESCRIPTION);
 			this.setInitializerForClass(Label, bookmarkHrefInitializer, LABEL_BOOKMARK_HREF);
 			
-			// pager initializers
-			this.setInitializerForClass(Pager, pagerDefaultInitializer, PAGER_HORIZONTAL_DEFAULT);
-			
-		}
-		
-		private function pagerDefaultInitializer(pager:Pager):void
-		{
-			// TODO default pager skin settings
 		}
 		
 		override protected function scrollContainerToolbarInitializer(container:ScrollContainer):void {

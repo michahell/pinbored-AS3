@@ -1,7 +1,6 @@
 package nl.powergeek.pinbored.model
 {
 	import feathers.controls.ScreenNavigator;
-	import feathers.data.ListCollection;
 	
 	import flash.events.Event;
 	
