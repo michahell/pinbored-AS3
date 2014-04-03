@@ -88,6 +88,7 @@ package nl.powergeek.feathers.components
 			hrefLayoutData.topAnchorDisplayObject = this._description;
 			hrefLayoutData.top = this._padding / 6;
 			hrefLayoutData.left = this._padding;
+//			hrefLayoutData.bottom = this._padding;
 			this._link.layoutData = hrefLayoutData;
 			this._link.nameList.add(PinboredDesktopTheme.LABEL_BOOKMARK_HREF);
 			this.addChild(this._link);
@@ -98,7 +99,7 @@ package nl.powergeek.feathers.components
 
 		override protected function commitData():void
 		{
-			// trace('commitData of item at index: ' + this.index);
+			trace('commitData of item at index: ' + this.index);
 			
 			if(this._data)
 			{

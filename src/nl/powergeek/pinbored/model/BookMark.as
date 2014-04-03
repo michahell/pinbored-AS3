@@ -50,6 +50,7 @@ package nl.powergeek.pinbored.model
 		public var
 			// raw data object
 			bookmarkData: Object,
+			bookmarkData_new:Object,
 			// data
 			href:String,
 			description:String,
@@ -68,7 +69,7 @@ package nl.powergeek.pinbored.model
 			link:String,
 			// these 2 layoutgroups have to be public for the item renderer.
 			accessory: LayoutGroup,
-			hiddenContent2: LayoutGroup;
+			hiddenContent: LayoutGroup;
 			
 		public const
 			staleConfirmed:Signal = new Signal(),
@@ -95,7 +96,6 @@ package nl.powergeek.pinbored.model
 			isTagsChanged:Boolean = false,
 			isDescriptionChanged:Boolean = false,
 			isExtendedChanged:Boolean = false;
-			public var bookmarkData_new:Object;
 			
 			
 		public function BookMark(bookmarkData:Object)
@@ -154,12 +154,12 @@ package nl.powergeek.pinbored.model
 			accessory.addChild(deleteButton);
 			
 			// create hidden content
-			hiddenContent2 = new LayoutGroup();
-			hiddenContent2.touchable = true;
+			hiddenContent = new LayoutGroup();
+			hiddenContent.touchable = true;
 			
 			// hidden content layout group
 			var hiddenContentLayout:AnchorLayout = new AnchorLayout();
-			hiddenContent2.layout = hiddenContentLayout;
+			hiddenContent.layout = hiddenContentLayout;
 			
 			// add description editor
 			_descriptionInput = new TextInput();
@@ -177,7 +177,7 @@ package nl.powergeek.pinbored.model
 			_descriptionInput.addEventListener(Event.CHANGE, descriptionInputHandler);
 			var descriptionInputLd:AnchorLayoutData = new AnchorLayoutData(0, 10, NaN, 0);
 			_descriptionInput.layoutData = descriptionInputLd;
-			hiddenContent2.addChild(_descriptionInput);
+			hiddenContent.addChild(_descriptionInput);
 			
 			// add link editor
 			_hrefInput = new TextInput();
@@ -199,7 +199,7 @@ package nl.powergeek.pinbored.model
 			hild.left = 0;
 			hild.right = 10;
 			_hrefInput.layoutData = hild;
-			hiddenContent2.addChild(_hrefInput);
+			hiddenContent.addChild(_hrefInput);
 			
 			// add the extended / description label
 			_extendedInput = new TextInput();
@@ -223,7 +223,7 @@ package nl.powergeek.pinbored.model
 			_extendedInput.layoutData = extendedInputLd;
 			
 			
-			hiddenContent2.addChild(_extendedInput);
+			hiddenContent.addChild(_extendedInput);
 			
 			// tag editor options
 			var tagTextOptions:Object = {
@@ -249,7 +249,7 @@ package nl.powergeek.pinbored.model
 			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
 				_tagEditor.addTag(tag, false);
 			});
-			hiddenContent2.addChild(_tagEditor);
+			hiddenContent.addChild(_tagEditor);
 			
 			// add the 'accept changes' button
 			_modifyButton = new Button();
@@ -263,7 +263,7 @@ package nl.powergeek.pinbored.model
 			modifyButtonLd.right = 10;
 			modifyButtonLd.bottom = 10;
 			_modifyButton.layoutData = modifyButtonLd;
-			hiddenContent2.addChild(_modifyButton);
+			hiddenContent.addChild(_modifyButton);
 			
 			// add the 'revert changes' button
 			_revertButton = new Button();
@@ -278,7 +278,7 @@ package nl.powergeek.pinbored.model
 			rbld.right = 5;
 			rbld.bottom = 10;
 			_revertButton.layoutData = rbld;
-			hiddenContent2.addChild(_revertButton);
+			hiddenContent.addChild(_revertButton);
 			
 			// add signals to Xor Signal
 			dataChanged.addSignal(descriptionChanged);

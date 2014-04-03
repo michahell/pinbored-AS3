@@ -40,14 +40,6 @@ package nl.powergeek.feathers.themes
 	public class PinboredDesktopTheme extends MetalWorksMobileTheme
 	{
 		// embedded fonts
-//		[Embed(source="assets/fonts/pinbored/OpenSans-Light.ttf", fontName="OpenSansLight", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
-//		private static const OpenSansLight:Class;
-//		public static var OpenSansLightFont:Font = new OpenSansLight();
-//		
-//		[Embed(source="assets/fonts/pinbored/OpenSans-Bold.ttf", fontName="OpenSansBold", mimeType="application/x-font", embedAsCFF="false", fontFamily="OpenSans")]
-//		private static const OpenSansBold:Class;
-//		public static var OpenSansBoldFont:Font = new OpenSansBold();
-		
 		[Embed(source="assets/fonts/pinbored/OpenSans-Light.ttf", fontName="OpenSansLight", mimeType="application/x-font", embedAsCFF="false")]
 		private static const OpenSansLight:Class;
 		public static var OpenSansLightFont:Font = new OpenSansLight();

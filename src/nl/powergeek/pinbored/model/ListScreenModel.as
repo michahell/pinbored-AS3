@@ -21,9 +21,6 @@ package nl.powergeek.pinbored.model
 		public static const
 			resultPageChanged:Signal = new Signal(Number);
 		
-		public static const
-			BOOKMARKS_PER_PAGE:uint = 25;
-		
 		
 		public function ListScreenModel()
 		{
@@ -224,7 +221,7 @@ package nl.powergeek.pinbored.model
 			numResultPages = -1;
 			
 			// first, page raw bookmark results (this list can be huge)
-			rawBookmarkListCollectionPager = new ArrayCollectionPager(array, BOOKMARKS_PER_PAGE);
+			rawBookmarkListCollectionPager = new ArrayCollectionPager(array, AppSettings.BOOKMARKS_PER_PAGE);
 			
 			// return the number of pages
 			return rawBookmarkListCollectionPager.numPages;
