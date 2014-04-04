@@ -646,6 +646,7 @@ package nl.powergeek.pinbored.screens
 			this.panel.addChild(this.searchTags);
 			
 			// add the list result paging bar, initially set to invisible
+			//TODO redo the paging component. have transparent buttons on a colored background. only when they are hovered they change to dark transp. black buttons! much easier.
 			this.pagingControl = new Pager();
 			this.pagingControl.visible = false;
 			this.panel.addChild(this.pagingControl);

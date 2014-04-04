@@ -1,5 +1,6 @@
 package nl.powergeek.pinbored.screens
 {
+	import com.codecatalyst.promise.Deferred;
 	import com.codecatalyst.promise.Promise;
 	
 	import feathers.controls.Button;
@@ -34,6 +35,7 @@ package nl.powergeek.pinbored.screens
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
+	import starling.display.DisplayObject;
 	import starling.display.Image;
 	import starling.display.Quad;
 	import starling.events.Event;
@@ -62,7 +64,8 @@ package nl.powergeek.pinbored.screens
 			
 		public const
 			LOGINBOX_WIDTH:Number = 500,
-			LOGINBOX_HEIGHT:Number = 300;
+			LOGINBOX_HEIGHT:Number = 300,
+			LOGINBOX_ANIMATE_IN_HEIGHT:Number = 50;
 
 		private var 
 			loadingIcon:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_LOADING())),
@@ -94,12 +97,61 @@ package nl.powergeek.pinbored.screens
 			// remove listener
 			owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, onTransitionComplete);
 			
-			//TODO tween-in login box and its items
+			// tween-in login box and its items
+			fadeLoginBox(1).then(function(result:String):void {
+				// testing quick login fix
+				CONFIG::TESTING {
+					login();
+				}
+			});
 			
-			// testing quick login fix
-			CONFIG::TESTING {
-				this.login();
+		}
+		
+		private function fadeLoginBox(alpha:Number):Promise
+		{
+			var deferred:Deferred = new Deferred();
+			
+			// temp set some properties
+			loginBoxOuter.y -= LOGINBOX_ANIMATE_IN_HEIGHT;
+			loginBoxInner.y -= LOGINBOX_ANIMATE_IN_HEIGHT;
+			
+			// all login items get alpha 0 and get pulled up a bit
+			for(var i:uint = 0; i < loginBoxInner.numChildren; i++) {
+				var child:DisplayObject = loginBoxInner.getChildAt(i);
+				child.alpha = 0;
+				child.y -= LOGINBOX_ANIMATE_IN_HEIGHT / 2;
 			}
+			
+			// tweens
+			var tween:Tween = new Tween(loginBoxOuter, PinboredDesktopTheme.ANIMATION_TIME, Transitions.EASE_OUT);
+			tween.animate("y", loginBoxOuter.y + LOGINBOX_ANIMATE_IN_HEIGHT);
+			tween.animate("alpha", 1);
+			
+			var tween2:Tween = new Tween(loginBoxInner, PinboredDesktopTheme.ANIMATION_TIME, Transitions.EASE_OUT);
+			tween2.animate("y", loginBoxInner.y + LOGINBOX_ANIMATE_IN_HEIGHT);
+			tween2.animate("alpha", 1);
+			
+			tween2.onComplete = function():void {
+				// tween in children
+				for(var i:uint = 0; i < loginBoxInner.numChildren; i++) {
+					var child:DisplayObject = loginBoxInner.getChildAt(i);
+					
+					var tween3:Tween = new Tween(child, PinboredDesktopTheme.ANIMATION_TIME, Transitions.EASE_OUT);
+					tween3.animate("y", child.y + LOGINBOX_ANIMATE_IN_HEIGHT / 2);
+					tween3.animate("alpha", 1);
+					
+					Starling.current.juggler.add(tween3);
+				}
+				// add delayed call
+				Starling.current.juggler.delayCall(function():void {
+					deferred.resolve('yay!');
+				}, PinboredDesktopTheme.ANIMATION_TIME);
+			};
+			
+			Starling.current.juggler.add(tween);
+			Starling.current.juggler.add(tween2);
+			
+			return deferred.promise;
 		}
 		
 		private function createGUI():void
@@ -200,6 +252,10 @@ package nl.powergeek.pinbored.screens
 			this.loginButton.addEventListener(FeathersEventType.ENTER, loginTriggeredEnterHandler);
 			this.addEventListener(FeathersEventType.ENTER, loginTriggeredEnterHandler);
 			this.loginBoxInner.addChild( loginButton );
+			
+			// set the login box containers invisible for tween in
+			loginBoxOuter.alpha = 0;
+			loginBoxInner.alpha = 0;
 		}
 		
 		protected function resetIcons():void {
