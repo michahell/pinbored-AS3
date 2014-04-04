@@ -13,7 +13,9 @@ package nl.powergeek.pinbored.model
 			BOOKMARK_FOLDED:String = 'bookmark-folded-event',
 			
 			BOOKMARK_EDITED:String = 'bookmark-edited-event',
-			BOOKMARK_DELETED:String = 'bookmark-deleted-event';
+			BOOKMARK_DELETED:String = 'bookmark-deleted-event',
+			
+			ITEM_RENDERER_COMMIT_DATA:String = 'bookmark-commit-data-event';
 		
 		public function BookmarkEvent(type:String, bubbles:Boolean=false, data:Object=null)
 		{

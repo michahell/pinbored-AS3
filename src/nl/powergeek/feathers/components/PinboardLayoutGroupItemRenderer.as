@@ -161,6 +161,9 @@ package nl.powergeek.feathers.components
 					});
 				}
 			}
+			
+			// dispatch commitData event
+			dispatchEventWith(BookmarkEvent.ITEM_RENDERER_COMMIT_DATA);
 		}
 		
 		override protected function preLayout():void

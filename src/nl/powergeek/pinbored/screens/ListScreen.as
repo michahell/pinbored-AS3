@@ -184,10 +184,19 @@ package nl.powergeek.pinbored.screens
 			
 			if(itemRenderer.isCreated != true) {
 				itemRenderer.addEventListener(FeathersEventType.CREATION_COMPLETE, function(event:starling.events.Event):void {
+					// remove listener
+					itemRenderer.removeEventListener(FeathersEventType.CREATION_COMPLETE, arguments.callee);
+					// call insta collapse
 					itemRenderer.instaCollapse();
 				});
 			} else {
-				itemRenderer.instaCollapse();
+				itemRenderer.addEventListener(BookmarkEvent.ITEM_RENDERER_COMMIT_DATA, function():void {
+					// remove listener
+					itemRenderer.removeEventListener(BookmarkEvent.ITEM_RENDERER_COMMIT_DATA, arguments.callee);
+					//TODO i should only execute the following function AFTER commitData has been called!
+					// call insta collapse
+					itemRenderer.instaCollapse();
+				})
 			}
 			
 			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_DELETED, function(event:starling.events.Event):void {
