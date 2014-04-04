@@ -193,7 +193,6 @@ package nl.powergeek.pinbored.screens
 				itemRenderer.addEventListener(BookmarkEvent.ITEM_RENDERER_COMMIT_DATA, function():void {
 					// remove listener
 					itemRenderer.removeEventListener(BookmarkEvent.ITEM_RENDERER_COMMIT_DATA, arguments.callee);
-					//TODO i should only execute the following function AFTER commitData has been called!
 					// call insta collapse
 					itemRenderer.instaCollapse();
 				})

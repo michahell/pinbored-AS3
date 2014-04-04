@@ -50,7 +50,6 @@ package nl.powergeek.pinbored.screens
 			iconContainer:LayoutGroup,
 			loginboxBackground:Quad,
 			loginHeader:Label,
-			infoLabel:Label,
 			usernameInput:TextInput,
 			passwordInput:TextInput,
 			loginButton:Button,
@@ -74,8 +73,6 @@ package nl.powergeek.pinbored.screens
 		public function LoginScreen()
 		{
 			super()
-			// TODO add pinbored logo to loginscreen
-			// TODO update text styles on login screen
 		}
 		
 		override protected function initialize():void
@@ -96,6 +93,8 @@ package nl.powergeek.pinbored.screens
 		{
 			// remove listener
 			owner.removeEventListener(FeathersEventType.TRANSITION_COMPLETE, onTransitionComplete);
+			
+			//TODO tween-in login box and its items
 			
 			// testing quick login fix
 			CONFIG::TESTING {
@@ -165,15 +164,18 @@ package nl.powergeek.pinbored.screens
 			
 			resetIcons();
 			
+			// create logo
+			var logo:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.LOGO_TRANSPARENT(), true));
+			//logo.scaleX = logo.scaleY = 0.75;
+			logo.alpha = 0.75;
+			this.loginBoxInner.addChild(logo);
+			
 			// create a login label text
 			loginHeader = new Label();
-			loginHeader.text = 'login to use Pinbored';
+			loginHeader.textRendererProperties.multiline = true;
+			loginHeader.text = 'login to Pinbored with your\nPinboard username and password';
+			loginHeader.nameList.add(PinboredDesktopTheme.LABEL_TAG_TEXTRENDERER);
 			this.loginBoxInner.addChild(loginHeader);
-			
-			// create a sub login info label text
-			infoLabel = new Label();
-			infoLabel.text = 'with your Pinboard username and password';
-			this.loginBoxInner.addChild(infoLabel);
 			
 			// create a username input
 			usernameInput = new TextInput();
