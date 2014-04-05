@@ -7,10 +7,12 @@ package nl.powergeek.pinbored.model
 	import feathers.controls.TextInput;
 	import feathers.core.FeathersControl;
 	import feathers.data.ListCollection;
+	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.AnchorLayoutData;
 	import feathers.layout.HorizontalLayout;
 	
+	import flash.errors.InvalidSWFError;
 	import flash.utils.setTimeout;
 	
 	import nl.powergeek.feathers.components.Tag;
@@ -173,8 +175,9 @@ package nl.powergeek.pinbored.model
 				_descriptionInput.prompt = '[ enter description ]';
 			}
 			
-//			_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+			_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			_descriptionInput.addEventListener(Event.CHANGE, descriptionInputHandler);
+			_descriptionInput.addEventListener(FeathersEventType.FOCUS_IN, descriptionFocusInHandler);
 			var descriptionInputLd:AnchorLayoutData = new AnchorLayoutData(0, 10, NaN, 0);
 			_descriptionInput.layoutData = descriptionInputLd;
 			hiddenContent.addChild(_descriptionInput);
@@ -291,6 +294,14 @@ package nl.powergeek.pinbored.model
 			dataChanged.add(dataChangedHandler);
 		}
 		
+		private function descriptionFocusInHandler(event:Event):void
+		{
+			trace('description focused!');
+			_descriptionInput.isEditable = true;
+			_descriptionInput.isEnabled = true;
+			_descriptionInput.invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
+			_descriptionInput.validate();
+		}		
 		
 		public function removeUrlChecker():void
 		{

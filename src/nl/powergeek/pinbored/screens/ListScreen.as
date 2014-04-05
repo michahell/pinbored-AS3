@@ -104,6 +104,9 @@ package nl.powergeek.pinbored.screens
 			// setup list delete listener
 			list.addEventListener( FeathersEventType.RENDERER_ADD, listRendererAddHandler );
 			list.addEventListener( FeathersEventType.RENDERER_REMOVE, listRendererRemoveHandler );
+			list.addEventListener( FeathersEventType.SCROLL_START, onListScrollStart );
+			list.addEventListener( FeathersEventType.SCROLL_COMPLETE, onListScrollComplete );
+			//list.addEventListener( FeathersEventType.S );
 			
 			// when searched for tags, update the bookmarks list
 			searchTags.searchTagsTriggered.add(function(tagNames:Vector.<String>):void {
@@ -177,9 +180,20 @@ package nl.powergeek.pinbored.screens
 			getInitialData();
 		}
 		
+		private function onListScrollComplete(event:starling.events.Event):void
+		{
+			// TODO Auto Generated method stub
+			
+		}
+		
+		private function onListScrollStart(event:starling.events.Event):void
+		{
+			
+		}
+		
 		private function listRendererAddHandler( event:starling.events.Event, itemRenderer:PinboardLayoutGroupItemRenderer ):void
 		{
-			trace('list IR added.');
+			//trace('list IR added.');
 			listFadePostPoned(1);
 			
 			if(itemRenderer.isCreated != true) {
@@ -217,7 +231,7 @@ package nl.powergeek.pinbored.screens
 		
 		private function listRendererRemoveHandler( event:starling.events.Event, itemRenderer:PinboardLayoutGroupItemRenderer ):void
 		{
-			trace('list IR removed.');
+			//trace('list IR removed.');
 			itemRenderer.removeEventListeners();
 		}
 		
@@ -230,12 +244,17 @@ package nl.powergeek.pinbored.screens
 			// set the timeout process
 			_listFadeRef = setTimeout(function():void {
 				listFade(alpha);
-			}, 500);
+			}, 1000);
 		}
 		
 		private function listFade(alpha:Number):Signal
 		{
-			trace('list fade called, to alpha: ' + alpha);
+			//trace('list fade called, to alpha: ' + alpha);
+			
+			if(alpha == 1)
+				pagingControl.fadeIn();
+			else
+				pagingControl.fadeOut();
 			
 			// tween params
 			var tween:Tween = new Tween(list, PinboredDesktopTheme.LIST_ANIMATION_TIME, Transitions.EASE_OUT);

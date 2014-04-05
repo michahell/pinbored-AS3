@@ -1,5 +1,8 @@
 package nl.powergeek.feathers.components
 {
+	import com.codecatalyst.promise.Deferred;
+	import com.codecatalyst.promise.Promise;
+	
 	import feathers.controls.Button;
 	import feathers.controls.LayoutGroup;
 	import feathers.controls.ScrollContainer;
@@ -14,6 +17,9 @@ package nl.powergeek.feathers.components
 	
 	import org.osflash.signals.Signal;
 	
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.DisplayObject;
 	import starling.display.Quad;
 	import starling.display.Sprite;
@@ -26,8 +32,10 @@ package nl.powergeek.feathers.components
 			_buttons:Array = null,
 			_leftFillerBackgroundFactory:Function = defaultFillerBackground,
 			_rightFillerBackgroundFactory:Function = defaultFillerBackground,
+			_completeFillerBackgroundFactory:Function = defaultFillerBackground,
 			_leftFiller:DisplayObject,
-			_rightFiller:DisplayObject;
+			_rightFiller:DisplayObject,
+			_completeFiller:DisplayObject;
 			
 	
 		public const
@@ -46,6 +54,10 @@ package nl.powergeek.feathers.components
 			_maxResultPages:Number = 20,
 			numResultPages:Number = -1,
 			numCurrentPage:Number = -1;
+
+			private var _buttonGroup:LayoutGroup;
+
+			private var _backgroundGroup:LayoutGroup;
 			
 		
 		public function Pager()
@@ -64,19 +76,29 @@ package nl.powergeek.feathers.components
 		private function createGUI():void
 		{
 			// component layout
-			var layout:HorizontalLayout = new HorizontalLayout()
-			layout.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_TOP;
-			layout.horizontalAlign= HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
-			layout.paddingBottom = 1;
-			layout.paddingTop = 0;
+			var layout:AnchorLayout = new AnchorLayout()
 			this.layout = layout;
 			
-			// create fillers
-			_leftFiller = _leftFillerBackgroundFactory();
-			_rightFiller = _rightFillerBackgroundFactory();
+			// create backgroundContainer
+			_backgroundGroup = new LayoutGroup();
+			_backgroundGroup.layout = new AnchorLayout();
+			var backgld:AnchorLayoutData = new AnchorLayoutData();
+			backgld.top = backgld.bottom = backgld.left = backgld.right = 0;
+			_backgroundGroup.layoutData = backgld;
+			addChild(_backgroundGroup);
 			
-			// add left filler
-			addChild(_leftFiller);
+			// create buttonLayoutContainer
+			_buttonGroup = new LayoutGroup();
+			var bgl:HorizontalLayout = new HorizontalLayout();
+			bgl.verticalAlign = HorizontalLayout.VERTICAL_ALIGN_TOP;
+			bgl.horizontalAlign= HorizontalLayout.HORIZONTAL_ALIGN_CENTER;
+			bgl.paddingBottom = 1;
+			bgl.paddingTop = 0;
+			var bgld:AnchorLayoutData = new AnchorLayoutData();
+			bgld.top = bgld.bottom = bgld.left = bgld.right = 0;
+			_buttonGroup.layout = bgl;
+			_buttonGroup.layoutData = bgld;
+			addChild(_buttonGroup);
 			
 			// add buttoncontainer
 			_buttonContainer = new ScrollContainer();
@@ -86,15 +108,18 @@ package nl.powergeek.feathers.components
 			buttonContainerLayout.gap = 0;
 			this._buttonContainer.layout = buttonContainerLayout;
 			this._buttonContainer.scrollBarDisplayMode = ScrollContainer.SCROLL_BAR_DISPLAY_MODE_NONE;
-			addChild(_buttonContainer);
+			_buttonGroup.addChild(_buttonContainer);
 			
-			// add right filler
-			addChild(_rightFiller);
+			// create filler bg.
+			_completeFiller = _completeFillerBackgroundFactory();
+			
+			// add filler background
+			_backgroundGroup.addChild(_completeFiller);
 		}
 		
 		protected function defaultFillerBackground():DisplayObject
 		{
-			var filler:Quad = new Quad(10, 10, 0x000000);
+			var filler:Quad = new Quad(50, 500, 0x000000);
 			filler.alpha = 0.5;
 			return filler;
 		}
@@ -154,6 +179,11 @@ package nl.powergeek.feathers.components
 				
 				isActivated = true;
 			}
+			
+			invalidate(INVALIDATION_FLAG_ALL);
+			_buttonContainer.invalidate(INVALIDATION_FLAG_ALL);
+			_buttonGroup.invalidate(INVALIDATION_FLAG_ALL);
+			validate();
 		}
 		
 		private function createResultPageButtons(totalResultPages:Number, currentPage:Number = 1):void
@@ -233,7 +263,30 @@ package nl.powergeek.feathers.components
 						button.isEnabled = false;
 					}
 				});
+				
 			}
+			
+			invalidate(INVALIDATION_FLAG_ALL);
+			_buttonContainer.invalidate(INVALIDATION_FLAG_ALL);
+			_buttonGroup.invalidate(INVALIDATION_FLAG_ALL);
+			validate();
+		}
+		
+		private function fade(alpha:Number):Promise
+		{
+			var deferred:Deferred = new Deferred();
+			
+			var tween:Tween = new Tween(_buttonContainer, PinboredDesktopTheme.LIST_ANIMATION_TIME, Transitions.EASE_OUT);
+			tween.animate("alpha", alpha);
+			
+			// completed
+			tween.onComplete = function():void {
+				deferred.resolve('yay!');
+			};
+			
+			Starling.current.juggler.add(tween);
+			
+			return deferred.promise;
 		}
 		
 		private function onFirstHandler(event:Event):void
@@ -264,24 +317,32 @@ package nl.powergeek.feathers.components
 		
 		override protected function draw():void
 		{
+			trace('pager draw called!');
+			
+			this._backgroundGroup.width = this.width;
+			this._buttonGroup.width = this.width;
+			
 			if(this.visible && _buttonContainer.height > 0) {
-				this.height = _buttonContainer.height + HorizontalLayout(this.layout).paddingTop + HorizontalLayout(this.layout).paddingBottom;
+				this.height = _buttonContainer.height + HorizontalLayout(_buttonGroup.layout).paddingTop + HorizontalLayout(_buttonGroup.layout).paddingBottom;
 			} else {
 				this.height = 0;
 			}
 			
-			var fillerSpace:Number = 0;
-			
-			// calc filler Space around buttonContainer ONLY when there is positive extra space
-			if(_buttonContainer.width < this.width) {
-				fillerSpace = this.width - _buttonContainer.width;
-			}
-			
-			// update left and right filler background
-			_leftFiller.width = _rightFiller.width = fillerSpace / 2;
-			_leftFiller.height = _rightFiller.height = _buttonContainer.height;
+			// update filler background
+			_completeFiller.width = this._backgroundGroup.width;
+			_completeFiller.height = _buttonContainer.height;
 			
 			super.draw();
+		}
+		
+		public function fadeOut():void
+		{
+			fade(0);
+		}
+		
+		public function fadeIn():void
+		{
+			fade(1);
 		}
 	}
 }

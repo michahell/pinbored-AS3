@@ -424,7 +424,7 @@ package nl.powergeek.feathers.themes
 			pagerDefaultButtonInitializer(button);
 			
 			var disabledSkin:Quad = new Quad(10, 10, 0x0055AA);
-			disabledSkin.alpha = 0.5;
+			disabledSkin.alpha = 0.3;
 			button.disabledSkin = disabledSkin;
 			
 			button.disabledLabelProperties.textFormat = TEXTFORMAT_PAGER_DISABLED_HIGHLIGHT;
@@ -433,19 +433,19 @@ package nl.powergeek.feathers.themes
 		private function pagerDefaultButtonInitializer(button:Button):void
 		{
 			var defaultSkin:Quad = new Quad(10, 10, 0x000000);
-			defaultSkin.alpha = 0.5;
+			defaultSkin.alpha = 0;//0.5;
 			button.defaultSkin = defaultSkin;
 			
 			var downSkin:Quad = new Quad(10, 10, 0x000000);
-			downSkin.alpha = 0.3;
+			downSkin.alpha = 0.1;//.3;
 			button.downSkin = downSkin;
 			
 			var hoverSkin:Quad = new Quad(10, 10, 0x000000);
-			hoverSkin.alpha = 0.7;
+			hoverSkin.alpha = 0.5;//0.7;
 			button.hoverSkin = hoverSkin;
 			
 			var disabledSkin:Quad = new Quad(10, 10, 0x000000);
-			disabledSkin.alpha = 0.5;
+			disabledSkin.alpha = 0;//0.5;
 			button.disabledSkin = disabledSkin;
 			
 			button.padding = 3;
