@@ -16,6 +16,7 @@ package nl.powergeek.feathers.themes
 	import feathers.events.FeathersEventType;
 	import feathers.layout.AnchorLayout;
 	import feathers.layout.HorizontalLayout;
+	import feathers.skins.SmartDisplayObjectStateValueSelector;
 	import feathers.themes.MetalWorksMobileTheme;
 	
 	import feathersx.controls.text.HyperlinkTextFieldTextRenderer;
@@ -116,6 +117,10 @@ package nl.powergeek.feathers.themes
 			TEXTINPUT_TRANSPARENT_BACKGROUND:String = 'pinbored-transparent-background-textinput',
 			TEXTINPUT_SEARCH:String = 'pinbored-search-textinput',
 			TEXTINPUT_TRANSLUCENT_BOX:String = 'pinbored-translucent-box-textinput',
+			TEXTINPUT_INLINE_TRANSLUCENT:String = 'pinbored-inline-translucent-textinput',
+			TEXTINPUT_INLINE_SEMI_TRANSLUCENT:String = 'pinbored-inline-semi-translucent-textinput',
+			
+			
 			TEXTAREA_TRANSLUCENT_BOX:String = 'pinbored-translucent-box-textarea',
 			
 			LABEL_TAG_TEXTRENDERER:String = 'pinbored-tag-label',
@@ -181,6 +186,9 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(TextInput, transparentTagTextInputInitializer, TEXTINPUT_TRANSPARENT_BACKGROUND);
 			this.setInitializerForClass(TextInput, pinboredSearchTextInputInitializer, TEXTINPUT_SEARCH);
 			this.setInitializerForClass(TextInput, pinboredTranslucentTextInputInitializer, TEXTINPUT_TRANSLUCENT_BOX);
+			this.setInitializerForClass(TextInput, pinboredInlineTextInputInitializer, TEXTINPUT_INLINE_TRANSLUCENT);
+			this.setInitializerForClass(TextInput, pinboredInlineSemiTextInputInitializer, TEXTINPUT_INLINE_SEMI_TRANSLUCENT);
+			
 			this.setInitializerForClass(TextInput, pinboredTranslucentTextAreaInitializer, TEXTAREA_TRANSLUCENT_BOX);
 			
 			// custom quad buttons
@@ -201,6 +209,75 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(Label, rightAlignedTextLabelInitializer, LABEL_RIGHT_ALIGNED_TEXT);
 			this.setInitializerForClass(Label, bookmarkLabelInitializer, LABEL_BOOKMARK_DESCRIPTION);
 			this.setInitializerForClass(Label, bookmarkHrefInitializer, LABEL_BOOKMARK_HREF);
+			
+		}
+		
+		private function pinboredInlineSemiTextInputInitializer(textInput:TextInput):void
+		{
+			// draw quad
+			var backgroundSkin:Quad = new Quad(10, 10, 0x000000);
+			backgroundSkin.alpha = 0.1;
+			
+			// text input background
+			textInput.backgroundDisabledSkin = backgroundSkin;
+			textInput.backgroundEnabledSkin = backgroundSkin;
+			textInput.backgroundFocusedSkin = backgroundSkin;
+			textInput.backgroundSkin = backgroundSkin;
+			
+			textInput.padding = 5;
+			
+			textInput.textEditorProperties.fontFamily = TEXTFORMAT_TAG.font;
+			textInput.textEditorProperties.fontSize = Number(TEXTFORMAT_TAG.size);
+			textInput.textEditorProperties.color = uint(TEXTFORMAT_TAG.color);
+//			textInput.textEditorProperties.embedFonts = true;
+			// using the above way, i cannot set 'boldness' since that is defined in a textformat...
+			
+			textInput.textEditorProperties.embedFonts = true;
+//			textInput.textEditorProperties.textFormat = TEXTFORMAT_TAG;
+			textInput.textEditorProperties.height = 30;
+			
+			
+			textInput.promptProperties.embedFonts = true;
+			textInput.promptProperties.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
+			textInput.promptProperties.height = 30;
+			
+//			textInput.textEditorProperties.textFormat = TEXTFORMAT_TAG;
+
+//			textInput.promptProperties.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
+		}
+		
+		private function pinboredInlineTextInputInitializer(textInput:TextInput):void
+		{
+			// draw quad
+			var backgroundSkin:Quad = new Quad(10, 10, 0x000000);
+			backgroundSkin.alpha = 0;
+			
+			// text input background
+			textInput.backgroundDisabledSkin = backgroundSkin;
+			textInput.backgroundEnabledSkin = backgroundSkin;
+			textInput.backgroundFocusedSkin = backgroundSkin;
+			textInput.backgroundSkin = backgroundSkin;
+			
+			textInput.padding = 5;
+			
+			textInput.textEditorProperties.fontFamily = TEXTFORMAT_TAG.font;
+			textInput.textEditorProperties.fontSize = Number(TEXTFORMAT_TAG.size);
+			textInput.textEditorProperties.color = uint(TEXTFORMAT_TAG.color);
+//			textInput.textEditorProperties.embedFonts = true;
+			// using the above way, i cannot set 'boldness' since that is defined in a textformat
+			// and setting the textFormat property does not show any text at all!
+			
+			textInput.textEditorProperties.embedFonts = true;
+//			textInput.textEditorProperties.textFormat = TEXTFORMAT_TAG;
+			textInput.textEditorProperties.height = 30;
+			
+//			textInput.promptProperties.fontFamily = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT.font;
+//			textInput.promptProperties.fontSize = Number(TEXTFORMAT_TAG_TEXT_INPUT_PROMPT.size);
+//			textInput.promptProperties.color = uint(TEXTFORMAT_TAG_TEXT_INPUT_PROMPT.color);
+			textInput.promptProperties.embedFonts = true;
+			textInput.promptProperties.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
+			textInput.promptProperties.height = 30;
+			
 			
 		}
 		

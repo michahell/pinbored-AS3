@@ -165,8 +165,6 @@ package nl.powergeek.pinbored.model
 			
 			// add description editor
 			_descriptionInput = new TextInput();
-			_descriptionInput.textEditorProperties.multiline = true;
-			_descriptionInput.padding = 5;
 			
 			if(this.description.length > 0) {
 				_descriptionInput.text = description;
@@ -175,7 +173,10 @@ package nl.powergeek.pinbored.model
 				_descriptionInput.prompt = '[ enter description ]';
 			}
 			
-			_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+			//_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+			_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_INLINE_SEMI_TRANSLUCENT);
+			_descriptionInput.textEditorProperties.multiline = true;
+			_descriptionInput.padding = 5;
 			_descriptionInput.addEventListener(Event.CHANGE, descriptionInputHandler);
 			_descriptionInput.addEventListener(FeathersEventType.FOCUS_IN, descriptionFocusInHandler);
 			var descriptionInputLd:AnchorLayoutData = new AnchorLayoutData(0, 10, NaN, 0);
@@ -184,8 +185,6 @@ package nl.powergeek.pinbored.model
 			
 			// add link editor
 			_hrefInput = new TextInput();
-			_hrefInput.textEditorProperties.multiline = true;
-			_hrefInput.padding = 5;
 			
 			if(this.href.length > 0) {
 				_hrefInput.text = href;
@@ -194,7 +193,10 @@ package nl.powergeek.pinbored.model
 				_hrefInput.prompt = '[ enter link ]';
 			}
 			
-//			_hrefInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+			//_hrefInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+			_hrefInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_INLINE_SEMI_TRANSLUCENT);
+			_hrefInput.textEditorProperties.multiline = true;
+			_hrefInput.padding = 5;
 			_hrefInput.addEventListener(Event.CHANGE, hrefInputHandler);
 			var hild:AnchorLayoutData = new AnchorLayoutData();
 			hild.topAnchorDisplayObject = _descriptionInput;
@@ -206,8 +208,6 @@ package nl.powergeek.pinbored.model
 			
 			// add the extended / description label
 			_extendedInput = new TextInput();
-			_extendedInput.textEditorProperties.multiline = true;
-			_extendedInput.padding = 5;
 			
 			if(this.extended.length > 0) {
 				_extendedInput.text = this.extended;
@@ -216,7 +216,10 @@ package nl.powergeek.pinbored.model
 				_extendedInput.prompt = '[ enter extended description ]';
 			}
 			
-//			_extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+			//_extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
+			_extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_INLINE_SEMI_TRANSLUCENT);
+			_extendedInput.textEditorProperties.multiline = true;
+			_extendedInput.padding = 5;
 			_extendedInput.addEventListener(Event.CHANGE, extendedInputHandler);
 			var extendedInputLd:AnchorLayoutData = new AnchorLayoutData();
 			extendedInputLd.topAnchorDisplayObject = _hrefInput;
@@ -297,10 +300,10 @@ package nl.powergeek.pinbored.model
 		private function descriptionFocusInHandler(event:Event):void
 		{
 			trace('description focused!');
-			_descriptionInput.isEditable = true;
-			_descriptionInput.isEnabled = true;
-			_descriptionInput.invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
-			_descriptionInput.validate();
+//			_descriptionInput.isEditable = true;
+//			_descriptionInput.isEnabled = true;
+//			_descriptionInput.invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
+//			_descriptionInput.validate();
 		}		
 		
 		public function removeUrlChecker():void
@@ -394,7 +397,7 @@ package nl.powergeek.pinbored.model
 		private function editTriggeredHandler(event:Event):void
 		{
 			const button:Button = Button(event.currentTarget);
-			editTapped.dispatch(this);
+			editTapped.dispatch();
 		}
 		
 		private function staleTriggeredHandler(event:Event):void

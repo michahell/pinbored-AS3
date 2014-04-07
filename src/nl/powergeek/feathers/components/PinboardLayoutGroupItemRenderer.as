@@ -100,6 +100,9 @@ package nl.powergeek.feathers.components
 		{
 			//trace('commitData of item at index: ' + this.index);
 			
+			// set isBeingEdited to false
+			this.isBeingEdited = false;
+			
 			if(this._data)
 			{
 				if(this._data.hasOwnProperty("description") && String(this._data.description).length > 0)
@@ -142,10 +145,10 @@ package nl.powergeek.feathers.components
 							// switch isBeingEdited property
 							if(isBeingEdited == false) {
 								isBeingEdited = true;
-								expandSelf(BookMark(_data));
+								expandSelf();
 							} else if(isBeingEdited == true) {
 								isBeingEdited = false;
-								foldSelf(BookMark(_data));
+								collapseSelf();
 							}
 						});
 					}
@@ -205,8 +208,13 @@ package nl.powergeek.feathers.components
 				}
 			}
 			
-			this._description.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);
-			this._link.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);
+			if(this.accessory) {
+				this._description.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);
+				this._link.maxWidth = this.actualWidth - ((this.padding * 6) + this.accessory.width);
+			} else {
+				this._description.maxWidth = this.actualWidth - ((this.padding * 6));
+				this._link.maxWidth = this.actualWidth - ((this.padding * 6));
+			}
 		}
 		
 		
@@ -342,9 +350,9 @@ package nl.powergeek.feathers.components
 			}
 		}
 		
-		private function foldSelf(bookmark:BookMark):void
+		private function collapseSelf():void
 		{
-			dispatchEventWith(BookmarkEvent.BOOKMARK_FOLDING, false, bookmark);
+			dispatchEventWith(BookmarkEvent.BOOKMARK_FOLDING, false);
 			_hiddenContent.visible = true;
 			
 			// fade out hidden content children
@@ -361,7 +369,7 @@ package nl.powergeek.feathers.components
 				tween.animate("scaleY", 0);
 				tween.onComplete = function():void {
 					_hiddenContent.visible = false;
-					dispatchEventWith(BookmarkEvent.BOOKMARK_FOLDED, false, bookmark);
+					dispatchEventWith(BookmarkEvent.BOOKMARK_FOLDED, false);
 				};
 				
 				Starling.current.juggler.add(tween);
@@ -370,9 +378,9 @@ package nl.powergeek.feathers.components
 			
 		}
 		
-		private function expandSelf(bookmark:BookMark):void
+		private function expandSelf():void
 		{
-			dispatchEventWith(BookmarkEvent.BOOKMARK_EXPANDING, false, bookmark);
+			dispatchEventWith(BookmarkEvent.BOOKMARK_EXPANDING, false);
 			this._hiddenContent.visible = true;
 			
 			// tween hiddenContent
@@ -390,7 +398,7 @@ package nl.powergeek.feathers.components
 			
 			Starling.current.juggler.add(tween);
 			
-			dispatchEventWith(BookmarkEvent.BOOKMARK_EXPANDED, false, bookmark);
+			dispatchEventWith(BookmarkEvent.BOOKMARK_EXPANDED, false);
 		}
 		
 		private function deleteSelf(bookmark:BookMark):void {
@@ -492,6 +500,13 @@ package nl.powergeek.feathers.components
 				childTween.animate("alpha", alpha);
 				Starling.current.juggler.add(childTween);
 			}
+		}
+		
+		public function collapseOn(signal:Signal):void
+		{
+			signal.addOnce(function():void {
+				collapseSelf();
+			});
 		}
 	}
 }

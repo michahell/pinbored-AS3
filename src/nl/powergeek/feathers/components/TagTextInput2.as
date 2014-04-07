@@ -146,6 +146,7 @@ package nl.powergeek.feathers.components
 			// create and add textinput
 			this._textInput.prompt = this.textInputPrompt;
 //			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_INLINE_TRANSLUCENT);			
 			this._textInput.padding = this._padding / 2;
 			var layoutData:AnchorLayoutData = new AnchorLayoutData();
 			layoutData.leftAnchorDisplayObject = _tagContainer;

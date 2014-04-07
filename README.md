@@ -19,11 +19,11 @@ Everything is provided AS-IS. Use this project in any way you wish, just not to 
 Roadmap V1
 ----------
 * show amount of bookmarks retrieved / number of pages in header
-* update request
 * update XML manifest for nice AIR package description etc.
 * more transitional interface design
-	* edit animations
-        * awesome button design like so: http://www.meetup.com/jobs/
+	* awesome button design like so: http://www.meetup.com/jobs/
+	* ~~edit animations~~
+* ~~update request~~
 * ~~item renderer has, when collapsed, editing capabilities~~
 * ~~paging bar for paging results in bookmark list screen~~
 * ~~able to search through all bookmark text~~

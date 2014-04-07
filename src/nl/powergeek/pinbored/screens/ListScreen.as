@@ -75,6 +75,8 @@ package nl.powergeek.pinbored.screens
 		
 		private var
 			_listFadeRef:uint,
+			_resultPageChanged:Signal = new Signal(),
+			_resultPageChangedPending:Signal = new Signal(),
 			_listFadeChanged:Signal = new Signal( Number ),
 			_onLoginScreenRequest:Signal = new Signal( ListScreen );
 
@@ -106,7 +108,6 @@ package nl.powergeek.pinbored.screens
 			list.addEventListener( FeathersEventType.RENDERER_REMOVE, listRendererRemoveHandler );
 			list.addEventListener( FeathersEventType.SCROLL_START, onListScrollStart );
 			list.addEventListener( FeathersEventType.SCROLL_COMPLETE, onListScrollComplete );
-			//list.addEventListener( FeathersEventType.S );
 			
 			// when searched for tags, update the bookmarks list
 			searchTags.searchTagsTriggered.add(function(tagNames:Vector.<String>):void {
@@ -135,37 +136,40 @@ package nl.powergeek.pinbored.screens
 			
 			// listen to Tag input signals
 			searchTags.tagsChanged.add(function(tags:Vector.<String>):void {
-				listFade(0).addOnce(function():void {
-					ListScreenModel.setCurrentTags(tags);
-				});
+				ListScreenModel.setCurrentTags(tags);
 			});
 			
 			// listen to Pager signals
 			pagingControl.firstPageRequested.add(function():void {
+				_resultPageChangedPending.dispatch();
 				listFade(0).addOnce(function():void {
 					displayFirstResultsPage();
 				});
 			});
 			
 			pagingControl.previousPageRequested.add(function():void {
+				_resultPageChangedPending.dispatch();
 				listFade(0).addOnce(function():void {
 					displayPreviousResultsPage();
 				});
 			});
 			
 			pagingControl.numberedPageRequested.add(function(number:Number):void {
+				_resultPageChangedPending.dispatch();
 				listFade(0).addOnce(function():void {
 					displayNumberedResultsPage(number);
 				});
 			});
 			
 			pagingControl.nextPageRequested.add(function():void {
+				_resultPageChangedPending.dispatch();
 				listFade(0).addOnce(function():void {
 					displayNextResultsPage();
 				});
 			});
 			
 			pagingControl.lastPageRequested.add(function():void {
+				_resultPageChangedPending.dispatch();
 				listFade(0).addOnce(function():void {
 					displayLastResultsPage();
 				});
@@ -174,6 +178,10 @@ package nl.powergeek.pinbored.screens
 			ListScreenModel.resultPageChanged.add(function(pageNumber:Number):void {
 				if(pagingControl.visible == true)
 					pagingControl.update(pageNumber);
+			});
+			
+			_resultPageChanged.add(function():void {
+				_resultPageChangedPending.removeAll();
 			});
 			
 			// get all bookmarks and populate list control
@@ -219,13 +227,11 @@ package nl.powergeek.pinbored.screens
 			});
 			
 			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_EXPANDING, function(event:starling.events.Event):void {
-				trace('receiving BOOKMARK_EXPANDING event from custom item renderer...');
-				var collapsedBookmark:BookMark = BookMark(event.data);
+				//trace('receiving BOOKMARK_EXPANDING event from custom item renderer...');
 			});
 			
 			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_FOLDING, function(event:starling.events.Event):void {
-				trace('receiving BOOKMARK_FOLDING event from custom item renderer...');
-				var foldedBookmark:BookMark = BookMark(event.data);
+				//trace('receiving BOOKMARK_FOLDING event from custom item renderer...');
 			});
 		}
 		
@@ -377,14 +383,14 @@ package nl.powergeek.pinbored.screens
 					}
 					
 					// execute request and attach listener to returned signal
-					PinboardService.deleteBookmark(tappedBookmark, false).then(requestCompleted, requestFailed);
+					PinboardService.deleteBookmark(tappedBookmark, true).then(requestCompleted, requestFailed);
 					
 					// mock deleted confirmed
-//					setTimeout(function():void {
-//						trace('[MOCK] bookmark delete request completed.');
-//						// update the bookmark by confirming delete
-//						tappedBookmark.deleteConfirmed.dispatch();
-//					}, 500);
+					setTimeout(function():void {
+						trace('[MOCK] bookmark delete request completed.');
+						// update the bookmark by confirming delete
+						tappedBookmark.deleteConfirmed.dispatch();
+					}, 500);
 					
 				});
 				
@@ -411,6 +417,9 @@ package nl.powergeek.pinbored.screens
 			
 			// update the list's dataprovider with all items at once
 			list.dataProvider = new ListCollection(ListScreenModel.bookmarksList);
+			
+			// fire result page has changed signal
+			_resultPageChanged.dispatch();
 		}
 		
 		private function onListReset(event:starling.events.Event):void
@@ -665,7 +674,6 @@ package nl.powergeek.pinbored.screens
 			this.panel.addChild(this.searchTags);
 			
 			// add the list result paging bar, initially set to invisible
-			//TODO redo the paging component. have transparent buttons on a colored background. only when they are hovered they change to dark transp. black buttons! much easier.
 			this.pagingControl = new Pager();
 			this.pagingControl.visible = false;
 			this.panel.addChild(this.pagingControl);
