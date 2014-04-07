@@ -18,10 +18,13 @@ Everything is provided AS-IS. Use this project in any way you wish, just not to 
 
 Roadmap V1
 ----------
+* update reflects in GUI
+
 * show amount of bookmarks retrieved / number of pages in header
 * update XML manifest for nice AIR package description etc.
 * more transitional interface design
 	* awesome button design like so: http://www.meetup.com/jobs/
+	
 	* ~~edit animations~~
 * ~~update request~~
 * ~~item renderer has, when collapsed, editing capabilities~~

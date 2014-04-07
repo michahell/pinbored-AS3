@@ -190,13 +190,12 @@ package nl.powergeek.pinbored.screens
 		
 		private function onListScrollComplete(event:starling.events.Event):void
 		{
-			// TODO Auto Generated method stub
-			
+			//TODO on list scroll complete
 		}
 		
 		private function onListScrollStart(event:starling.events.Event):void
 		{
-			
+			//TODO on list scroll start	
 		}
 		
 		private function listRendererAddHandler( event:starling.events.Event, itemRenderer:PinboardLayoutGroupItemRenderer ):void
