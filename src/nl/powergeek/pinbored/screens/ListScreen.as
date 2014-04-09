@@ -404,18 +404,16 @@ package nl.powergeek.pinbored.screens
 					var requestCompleted:Function = function(event:flash.events.Event):void {
 						trace('bookmark update request completed.');
 						
+						// update array collection pager source
+						ListScreenModel.updateInLists(editedBookmark);
+						
+						// and update array collection pager				
+						
 						// update to visualize directly
 						editedBookmark.update();
 						
-						// update dataprovider source list(s)
-						ListScreenModel.updateInLists(editedBookmark);
-						
-						// and update it in the bookmarks list						
-//						var index:Number = list.dataProvider.getItemIndex(editedBookmark);
-//						list.dataProvider.updateItemAt(index);
-//						trace('bookmark updated at: ' + index);
-						
-						trace('edited bookmark tags: ' + editedBookmark.tags.toString());
+						//TODO solve tag problem
+						//trace('edited bookmark tags: ' + editedBookmark.tags.toString());
 						
 						list.invalidate();
 					};

@@ -403,7 +403,7 @@ package nl.powergeek.pinbored.model
 			isTagsChanged = false;
 			
 			// dispatch signal so that item renderer invalidates!
-			dataChangedHandler();
+			dataChanged.dispatch();
 		}
 		
 		private function editTriggeredHandler(event:Event):void

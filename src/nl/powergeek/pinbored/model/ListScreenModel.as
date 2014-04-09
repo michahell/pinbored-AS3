@@ -125,7 +125,8 @@ package nl.powergeek.pinbored.model
 		
 		public static function filter(searchWords:String = ''):Array
 		{
-			var result:Array = rawBookmarkDataList;
+			//var result:Array = rawBookmarkDataList;
+			var result:Array = rawBookmarkDataListFiltered;
 			
 			// if we have tags or a search string to filter for
 			if((searchTags && searchTags.length > 0) || (searchWords.length > 0)) {
@@ -136,7 +137,8 @@ package nl.powergeek.pinbored.model
 					trace('filtering on tags...');
 					
 					// filter
-					result = rawBookmarkDataList.filter(function(bm:Object, index:int, arr:Array):Boolean {
+					//result = rawBookmarkDataList.filter(function(bm:Object, index:int, arr:Array):Boolean {
+					result = rawBookmarkDataListFiltered.filter(function(bm:Object, index:int, arr:Array):Boolean {
 						
 						var tags:Array = String(bm.tags).split(" ");
 						var test:Boolean;
@@ -249,13 +251,21 @@ package nl.powergeek.pinbored.model
 		
 		public static function updateInLists(bm:BookMark):void
 		{
+			// find the bookmark raw object in the source raw bookmark data list
 			var index1:int = rawBookmarkDataListFiltered.indexOf(bm.bookmarkData);
-			
 			trace('to UPDATE, found in lists ? ' + index1);
 			
-			// update item in filtered bookmarks list
+			// update or replace item in the list
 			if(index1 != -1)
 				rawBookmarkDataListFiltered.splice(index1, 1, bm.bookmarkData_new);
+		
+			// update array collection pager
+			refreshArrayCollectionPager();
+		}
+		
+		private static function refreshArrayCollectionPager():void
+		{
+			rawBookmarkListCollectionPager.updateSource(rawBookmarkDataListFiltered);
 		}
 	}
 }

@@ -157,7 +157,6 @@ package nl.powergeek.feathers.components
 					this._dataChanged.add(function():void {
 						//trace('IR firing!');
 						invalidate(INVALIDATION_FLAG_ALL);
-						validate();
 					});
 				}
 			}

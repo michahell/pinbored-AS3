@@ -7,12 +7,19 @@ package nl.powergeek.utils
 	{
 		private var
 			_arrayCollection:Array,
+			_resultsPerPage:Number,
 			_currentPage:Number = 0,
 			_numPages:Number = -1;
 			
 		public function ArrayCollectionPager(sourceArray:Array = null, resultsPerPage:Number = 20)
 		{
+			refreshArrayCollection(sourceArray, resultsPerPage);
+		}
+		
+		private function refreshArrayCollection(sourceArray:Array, resultsPerPage:Number):void
+		{
 			//trace('ArrayCollectionPager: source array size before split: ' + sourceArray.length);
+			_resultsPerPage = resultsPerPage;
 			
 			// split the given source array
 			_arrayCollection = split(sourceArray, resultsPerPage);
@@ -28,7 +35,7 @@ package nl.powergeek.utils
 				} else {
 					_numPages = 0;
 				}
-				
+			
 			//trace('ArrayCollectionPager: numPages: ' + _numPages);
 		}
 		
@@ -177,6 +184,9 @@ package nl.powergeek.utils
 			return _numPages;
 		}
 
-		
+		public function updateSource(rawBookmarkDataListFiltered:Array):void
+		{
+			refreshArrayCollection(rawBookmarkDataListFiltered, _resultsPerPage);
+		}
 	}
 }
