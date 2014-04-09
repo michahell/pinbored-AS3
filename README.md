@@ -18,14 +18,11 @@ Everything is provided AS-IS. Use this project in any way you wish, just not to 
 
 Roadmap V1
 ----------
-* update reflects in GUI
-
+* finish all TODO's in code
 * show amount of bookmarks retrieved / number of pages in header
-* update XML manifest for nice AIR package description etc.
-* more transitional interface design
-	* awesome button design like so: http://www.meetup.com/jobs/, https://getpebble.com/discover
-	* ~~edit animations~~
+* ~~update animations~~
 * ~~update request~~
+* ~~update reflects in GUI~~
 * ~~item renderer has, when collapsed, editing capabilities~~
 * ~~paging bar for paging results in bookmark list screen~~
 * ~~able to search through all bookmark text~~
@@ -38,13 +35,19 @@ Roadmap V1
 
 Roadmap V2
 ----------
+* search initially highlights text in current screen
+* massive 'stale' checker screen (check all your bookmarks for broken links)
+* tag information screen (tag statistics)
+* more transitional interface design
+	* button design similar to http://www.meetup.com/jobs/, https://getpebble.com/discover
+	* nice bookmark list update animations (bookmarks fading/moving in one by one for example)
+
+Roadmap V3
+----------
 * abstract and complete Pager component
 * abstract and complete TagInput component
 * abstract and complete Pinbored Theme
 * release Pinbored theme and skins (maybe separate GitHub repo)
-* massive 'stale' checker screen (check all your bookmarks for broken links)
-* tag information screen (tag statistics)
-* nice bookmark list update animations (bookmarks fading/moving in one by one for example)
 
 libraries used
 --------------

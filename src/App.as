@@ -77,6 +77,9 @@ package
 			
 			// show login screen
 			this._navigator.showScreen( LOGIN_SCREEN );
+			
+			//TODO update XML manifest for nice AIR package description etc.
+			//TODO put all trace statements inside conditional compile
 		}
 	}
 }
