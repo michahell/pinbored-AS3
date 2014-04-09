@@ -203,6 +203,9 @@ package nl.powergeek.pinbored.screens
 			//trace('list IR added.');
 			listFadePostPoned(1);
 			
+			// set isBeingEdited to false
+			itemRenderer.isBeingEdited = false;
+			
 			if(itemRenderer.isCreated != true) {
 				itemRenderer.addEventListener(FeathersEventType.CREATION_COMPLETE, function(event:starling.events.Event):void {
 					// remove listener
@@ -309,10 +312,13 @@ package nl.powergeek.pinbored.screens
 				var parsedResponse:Object = JSON.parse(event.target.data as String);
 				
 				parsedResponse.forEach(function(bookmark:Object, index:int, array:Array):void {
+					// for reference
 					ListScreenModel.rawBookmarkDataList.push(bookmark);
+					// for usage
+					ListScreenModel.rawBookmarkDataListFiltered.push(bookmark);
 				});
 				
-				displayInitialResultsPage(ListScreenModel.rawBookmarkDataList);
+				displayInitialResultsPage(ListScreenModel.rawBookmarkDataListFiltered);
 				
 				// small timeout for update?
 				updateScrollContainerHeight();
@@ -397,8 +403,21 @@ package nl.powergeek.pinbored.screens
 					
 					var requestCompleted:Function = function(event:flash.events.Event):void {
 						trace('bookmark update request completed.');
+						
+						// update to visualize directly
+						editedBookmark.update();
+						
+						// update dataprovider source list(s)
 						ListScreenModel.updateInLists(editedBookmark);
-						list.dataProvider.updateItemAt(list.dataProvider.getItemIndex(editedBookmark.bookmarkData));
+						
+						// and update it in the bookmarks list						
+//						var index:Number = list.dataProvider.getItemIndex(editedBookmark);
+//						list.dataProvider.updateItemAt(index);
+//						trace('bookmark updated at: ' + index);
+						
+						trace('edited bookmark tags: ' + editedBookmark.tags.toString());
+						
+						list.invalidate();
 					};
 					
 					var requestFailed:Function = function(event:flash.events.Event):void {
@@ -520,14 +539,8 @@ package nl.powergeek.pinbored.screens
 		}		
 		
 		private function removeBookmarkFromList(bookmark:BookMark):void {
-			
-			// remove item from list dataProvider
-			var bmIndex:Number = list.dataProvider.getItemIndex(bookmark);
-			list.dataProvider.removeItemAt(bmIndex);
-			
-			// also delete item from rawBookMarkList
-//			trace('also removing from filtered bookmark list');
-//			ListScreenModel.removeFromLists(bookmark.bookmarkData);
+			// delete item from rawBookMarkList
+			ListScreenModel.removeFromLists(bookmark.bookmarkData);
 		}
 		
 		public function get onLoginScreenRequest():ISignal

@@ -165,34 +165,17 @@ package nl.powergeek.pinbored.model
 			
 			// add description editor
 			_descriptionInput = new TextInput();
-			
-			if(this.description.length > 0) {
-				_descriptionInput.text = description;
-				_descriptionInput.prompt = description;
-			} else {
-				_descriptionInput.prompt = '[ enter description ]';
-			}
-			
 			//_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			_descriptionInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_INLINE_SEMI_TRANSLUCENT);
 			_descriptionInput.textEditorProperties.multiline = true;
 			_descriptionInput.padding = 5;
 			_descriptionInput.addEventListener(Event.CHANGE, descriptionInputHandler);
-			_descriptionInput.addEventListener(FeathersEventType.FOCUS_IN, descriptionFocusInHandler);
 			var descriptionInputLd:AnchorLayoutData = new AnchorLayoutData(0, 10, NaN, 0);
 			_descriptionInput.layoutData = descriptionInputLd;
 			hiddenContent.addChild(_descriptionInput);
 			
 			// add link editor
 			_hrefInput = new TextInput();
-			
-			if(this.href.length > 0) {
-				_hrefInput.text = href;
-				_hrefInput.prompt = href;
-			} else {
-				_hrefInput.prompt = '[ enter link ]';
-			}
-			
 			//_hrefInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			_hrefInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_INLINE_SEMI_TRANSLUCENT);
 			_hrefInput.textEditorProperties.multiline = true;
@@ -208,14 +191,6 @@ package nl.powergeek.pinbored.model
 			
 			// add the extended / description label
 			_extendedInput = new TextInput();
-			
-			if(this.extended.length > 0) {
-				_extendedInput.text = this.extended;
-				_extendedInput.prompt = this.extended;
-			} else {
-				_extendedInput.prompt = '[ enter extended description ]';
-			}
-			
 			//_extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSLUCENT_BOX);
 			_extendedInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_INLINE_SEMI_TRANSLUCENT);
 			_extendedInput.textEditorProperties.multiline = true;
@@ -227,8 +202,6 @@ package nl.powergeek.pinbored.model
 			extendedInputLd.left = 0;
 			extendedInputLd.right = 10;
 			_extendedInput.layoutData = extendedInputLd;
-			
-			
 			hiddenContent.addChild(_extendedInput);
 			
 			// tag editor options
@@ -251,10 +224,6 @@ package nl.powergeek.pinbored.model
 			teld.right = 10;
 			teld.top = 5;
 			_tagEditor.layoutData = teld;
-			// add tags to tag component
-			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
-				_tagEditor.addTag(tag, false);
-			});
 			hiddenContent.addChild(_tagEditor);
 			
 			// add the 'accept changes' button
@@ -295,16 +264,44 @@ package nl.powergeek.pinbored.model
 			
 			// add data changed general handler
 			dataChanged.add(dataChangedHandler);
+			
+			refreshData();
 		}
 		
-		private function descriptionFocusInHandler(event:Event):void
+		private function refreshData():void
 		{
-			trace('description focused!');
-//			_descriptionInput.isEditable = true;
-//			_descriptionInput.isEnabled = true;
-//			_descriptionInput.invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
-//			_descriptionInput.validate();
-		}		
+			// add description url
+			if(this.description.length > 0) {
+				_descriptionInput.text = description;
+				_descriptionInput.prompt = description;
+			} else {
+				_descriptionInput.prompt = '[ enter description ]';
+			}
+			
+			// add href url
+			if(this.href.length > 0) {
+				_hrefInput.text = href;
+				_hrefInput.prompt = href;
+			} else {
+				_hrefInput.prompt = '[ enter link ]';
+			}
+			
+			// add extended description
+			if(this.extended.length > 0) {
+				_extendedInput.text = this.extended;
+				_extendedInput.prompt = this.extended;
+			} else {
+				_extendedInput.prompt = '[ enter extended description ]';
+			}
+			
+			// first remove all tags
+			_tagEditor.removeAllTags(false);
+			
+			// add tags to tag component
+			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
+				_tagEditor.addTag(tag, false);
+			});
+		}
 		
 		public function removeUrlChecker():void
 		{
@@ -322,7 +319,7 @@ package nl.powergeek.pinbored.model
 		
 		private function dataChangedHandler():void 
 		{
-			trace('data changed called.');
+			//trace('data changed called.');
 			//trace('changed: ', isLinkChanged, isHrefChanged, isDescriptionChanged, isExtendedChanged, isTagsChanged);
 			
 			if(isLinkChanged == true || isHrefChanged == true || isDescriptionChanged == true || isExtendedChanged == true || isTagsChanged == true) {
@@ -338,6 +335,9 @@ package nl.powergeek.pinbored.model
 		
 		private function tagEditorHandler(changedTags:Vector.<String>):void
 		{
+			trace('tag editor handler called! ');
+			trace(tags.toString(), '\n', changedTags.toString());
+			
 			// store new value
 			tags_new = changedTags;
 			
@@ -392,6 +392,18 @@ package nl.powergeek.pinbored.model
 				isExtendedChanged = false;
 			
 			extendedChanged.dispatch(text);
+		}
+		
+		private function resetChangedIndicators():void
+		{
+			isLinkChanged = false;
+			isHrefChanged = false;
+			isDescriptionChanged = false;
+			isExtendedChanged = false;
+			isTagsChanged = false;
+			
+			// dispatch signal so that item renderer invalidates!
+			dataChangedHandler();
 		}
 		
 		private function editTriggeredHandler(event:Event):void
@@ -453,15 +465,7 @@ package nl.powergeek.pinbored.model
 		
 		private function revertButtonTriggeredHandler(event:Event):void
 		{
-			_hrefInput.text = href;
-			_extendedInput.text = extended;
-			_descriptionInput.text = description;
-			
-			_tagEditor.removeAllTags();
-			
-			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
-				_tagEditor.addTag(tag);
-			});
+			refreshData();
 		}
 		
 		private function modifyButtonTriggeredHandler(event:Event):void
@@ -478,11 +482,34 @@ package nl.powergeek.pinbored.model
 			shared_new = (shared_new == null) ? shared : shared_new;
 			toread_new = (toread_new == null) ? toread : toread_new;
 			
+			// update component datas
+			bookmarkData_new = new Object();
+			bookmarkData_new.href = href_new;
+			bookmarkData_new.description = description_new;
+			bookmarkData_new.extended = extended_new;
+			bookmarkData_new.tags = tags_new;
+			bookmarkData_new.shared = shared_new;
+			bookmarkData_new.toread = toread_new;
+			
+			trace('bm data new: ' + bookmarkData_new.toString(), bookmarkData_new.href, bookmarkData_new.description);
+			
 			// notify that edit request should be performed
 			editConfirmed.dispatch(this);
 			
 			// collapse item renderer
 			editTapped.dispatch(this);
+		}
+		
+		public function update():void
+		{
+			this.href = href_new;
+			this.description = description_new;
+			this.extended = extended_new;
+			this.tags = tags_new;
+			this.shared = shared_new;
+			this.toread = toread_new;
+			
+			resetChangedIndicators();
 		}
 	}
 }

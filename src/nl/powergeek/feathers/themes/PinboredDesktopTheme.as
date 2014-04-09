@@ -26,6 +26,7 @@ package nl.powergeek.feathers.themes
 	import flash.text.TextFormatAlign;
 	
 	import nl.powergeek.feathers.components.Pager;
+	import nl.powergeek.feathers.components.RoundedStrokeButtonSkin;
 	import nl.powergeek.feathers.components.TagTextInput;
 	import nl.powergeek.pinbored.model.BookmarkEvent;
 	
@@ -37,6 +38,7 @@ package nl.powergeek.feathers.themes
 	import starling.display.graphics.RoundedRectangle;
 	import starling.display.materials.FlatColorMaterial;
 	import starling.display.materials.IMaterial;
+	import starling.display.materials.StandardMaterial;
 	
 	public class PinboredDesktopTheme extends MetalWorksMobileTheme
 	{
@@ -212,75 +214,6 @@ package nl.powergeek.feathers.themes
 			
 		}
 		
-		private function pinboredInlineSemiTextInputInitializer(textInput:TextInput):void
-		{
-			// draw quad
-			var backgroundSkin:Quad = new Quad(10, 10, 0x000000);
-			backgroundSkin.alpha = 0.1;
-			
-			// text input background
-			textInput.backgroundDisabledSkin = backgroundSkin;
-			textInput.backgroundEnabledSkin = backgroundSkin;
-			textInput.backgroundFocusedSkin = backgroundSkin;
-			textInput.backgroundSkin = backgroundSkin;
-			
-			textInput.padding = 5;
-			
-			textInput.textEditorProperties.fontFamily = TEXTFORMAT_TAG.font;
-			textInput.textEditorProperties.fontSize = Number(TEXTFORMAT_TAG.size);
-			textInput.textEditorProperties.color = uint(TEXTFORMAT_TAG.color);
-//			textInput.textEditorProperties.embedFonts = true;
-			// using the above way, i cannot set 'boldness' since that is defined in a textformat...
-			
-			textInput.textEditorProperties.embedFonts = true;
-//			textInput.textEditorProperties.textFormat = TEXTFORMAT_TAG;
-			textInput.textEditorProperties.height = 30;
-			
-			
-			textInput.promptProperties.embedFonts = true;
-			textInput.promptProperties.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
-			textInput.promptProperties.height = 30;
-			
-//			textInput.textEditorProperties.textFormat = TEXTFORMAT_TAG;
-
-//			textInput.promptProperties.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
-		}
-		
-		private function pinboredInlineTextInputInitializer(textInput:TextInput):void
-		{
-			// draw quad
-			var backgroundSkin:Quad = new Quad(10, 10, 0x000000);
-			backgroundSkin.alpha = 0;
-			
-			// text input background
-			textInput.backgroundDisabledSkin = backgroundSkin;
-			textInput.backgroundEnabledSkin = backgroundSkin;
-			textInput.backgroundFocusedSkin = backgroundSkin;
-			textInput.backgroundSkin = backgroundSkin;
-			
-			textInput.padding = 5;
-			
-			textInput.textEditorProperties.fontFamily = TEXTFORMAT_TAG.font;
-			textInput.textEditorProperties.fontSize = Number(TEXTFORMAT_TAG.size);
-			textInput.textEditorProperties.color = uint(TEXTFORMAT_TAG.color);
-//			textInput.textEditorProperties.embedFonts = true;
-			// using the above way, i cannot set 'boldness' since that is defined in a textformat
-			// and setting the textFormat property does not show any text at all!
-			
-			textInput.textEditorProperties.embedFonts = true;
-//			textInput.textEditorProperties.textFormat = TEXTFORMAT_TAG;
-			textInput.textEditorProperties.height = 30;
-			
-//			textInput.promptProperties.fontFamily = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT.font;
-//			textInput.promptProperties.fontSize = Number(TEXTFORMAT_TAG_TEXT_INPUT_PROMPT.size);
-//			textInput.promptProperties.color = uint(TEXTFORMAT_TAG_TEXT_INPUT_PROMPT.color);
-			textInput.promptProperties.embedFonts = true;
-			textInput.promptProperties.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
-			textInput.promptProperties.height = 30;
-			
-			
-		}
-		
 		override protected function scrollContainerToolbarInitializer(container:ScrollContainer):void {
 			if(!container.layout)
 			{
@@ -350,6 +283,52 @@ package nl.powergeek.feathers.themes
 			}
 		}
 		
+		private function pinboredInlineSemiTextInputInitializer(textInput:TextInput):void
+		{
+			// draw quad
+			var backgroundSkin:Quad = new Quad(10, 10, 0x000000);
+			backgroundSkin.alpha = 0.2;
+			
+			// text input background
+			textInput.backgroundSkin = backgroundSkin;
+			
+			textInput.padding = 5;
+			
+			textInput.textEditorProperties.fontFamily = TEXTFORMAT_TAG.font;
+			textInput.textEditorProperties.fontSize = Number(TEXTFORMAT_TAG.size);
+			textInput.textEditorProperties.color = uint(TEXTFORMAT_TAG.color);
+			
+			textInput.textEditorProperties.embedFonts = true;
+			textInput.textEditorProperties.height = 30;
+			
+			textInput.promptProperties.embedFonts = true;
+			textInput.promptProperties.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
+			textInput.promptProperties.height = 30;
+		}
+		
+		private function pinboredInlineTextInputInitializer(textInput:TextInput):void
+		{
+			// draw quad
+			var backgroundSkin:Quad = new Quad(10, 10, 0x000000);
+			backgroundSkin.alpha = 0;
+			
+			// text input background
+			textInput.backgroundSkin = backgroundSkin;
+			
+			textInput.padding = 5;
+			
+			textInput.textEditorProperties.fontFamily = TEXTFORMAT_TAG.font;
+			textInput.textEditorProperties.fontSize = Number(TEXTFORMAT_TAG.size);
+			textInput.textEditorProperties.color = uint(TEXTFORMAT_TAG.color);
+			
+			textInput.textEditorProperties.embedFonts = true;
+			textInput.textEditorProperties.height = 30;
+			
+			textInput.promptProperties.embedFonts = true;
+			textInput.promptProperties.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
+			textInput.promptProperties.height = 30;
+		}
+		
 		private function pinboredTranslucentTextAreaInitializer(textInput:TextInput):void
 		{
 			// draw quad
@@ -357,9 +336,6 @@ package nl.powergeek.feathers.themes
 			backgroundSkin.alpha = 0.1;
 			
 			// text input background
-			textInput.backgroundDisabledSkin = backgroundSkin;
-			textInput.backgroundEnabledSkin = backgroundSkin;
-			textInput.backgroundFocusedSkin = backgroundSkin;
 			textInput.backgroundSkin = backgroundSkin;
 			
 			textInput.padding = 10;
@@ -392,9 +368,6 @@ package nl.powergeek.feathers.themes
 			backgroundSkin.alpha = 0.2;
 			
 			// text input background
-			input.backgroundDisabledSkin = backgroundSkin;
-			input.backgroundEnabledSkin = backgroundSkin;
-			input.backgroundFocusedSkin = backgroundSkin;
 			input.backgroundSkin = backgroundSkin;
 			
 			input.padding = 10;
@@ -448,9 +421,6 @@ package nl.powergeek.feathers.themes
 			backgroundSkin.alpha = 0.3;
 			
 			// text input background
-			input.backgroundDisabledSkin = backgroundSkin;
-			input.backgroundEnabledSkin = backgroundSkin;
-			input.backgroundFocusedSkin = backgroundSkin;
 			input.backgroundSkin = backgroundSkin;
 			
 			
@@ -659,8 +629,8 @@ package nl.powergeek.feathers.themes
 		
 		private function quadContextPrimaryButtonInitializer(button:Button):void
 		{
-//			var defaultSkin:RoundedRectangle = new RoundedRectangle(10, 10, 3, 3, 3, 3);
-//			defaultSkin.material = new FlatColorMaterial(0x428BCA);
+//			var defaultSkin:RoundedStrokeButtonSkin = drawRoundedRectStrokeButton(10, 10, 3, 2, 0xFFFFFF, 1, 0x000000, 0.2);
+			
 			var defaultSkin:Quad = new Quad(10, 10, 0x428BCA);
 //			defaultSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.defaultSkin = defaultSkin;
@@ -696,6 +666,11 @@ package nl.powergeek.feathers.themes
 			button.useHandCursor = true;
 		}
 		
+		private function drawRoundedRectStrokeButton(width:int, height:int, cornerRadius:int, strokeWidth:int, strokeColor:Number = 0xFFFFFF, strokeAlpha:Number = 1, bgColor:Number = 0x000000, bgAlpha:Number = 0):RoundedStrokeButtonSkin
+		{	
+			return new RoundedStrokeButtonSkin(width, height, cornerRadius, strokeWidth, strokeColor, strokeAlpha, bgColor, bgAlpha);
+		}
+		
 		private function transparentPanelInitializer(panel:Panel):void
 		{
 			var bg:Quad = new Quad(10, 10, 0x000000);
@@ -709,31 +684,22 @@ package nl.powergeek.feathers.themes
 			// define background
 			var backgroundSkin:Quad = new Quad(10, 10, 0xFFFFFF);
 			backgroundSkin.alpha = 0;
-//			backgroundSkin.touchable = false;
-			
-			var backgroundDisabledSkin:Quad = new Quad(10, 10, 0xFFCCCC);
-			backgroundDisabledSkin.alpha = 0.1;
-//			backgroundDisabledSkin.touchable = false;
 			
 			// text input background
-			textInput.backgroundDisabledSkin = backgroundDisabledSkin;
-			textInput.backgroundEnabledSkin = backgroundSkin;
-			textInput.backgroundFocusedSkin = backgroundSkin;
 			textInput.backgroundSkin = backgroundSkin;
-			
-			textInput.promptProperties.embedFonts = true;
-			textInput.textEditorProperties.embedFonts = true;
 			
 			textInput.textEditorFactory = function():ITextEditor {
 				var tfte:TextFieldTextEditor = new TextFieldTextEditor();
-//				tfte.width = textInput.width;
+				tfte.width = textInput.width;
+				tfte.embedFonts = true;
 				tfte.textFormat = TEXTFORMAT_TAG;
 				return tfte;
 			}
 				
 			textInput.promptFactory = function():ITextRenderer {
 				var tr:TextFieldTextRenderer = new TextFieldTextRenderer();
-//				tr.width = textInput.width;
+				tr.width = textInput.width;
+				tr.embedFonts = true;
 				tr.textFormat = TEXTFORMAT_TAG_TEXT_INPUT_PROMPT;
 				return tr;
 			}
