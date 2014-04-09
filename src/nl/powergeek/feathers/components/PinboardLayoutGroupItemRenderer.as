@@ -100,9 +100,6 @@ package nl.powergeek.feathers.components
 		{
 			//trace('commitData of item at index: ' + this.index);
 			
-			// set isBeingEdited to false
-			this.isBeingEdited = false;
-			
 			if(this._data)
 			{
 				if(this._data.hasOwnProperty("description") && String(this._data.description).length > 0)
@@ -160,6 +157,7 @@ package nl.powergeek.feathers.components
 					this._dataChanged.add(function():void {
 						//trace('IR firing!');
 						invalidate(INVALIDATION_FLAG_ALL);
+						validate();
 					});
 				}
 			}

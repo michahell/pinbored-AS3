@@ -190,7 +190,7 @@ package nl.powergeek.feathers.components
 		{
 			// first remove old buttons
 			if(_buttons && _buttons.length > 0) {
-				trace('removing previous pager buttons...' + _buttons.length);
+				//trace('removing previous pager buttons...' + _buttons.length);
 				while(_buttons.length > 0) {
 					var removedButton:Button = Button(_buttons.pop());
 					removedButton.removeEventListeners();
@@ -317,8 +317,6 @@ package nl.powergeek.feathers.components
 		
 		override protected function draw():void
 		{
-			trace('pager draw called!');
-			
 			this._backgroundGroup.width = this.width;
 			this._buttonGroup.width = this.width;
 			

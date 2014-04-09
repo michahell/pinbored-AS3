@@ -23,8 +23,7 @@ Roadmap V1
 * show amount of bookmarks retrieved / number of pages in header
 * update XML manifest for nice AIR package description etc.
 * more transitional interface design
-	* awesome button design like so: http://www.meetup.com/jobs/
-	
+	* awesome button design like so: http://www.meetup.com/jobs/, https://getpebble.com/discover
 	* ~~edit animations~~
 * ~~update request~~
 * ~~item renderer has, when collapsed, editing capabilities~~

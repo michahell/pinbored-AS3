@@ -287,10 +287,10 @@ package nl.powergeek.feathers.components
 			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 		}
 		
-		public function removeAllTags():void
+		public function removeAllTags(notify:Boolean = false):void
 		{
 			while(_tagsArray && _tagsArray.length > 0) {
-				removeTag(_tagsArray[0], false);	
+				removeTag(_tagsArray[0], notify);	
 			}
 		}
 		
