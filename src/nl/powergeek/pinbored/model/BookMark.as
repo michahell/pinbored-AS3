@@ -60,7 +60,7 @@ package nl.powergeek.pinbored.model
 			tags:Vector.<String>,
 			shared:String,
 			toread:String,
-			// new data (when modifying)
+			// new data (when modifying)e
 			href_new:String,
 			description_new:String,
 			extended_new:String,
