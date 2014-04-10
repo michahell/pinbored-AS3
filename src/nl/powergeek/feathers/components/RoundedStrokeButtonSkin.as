@@ -37,7 +37,9 @@ package nl.powergeek.feathers.components
 		
 		public function redraw():void
 		{
-			trace('redraw called!');
+			CONFIG::TESTING {
+				trace('redraw called!');
+			}
 			this.graphics.clear();
 			
 			this.graphics.lineStyle(_strokeWidth, _strokeColor, _strokeAlpha);
@@ -50,14 +52,18 @@ package nl.powergeek.feathers.components
 		
 		override public function set width(value:Number):void
 		{
-			trace('width set called! ' + value);
+			CONFIG::TESTING {
+				trace('width set called! ' + value);
+			}
 			super.width = value;
 			redraw();
 		}
 		
 		override public function set height(value:Number):void
 		{
-			trace('height set called! ' + value);
+			CONFIG::TESTING {
+				trace('height set called! ' + value);
+			}
 			super.height = value;
 			redraw();
 		}

@@ -319,8 +319,10 @@ package nl.powergeek.pinbored.model
 		
 		private function dataChangedHandler():void 
 		{
-			//trace('data changed called.');
-			//trace('changed: ', isLinkChanged, isHrefChanged, isDescriptionChanged, isExtendedChanged, isTagsChanged);
+			CONFIG::TESTING {
+				trace('data changed called.');
+				trace('changed: ', isLinkChanged, isHrefChanged, isDescriptionChanged, isExtendedChanged, isTagsChanged);
+			}
 			
 			if(isLinkChanged == true || isHrefChanged == true || isDescriptionChanged == true || isExtendedChanged == true || isTagsChanged == true) {
 				isChanged = true;
@@ -335,8 +337,10 @@ package nl.powergeek.pinbored.model
 		
 		private function tagEditorHandler(changedTags:Vector.<String>):void
 		{
-			trace('tag editor handler called! ');
-			trace(tags.toString(), '\n', changedTags.toString());
+			CONFIG::TESTING {
+				trace('tag editor handler called! ');
+				trace(tags.toString(), '\n', changedTags.toString());
+			}
 			
 			// store new value
 			tags_new = changedTags;
@@ -491,7 +495,9 @@ package nl.powergeek.pinbored.model
 			bookmarkData_new.shared = shared_new;
 			bookmarkData_new.toread = toread_new;
 			
-			trace('bm data new: ' + bookmarkData_new.toString(), bookmarkData_new.href, bookmarkData_new.description);
+			CONFIG::TESTING {
+				trace('bm data new: ' + bookmarkData_new.toString(), bookmarkData_new.href, bookmarkData_new.description);
+			}
 			
 			// notify that edit request should be performed
 			editConfirmed.dispatch(this);

@@ -112,16 +112,20 @@ package nl.powergeek.REST
 			if(dryRun == false) {
 				loader.load(restrequest.payload);
 				// echo request
-				trace('requested :\n',
-					restrequest.type, '\n',
-					restrequest.payload.url, '\n'
-				);
+				CONFIG::TESTING {
+					trace('requested :\n',
+						restrequest.type, '\n',
+						restrequest.payload.url, '\n'
+					);
+				}
 			} else {
 				// echo request
-				trace('requesting DRY-RUN :\n',
-					restrequest.type, '\n',
-					restrequest.payload.url, '\n'
-				);
+				CONFIG::TESTING {
+					trace('requesting DRY-RUN :\n',
+						restrequest.type, '\n',
+						restrequest.payload.url, '\n'
+					);
+				}
 			}
 			
 			return restrequest;

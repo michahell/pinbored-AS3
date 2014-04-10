@@ -78,8 +78,9 @@ package
 			// show login screen
 			this._navigator.showScreen( LOGIN_SCREEN );
 			
-			//TODO update XML manifest for nice AIR package description etc.
-			//TODO put all trace statements inside conditional compile
+			//TODO PROBLEM: solve huuuge filtering problem...
+			//TODO PROBLEM: look into JSON data tag being displayed while it is not there...
+			//TODO FEAT: create tag autocompletion...
 		}
 	}
 }

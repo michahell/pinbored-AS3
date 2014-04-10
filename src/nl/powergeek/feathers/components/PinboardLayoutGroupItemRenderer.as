@@ -98,7 +98,9 @@ package nl.powergeek.feathers.components
 
 		override protected function commitData():void
 		{
-			//trace('commitData of item at index: ' + this.index);
+			CONFIG::TESTING {
+				trace('commitData of item at index: ' + this.index);
+			}
 			
 			if(this._data)
 			{
@@ -155,7 +157,9 @@ package nl.powergeek.feathers.components
 				if(this._data.hasOwnProperty("dataChanged")) {
 					this._dataChanged = this._data.dataChanged;
 					this._dataChanged.add(function():void {
-						//trace('IR firing!');
+						CONFIG::TESTING {
+							trace('IR firing!');
+						}
 						invalidate(INVALIDATION_FLAG_ALL);
 					});
 				}
@@ -339,7 +343,9 @@ package nl.powergeek.feathers.components
 					_hiddenContentHeight = _hiddenContent.height;
 				}
 				if( isBeingEdited == false ) {
-					//trace('insta collapsing HC!');
+					CONFIG::TESTING {
+						trace('insta collapsing HC!');
+					}
 					_hiddenContent.height = 0;
 					hiddenContentFadeOut();
 					_hiddenContent.visible = false;
@@ -427,8 +433,10 @@ package nl.powergeek.feathers.components
 			var realWidth:Number = this.width;
 			var realScaleX:Number = this.scaleX;
 			
-//			trace('IR: real height/width: ' + realHeight, realWidth);
-//			trace('IR: real height - _hiddenContentHeight: ', realHeight - _hiddenContentHeight, realWidth);
+			CONFIG::TESTING {
+				trace('IR: real height/width: ' + realHeight, realWidth);
+				trace('IR: real height - _hiddenContentHeight: ', realHeight - _hiddenContentHeight, realWidth);
+			}
 			
 			var fakeRealHeight:Number = realHeight - _hiddenContentHeight;
 			
@@ -461,7 +469,9 @@ package nl.powergeek.feathers.components
 		
 		public function removeSelf():void
 		{
-			trace('IR being removed...');
+			CONFIG::TESTING {
+				trace('IR being removed...');
+			}
 		}
 		
 		private function tweenBackgroundColor(fromColor:uint, toColor:uint):void

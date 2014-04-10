@@ -100,7 +100,7 @@ package nl.powergeek.pinbored.screens
 			// tween-in login box and its items
 			fadeLoginBox(1).then(function(result:String):void {
 				// testing quick login fix
-				CONFIG::TESTING {
+				CONFIG::QUICKTEST {
 					login();
 				}
 			});
@@ -285,7 +285,9 @@ package nl.powergeek.pinbored.screens
 		
 		protected function loginTriggeredEnterHandler( event:starling.events.Event ):void
 		{	
-			trace('enter pressed..');
+			CONFIG::TESTING {
+				trace('enter pressed..');
+			}
 			this.login();
 		}
 		
@@ -348,7 +350,7 @@ package nl.powergeek.pinbored.screens
 		
 		protected function login():void {
 			
-			CONFIG::TESTING {
+			CONFIG::QUICKTEST {
 				usernameInput.text = 'michahell';
 				passwordInput.text = 'Yefjq7ct!';
 			}
@@ -405,8 +407,10 @@ package nl.powergeek.pinbored.screens
 				PinboardService.getUserToken(username, password).then(requestCompleted, requestFailed);
 				
 			} else {
-				//TODO handle username / password error etc.
-				trace('error: no username or password provided!');
+				//TODO FEAT: handle username / password error etc.
+				CONFIG::TESTING {
+					trace('error: no username or password provided!');
+				}
 			}
 		}
 

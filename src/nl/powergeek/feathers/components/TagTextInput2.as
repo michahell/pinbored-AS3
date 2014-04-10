@@ -296,7 +296,9 @@ package nl.powergeek.feathers.components
 		
 		override protected function draw():void
 		{
-//			trace('tag text input 2 draw called');
+			CONFIG::TESTING {
+				trace('tag text input 2 draw called');
+			}
 			
 			// phase 1 commit
 			_tagContainer.validate();

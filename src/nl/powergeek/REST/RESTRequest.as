@@ -94,7 +94,9 @@ package nl.powergeek.REST
 					break;
 			}
 			
-			//trace('payload url: ' + payload.url);
+			CONFIG::TESTING {
+				trace('payload url: ' + payload.url);
+			}
 			
 			// return the request
 			return payload;

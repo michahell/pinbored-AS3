@@ -36,7 +36,9 @@ package nl.powergeek.pinbored.services
 		
 		protected function completeHandler(event:Event):void
 		{
-			trace('request completed successfully.');
+			CONFIG::TESTING {
+				trace('request completed successfully.');
+			}
 			if(status == 200)
 				this.callback(false);
 			else
@@ -45,13 +47,17 @@ package nl.powergeek.pinbored.services
 		
 		protected function ioErrorHandler(event:IOErrorEvent):void
 		{
-			trace('request failed: ' + event.text);
+			CONFIG::TESTING {
+				trace('request failed: ' + event.text);
+			}
 			this.callback(true);
 		}
 		
 		protected function securityErrorHandler(event:SecurityErrorEvent):void
 		{
-			trace('request failed: ' + event.text);
+			CONFIG::TESTING {
+				trace('request failed: ' + event.text);
+			}
 			this.callback(true);
 		}
 		

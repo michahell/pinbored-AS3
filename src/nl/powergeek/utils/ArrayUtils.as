@@ -74,11 +74,17 @@ package nl.powergeek.utils
 			
 			// 50 items and 10 items per page means 5 child arrays.
 			var fullPages:uint = Math.floor(source.length / resultsPerPage);
-			trace('parts: ', source.length + ' / ' + resultsPerPage + ' = ' + fullPages);
+			
+			CONFIG::TESTING {
+				trace('parts: ', source.length + ' / ' + resultsPerPage + ' = ' + fullPages);
+			}
 			
 			// 48 items would mean 4 child arrays and the last one containing 8 instead of 10 items.
 			var restPage:uint = uint(source.length % resultsPerPage);
-			trace('rest: ', source.length + ' % ' + resultsPerPage + ' = ' + restPage);
+			
+			CONFIG::TESTING {
+				trace('rest: ', source.length + ' % ' + resultsPerPage + ' = ' + restPage);
+			}
 			
 			// copy source
 			var sourceCopy:Array = source.slice();

@@ -18,7 +18,9 @@ package nl.powergeek.utils
 		
 		private function refreshArrayCollection(sourceArray:Array, resultsPerPage:Number):void
 		{
-			//trace('ArrayCollectionPager: source array size before split: ' + sourceArray.length);
+			CONFIG::TESTING {
+				trace('ArrayCollectionPager: source array size before split: ' + sourceArray.length);
+			}
 			_resultsPerPage = resultsPerPage;
 			
 			// split the given source array
@@ -30,13 +32,17 @@ package nl.powergeek.utils
 				if(_arrayCollection[0] is Array) {
 					_numPages = _arrayCollection.length;
 					for (var i:uint = 0; i < _numPages; i++) {
-						//trace('ArrayCollectionPager: result page size: ' + _arrayCollection[i].length);
+						CONFIG::TESTING {
+							trace('ArrayCollectionPager: result page size: ' + _arrayCollection[i].length);
+						}
 					}
 				} else {
 					_numPages = 0;
 				}
 			
-			//trace('ArrayCollectionPager: numPages: ' + _numPages);
+			CONFIG::TESTING {
+				trace('ArrayCollectionPager: numPages: ' + _numPages);
+			}
 		}
 		
 		/**
@@ -49,16 +55,7 @@ package nl.powergeek.utils
 			
 			// if there is a source Array and it contains items
 			var listCollectionArray:Array = null;
-			
-//			if(sourceArray && sourceArray.length > 0) {
-//				// calculate how many parts we need
-//				var parts:Number = Math.ceil(sourceArray.length / resultsPerPage);
-//				trace('ArrayCollectionPager: split in part size: ' + parts, ' source array length: ', sourceArray.length, ' results per page: ', resultsPerPage);
-//				
-//				// split the source array into an arrayCollection of n parts
-//				listCollectionArray = ArrayUtils.splitTo(sourceArray, parts);
-//			}
-			
+
 			if(sourceArray && sourceArray.length > 0) {
 				// split the source array into an arrayCollection of n parts
 				listCollectionArray = ArrayUtils.splitToTypeSafe(sourceArray, resultsPerPage);

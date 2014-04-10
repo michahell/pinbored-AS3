@@ -126,7 +126,9 @@ package nl.powergeek.feathers.components
 		
 		public function activate(resultPages:Number):void
 		{
-			//trace('pager ACTIVATE called..');
+			CONFIG::TESTING {
+				trace('pager ACTIVATE called..');
+			}
 			
 			// first store resultPages
 			this.numResultPages = resultPages;
@@ -190,7 +192,9 @@ package nl.powergeek.feathers.components
 		{
 			// first remove old buttons
 			if(_buttons && _buttons.length > 0) {
-				//trace('removing previous pager buttons...' + _buttons.length);
+				CONFIG::TESTING {
+					trace('removing previous pager buttons...' + _buttons.length);
+				}
 				while(_buttons.length > 0) {
 					var removedButton:Button = Button(_buttons.pop());
 					removedButton.removeEventListeners();
@@ -214,7 +218,10 @@ package nl.powergeek.feathers.components
 			// calculate the range start and end numbers
 			rangeStart = Math.max(currentPage - numSideButtons - moreLeftButtons, 1);
 			rangeEnd = Math.min(currentPage + numSideButtons + moreRightButtons, totalResultPages);
-			//trace('rangeStart: ' + rangeStart, 'rangeEnd:', rangeEnd);
+			
+			CONFIG::TESTING {
+				trace('rangeStart: ' + rangeStart, 'rangeEnd:', rangeEnd);
+			}
 			
 			for (var i:uint = rangeStart; i <= rangeEnd; i++) {
 				var button:Button = new Button();

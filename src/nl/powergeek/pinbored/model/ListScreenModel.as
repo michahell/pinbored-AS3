@@ -43,7 +43,10 @@ package nl.powergeek.pinbored.model
 				
 				// reference result to resulting page data array
 				result = rawBookmarkListCollectionPager.first();
-				trace('first page result #items: ' + result.length);
+				
+				CONFIG::TESTING {
+					trace('first page result #items: ' + result.length);
+				}
 				
 				// also update total result pages. This is unique for this function!
 				numResultPages = rawBookmarkListCollectionPager.numPages;
@@ -63,7 +66,10 @@ package nl.powergeek.pinbored.model
 				
 				// reference result to resulting page data array
 				result = rawBookmarkListCollectionPager.previous();
-				trace('previous page result #items: ' + result.length);
+				
+				CONFIG::TESTING {
+					trace('previous page result #items: ' + result.length);
+				}
 				
 				// fire signal to let know that we are now on a different result page
 				resultPageChanged.dispatch(rawBookmarkListCollectionPager.numCurrentPage());
@@ -80,7 +86,10 @@ package nl.powergeek.pinbored.model
 				
 				// reference result to resulting page data array
 				result = rawBookmarkListCollectionPager.numbered(number);
-				trace('numbered page result #items: ' + result.length);
+				
+				CONFIG::TESTING {
+					trace('numbered page result #items: ' + result.length);
+				}
 				
 				// fire signal to let know that we are now on a different result page
 				resultPageChanged.dispatch(rawBookmarkListCollectionPager.numCurrentPage());
@@ -97,7 +106,10 @@ package nl.powergeek.pinbored.model
 				
 				// reference result to resulting page data array
 				result = rawBookmarkListCollectionPager.next();
-				trace('next page result #items: ' + result.length);
+				
+				CONFIG::TESTING {
+					trace('next page result #items: ' + result.length);
+				}
 				
 				// fire signal to let know that we are now on a different result page
 				resultPageChanged.dispatch(rawBookmarkListCollectionPager.numCurrentPage());
@@ -114,7 +126,10 @@ package nl.powergeek.pinbored.model
 				
 				// reference result to resulting page data array
 				result = rawBookmarkListCollectionPager.last();
-				trace('last page result #items: ' + result.length);
+				
+				CONFIG::TESTING {
+					trace('last page result #items: ' + result.length);
+				}
 				
 				// fire signal to let know that we are now on a different result page
 				resultPageChanged.dispatch(rawBookmarkListCollectionPager.numCurrentPage());
@@ -134,7 +149,9 @@ package nl.powergeek.pinbored.model
 				// filter on tags
 				if(searchTags && searchTags.length > 0) {
 					
-					trace('filtering on tags...');
+					CONFIG::TESTING {
+						trace('filtering on tags...');
+					}
 					
 					// filter
 					//result = rawBookmarkDataList.filter(function(bm:Object, index:int, arr:Array):Boolean {
@@ -166,7 +183,9 @@ package nl.powergeek.pinbored.model
 				// fiter on search word(s)
 				if(searchWords.length > 0) {
 					
-					trace('filtering on search word(s): ' + searchWords);
+					CONFIG::TESTING {
+						trace('filtering on search word(s): ' + searchWords);
+					}
 					
 					// first store search string
 					searchString = searchWords;
@@ -195,7 +214,7 @@ package nl.powergeek.pinbored.model
 						});
 						
 					} else {
-						// TODO search for multiple words
+						// TODO FEAT: search for multiple words
 					}
 				}
 				
@@ -203,7 +222,10 @@ package nl.powergeek.pinbored.model
 			
 			// store result
 			rawBookmarkDataListFiltered = result;
-			trace('done filtering: ' + rawBookmarkDataListFiltered.length);
+			
+			CONFIG::TESTING {
+				trace('done filtering: ' + rawBookmarkDataListFiltered.length);
+			}
 			
 			// also return it
 			return result;
@@ -231,7 +253,9 @@ package nl.powergeek.pinbored.model
 		
 		public static function setCurrentTags(tags:Vector.<String>):void
 		{
-			//trace('LSM tags updated: ' + tags.toString());
+			CONFIG::TESTING {
+				trace('LSM tags updated: ' + tags.toString());
+			}
 			
 			// first store tags searched for
 			searchTags = tags;
@@ -241,7 +265,9 @@ package nl.powergeek.pinbored.model
 		{
 			var index1:int = rawBookmarkDataListFiltered.indexOf(bookmarkData);
 			
-			trace('to DELETE, found in list ? ' + index1);
+			CONFIG::TESTING {
+				trace('to DELETE, found in list ? ' + index1);
+			}
 			
 			// remove from filtered bookmarks list
 			if(index1 != -1)
@@ -253,7 +279,10 @@ package nl.powergeek.pinbored.model
 		{
 			// find the bookmark raw object in the source raw bookmark data list
 			var index1:int = rawBookmarkDataListFiltered.indexOf(bm.bookmarkData);
-			trace('to UPDATE, found in lists ? ' + index1);
+			
+			CONFIG::TESTING {
+				trace('to UPDATE, found in lists ? ' + index1);
+			}
 			
 			// update or replace item in the list
 			if(index1 != -1)

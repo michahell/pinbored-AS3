@@ -470,8 +470,8 @@ package nl.powergeek.feathers.themes
 		{
 			pagerDefaultButtonInitializer(button);
 			
-			var disabledSkin:Quad = new Quad(10, 10, 0x0055AA);
-			disabledSkin.alpha = 0.3;
+			var disabledSkin:Quad = new Quad(10, 10, 0x0066CC);
+			disabledSkin.alpha = 0.6;
 			button.disabledSkin = disabledSkin;
 			
 			button.disabledLabelProperties.textFormat = TEXTFORMAT_PAGER_DISABLED_HIGHLIGHT;

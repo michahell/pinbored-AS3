@@ -190,17 +190,19 @@ package nl.powergeek.pinbored.screens
 		
 		private function onListScrollComplete(event:starling.events.Event):void
 		{
-			//TODO on list scroll complete
+			
 		}
 		
 		private function onListScrollStart(event:starling.events.Event):void
 		{
-			//TODO on list scroll start	
+			
 		}
 		
 		private function listRendererAddHandler( event:starling.events.Event, itemRenderer:PinboardLayoutGroupItemRenderer ):void
 		{
-			//trace('list IR added.');
+			CONFIG::TESTING {
+				trace('list IR added.');
+			}
 			listFadePostPoned(1);
 			
 			// set isBeingEdited to false
@@ -223,23 +225,32 @@ package nl.powergeek.pinbored.screens
 			}
 			
 			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_DELETED, function(event:starling.events.Event):void {
-				trace('receiving BOOKMARK_DELETED event from custom item renderer...');
+				CONFIG::TESTING {
+					trace('receiving BOOKMARK_DELETED event from custom item renderer...');
+				}
 				var deletedBookmark:BookMark = BookMark(event.data);
 				removeBookmarkFromList(deletedBookmark);
 			});
 			
 			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_EXPANDING, function(event:starling.events.Event):void {
-				//trace('receiving BOOKMARK_EXPANDING event from custom item renderer...');
+				CONFIG::TESTING {
+					trace('receiving BOOKMARK_EXPANDING event from custom item renderer...');
+				}
 			});
 			
 			itemRenderer.addEventListener(BookmarkEvent.BOOKMARK_FOLDING, function(event:starling.events.Event):void {
-				//trace('receiving BOOKMARK_FOLDING event from custom item renderer...');
+				CONFIG::TESTING {
+					trace('receiving BOOKMARK_FOLDING event from custom item renderer...');
+				}
 			});
 		}
 		
 		private function listRendererRemoveHandler( event:starling.events.Event, itemRenderer:PinboardLayoutGroupItemRenderer ):void
 		{
-			//trace('list IR removed.');
+			CONFIG::TESTING {
+				trace('list IR removed.');
+			}
+			
 			itemRenderer.removeEventListeners();
 		}
 		
@@ -257,7 +268,9 @@ package nl.powergeek.pinbored.screens
 		
 		private function listFade(alpha:Number):Signal
 		{
-			//trace('list fade called, to alpha: ' + alpha);
+			CONFIG::TESTING {
+				trace('list fade called, to alpha: ' + alpha);
+			}
 			
 			if(alpha == 1)
 				pagingControl.fadeIn();
@@ -288,7 +301,11 @@ package nl.powergeek.pinbored.screens
 			
 			// filter
 			var searchString:String = TextInput(event.target).text;
-			//trace('searchString: ' + searchString);
+			
+			CONFIG::TESTING {
+				trace('searchString: ' + searchString);
+			}
+			
 			ListScreenModel.filter(searchString);
 			
 			// show loading icon
@@ -346,7 +363,10 @@ package nl.powergeek.pinbored.screens
 		
 		private function displayNoResults():void
 		{
-			trace('no results after filtering...');
+			CONFIG::TESTING {
+				trace('no results after filtering...');
+			}
+			
 			cleanBookmarkList();
 			pagingControl.visible = false;
 			
@@ -378,13 +398,17 @@ package nl.powergeek.pinbored.screens
 				bm.deleteTapped.addOnce(function(tappedBookmark:BookMark):void {
 					
 					var requestCompleted:Function = function(event:flash.events.Event):void {
-						trace('bookmark delete request completed.');
+						CONFIG::TESTING {
+							trace('bookmark delete request completed.');
+						}
 						// update the bookmark by confirming delete
 						tappedBookmark.deleteConfirmed.dispatch();
 					}
 					
 					var requestFailed:Function = function(event:flash.events.Event):void {
-						trace('bookmark delete request failed.');
+						CONFIG::TESTING {
+							trace('bookmark delete request failed.');
+						}
 					}
 					
 					// execute request and attach listener to returned signal
@@ -392,7 +416,9 @@ package nl.powergeek.pinbored.screens
 					
 					// mock deleted confirmed
 					setTimeout(function():void {
-						trace('[MOCK] bookmark delete request completed.');
+						CONFIG::TESTING {
+							trace('[MOCK] bookmark delete request completed.');
+						}
 						// update the bookmark by confirming delete
 						tappedBookmark.deleteConfirmed.dispatch();
 					}, 500);
@@ -402,7 +428,9 @@ package nl.powergeek.pinbored.screens
 				bm.editConfirmed.add(function(editedBookmark:BookMark):void {
 					
 					var requestCompleted:Function = function(event:flash.events.Event):void {
-						trace('bookmark update request completed.');
+						CONFIG::TESTING {
+							trace('bookmark update request completed.');
+						}
 						
 						// update array collection pager source
 						ListScreenModel.updateInLists(editedBookmark);
@@ -412,14 +440,16 @@ package nl.powergeek.pinbored.screens
 						// update to visualize directly
 						editedBookmark.update();
 						
-						//TODO solve tag problem
+						// TODO PROBLEM: solve tag problem
 						//trace('edited bookmark tags: ' + editedBookmark.tags.toString());
 						
 						list.invalidate();
 					};
 					
 					var requestFailed:Function = function(event:flash.events.Event):void {
-						trace('bookmark update request failed.');
+						CONFIG::TESTING {
+							trace('bookmark update request failed.');
+						}
 					};
 					
 					// execute request and attach promise functions
@@ -440,7 +470,9 @@ package nl.powergeek.pinbored.screens
 		
 		private function onListReset(event:starling.events.Event):void
 		{
-			trace('list reset!');
+			CONFIG::TESTING {
+				trace('list reset!');
+			}
 		}
 		
 		private function updateDataProvider(bookmarksList:Array):void
@@ -484,46 +516,61 @@ package nl.powergeek.pinbored.screens
 		private function displayFirstResultsPage():void
 		{
 			var page:Array = ListScreenModel.getFirstResultPage();
-			if(page && page.length > 0)
+			if(page && page.length > 0) {
 				refreshListWithCollection(page);
-			else
-				trace('todo: first: some warning?');
+			} else {
+				CONFIG::TESTING {
+					trace('todo: first: some warning?');
+				}
+			}
 		}
 		
 		private function displayPreviousResultsPage():void
 		{
 			var page:Array = ListScreenModel.getPreviousResultPage();
-			if(page && page.length > 0)
+			if(page && page.length > 0) {
 				refreshListWithCollection(page);
-			else
-				trace('todo: previous: some warning?');
+			} else {
+				CONFIG::TESTING {
+					trace('todo: previous: some warning?');
+				}
+			}
 		}
 		
 		private function displayNumberedResultsPage(number:Number):void
 		{
 			var page:Array = ListScreenModel.getNumberedResultsPage(number);
-			if(page && page.length > 0)
+			if(page && page.length > 0) {
 				refreshListWithCollection(page);
-			else
-				trace('todo: numbered: some warning?');
+			} else {
+				CONFIG::TESTING {
+					trace('todo: numbered: some warning?');
+				}
+			}
 		}
 		
 		private function displayNextResultsPage():void
 		{
 			var page:Array = ListScreenModel.getNextResultsPage();
-			if(page && page.length > 0)
+			if(page && page.length > 0) {
 				refreshListWithCollection(page);
-			else
-				trace('todo: next: some warning?');
+			} else {
+				CONFIG::TESTING {
+					trace('todo: next: some warning?');
+				}
+			}
 		}
 		
 		private function displayLastResultsPage():void
 		{
 			var page:Array = ListScreenModel.getLastResultsPage();
-			if(page && page.length > 0)
+			if(page && page.length > 0) {
 				refreshListWithCollection(page);
-			else
-				trace('todo: last: some warning?');
+			} else {
+				CONFIG::TESTING {
+					trace('todo: last: some warning?');
+				}
+			}
 		}
 		
 		private function refreshListWithCollection(array:Array):void
@@ -731,19 +778,25 @@ package nl.powergeek.pinbored.screens
 		
 		private function onScrollStart(event:starling.events.Event):void
 		{
-			trace('list scroll started');
+			CONFIG::TESTING {
+				trace('list scroll started');
+			}
 			this.list.addEventListener(starling.events.Event.SCROLL, onScrollHandler);
 		}
 		
 		private function onScrollComplete(event:starling.events.Event):void
 		{
-			trace('list scroll completed');
+			CONFIG::TESTING {
+				trace('list scroll completed');
+			}
 			this.list.removeEventListener(starling.events.Event.SCROLL, onScrollHandler);
 		}
 		
 		private function onScrollHandler(event:starling.events.Event):void
 		{
-			trace('list scrolling...');
+			CONFIG::TESTING {
+				trace('list scrolling...');
+			}
 		}
 		
 		override protected function draw():void

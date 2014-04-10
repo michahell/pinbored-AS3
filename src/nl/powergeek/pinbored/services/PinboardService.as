@@ -71,7 +71,7 @@ package nl.powergeek.pinbored.services
 		
 		public static function GetAllBookmarks(tags:Array = null):void {
 			
-			// TODO implement deferred here
+			// TODO FIX: implement deferred here
 			var tagList:String = '&tag=';
 			var argument:String = '';
 			
