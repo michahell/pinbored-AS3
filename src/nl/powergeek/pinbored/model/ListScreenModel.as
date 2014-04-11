@@ -140,8 +140,7 @@ package nl.powergeek.pinbored.model
 		
 		public static function filter(searchWords:String = ''):Array
 		{
-			//var result:Array = rawBookmarkDataList;
-			var result:Array = rawBookmarkDataListFiltered;
+			var result:Array = rawBookmarkDataList;
 			
 			// if we have tags or a search string to filter for
 			if((searchTags && searchTags.length > 0) || (searchWords.length > 0)) {
@@ -154,8 +153,7 @@ package nl.powergeek.pinbored.model
 					}
 					
 					// filter
-					//result = rawBookmarkDataList.filter(function(bm:Object, index:int, arr:Array):Boolean {
-					result = rawBookmarkDataListFiltered.filter(function(bm:Object, index:int, arr:Array):Boolean {
+					result = rawBookmarkDataList.filter(function(bm:Object, index:int, arr:Array):Boolean {
 						
 						var tags:Array = String(bm.tags).split(" ");
 						var test:Boolean;
@@ -263,22 +261,22 @@ package nl.powergeek.pinbored.model
 		
 		public static function removeFromLists(bookmarkData:Object):void
 		{
-			var index1:int = rawBookmarkDataListFiltered.indexOf(bookmarkData);
+			var index1:int = rawBookmarkDataList.indexOf(bookmarkData);
 			
 			CONFIG::TESTING {
 				trace('to DELETE, found in list ? ' + index1);
 			}
 			
-			// remove from filtered bookmarks list
+			// remove from bookmarks list
 			if(index1 != -1)
-				rawBookmarkDataListFiltered.splice(index1, 1);
+				rawBookmarkDataList.splice(index1, 1);
 			
 		}
 		
 		public static function updateInLists(bm:BookMark):void
 		{
 			// find the bookmark raw object in the source raw bookmark data list
-			var index1:int = rawBookmarkDataListFiltered.indexOf(bm.bookmarkData);
+			var index1:int = rawBookmarkDataList.indexOf(bm.bookmarkData);
 			
 			CONFIG::TESTING {
 				trace('to UPDATE, found in lists ? ' + index1);
@@ -286,7 +284,7 @@ package nl.powergeek.pinbored.model
 			
 			// update or replace item in the list
 			if(index1 != -1)
-				rawBookmarkDataListFiltered.splice(index1, 1, bm.bookmarkData_new);
+				rawBookmarkDataList.splice(index1, 1, bm.bookmarkData_new);
 		
 			// update array collection pager
 			refreshArrayCollectionPager();
@@ -294,7 +292,25 @@ package nl.powergeek.pinbored.model
 		
 		private static function refreshArrayCollectionPager():void
 		{
-			rawBookmarkListCollectionPager.updateSource(rawBookmarkDataListFiltered);
+			// check if any search string or search tags exist, if so filter
+			if( (searchString && searchString.length > 0) || (searchTags && searchTags.length > 0) ) {
+				if(searchString.length > 0)
+					filter(searchString);
+				else
+					filter();
+				
+				// refresh source with FILTERED
+				CONFIG::TESTING {
+					trace('updating filtered...');
+				}
+				rawBookmarkListCollectionPager.updateSource(rawBookmarkDataListFiltered);
+			} else {
+				// refresh source with STANDARD
+				CONFIG::TESTING {
+					trace('updating normal...');
+				}
+				rawBookmarkListCollectionPager.updateSource(rawBookmarkDataList);
+			}
 		}
 	}
 }

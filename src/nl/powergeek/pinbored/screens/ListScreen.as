@@ -329,13 +329,13 @@ package nl.powergeek.pinbored.screens
 				var parsedResponse:Object = JSON.parse(event.target.data as String);
 				
 				parsedResponse.forEach(function(bookmark:Object, index:int, array:Array):void {
-					// for reference
+					// unfiltered
 					ListScreenModel.rawBookmarkDataList.push(bookmark);
-					// for usage
+					// and filtered
 					ListScreenModel.rawBookmarkDataListFiltered.push(bookmark);
 				});
 				
-				displayInitialResultsPage(ListScreenModel.rawBookmarkDataListFiltered);
+				displayInitialResultsPage(ListScreenModel.rawBookmarkDataList);
 				
 				// small timeout for update?
 				updateScrollContainerHeight();
@@ -466,13 +466,6 @@ package nl.powergeek.pinbored.screens
 			
 			// fire result page has changed signal
 			_resultPageChanged.dispatch();
-		}
-		
-		private function onListReset(event:starling.events.Event):void
-		{
-			CONFIG::TESTING {
-				trace('list reset!');
-			}
 		}
 		
 		private function updateDataProvider(bookmarksList:Array):void

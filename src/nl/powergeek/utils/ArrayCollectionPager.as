@@ -31,8 +31,8 @@ package nl.powergeek.utils
 				// if there are pages
 				if(_arrayCollection[0] is Array) {
 					_numPages = _arrayCollection.length;
-					for (var i:uint = 0; i < _numPages; i++) {
-						CONFIG::TESTING {
+					CONFIG::TESTING {
+						for (var i:uint = 0; i < _numPages; i++) {
 							trace('ArrayCollectionPager: result page size: ' + _arrayCollection[i].length);
 						}
 					}
@@ -181,9 +181,9 @@ package nl.powergeek.utils
 			return _numPages;
 		}
 
-		public function updateSource(rawBookmarkDataListFiltered:Array):void
+		public function updateSource(array:Array):void
 		{
-			refreshArrayCollection(rawBookmarkDataListFiltered, _resultsPerPage);
+			refreshArrayCollection(array, _resultsPerPage);
 		}
 	}
 }
