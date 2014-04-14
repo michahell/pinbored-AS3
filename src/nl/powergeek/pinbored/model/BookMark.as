@@ -16,8 +16,8 @@ package nl.powergeek.pinbored.model
 	import flash.utils.setTimeout;
 	
 	import nl.powergeek.feathers.components.Tag;
+	import nl.powergeek.feathers.components.FilterBar;
 	import nl.powergeek.feathers.components.TagTextInput;
-	import nl.powergeek.feathers.components.TagTextInput2;
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	import nl.powergeek.pinbored.components.InteractiveIcon;
 	import nl.powergeek.pinbored.services.UrlChecker;
@@ -43,7 +43,7 @@ package nl.powergeek.pinbored.model
 			_urlChecker:UrlChecker,
 			_revertButton:Button,
 			_modifyButton:Button,
-			_tagEditor:TagTextInput2,
+			_tagEditor:TagTextInput,
 			_extendedInput:TextInput,
 			_hrefInput:TextInput,
 			_descriptionInput:TextInput;
@@ -102,13 +102,23 @@ package nl.powergeek.pinbored.model
 			
 		public function BookMark(bookmarkData:Object)
 		{
+			// populate local fields
 			this.bookmarkData = bookmarkData;
 			this.href = bookmarkData.href;
 			this.description = bookmarkData.description;
 			this.extended = bookmarkData.extended;
-			this.tags = Vector.<String>(String(bookmarkData.tags).split(" "));
+			
+			var tagsText:String = String(bookmarkData.tags);
+			
+			if(tagsText.length > 0 && tagsText.charAt(0) != ' ') {
+				this.tags = Vector.<String>(String(bookmarkData.tags).split(" "));
+			} else {
+				this.tags = new Vector.<String>();
+			}
+			
 			this.shared = bookmarkData.shared;
 			this.toread = bookmarkData.toread;
+			
 			
 			// automagically populate the link field
 			setLink(this.href);
@@ -216,7 +226,7 @@ package nl.powergeek.pinbored.model
 			};
 			
 			// add the tag editor
-			_tagEditor = new TagTextInput2(AppSettings.SCREEN_DPI_SCALE, tagTextOptions);
+			_tagEditor = new TagTextInput(AppSettings.SCREEN_DPI_SCALE, tagTextOptions);
 			_tagEditor.tagsChanged.add(tagEditorHandler);
 			var teld:AnchorLayoutData = new AnchorLayoutData();
 			teld.topAnchorDisplayObject = _extendedInput;
@@ -297,10 +307,12 @@ package nl.powergeek.pinbored.model
 			// first remove all tags
 			_tagEditor.removeAllTags(false);
 			
-			// add tags to tag component
-			this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
-				_tagEditor.addTag(tag, false);
-			});
+			// when there are tags, add tags to tag component
+			if(this.tags.length > 0) {
+				this.tags.forEach(function(tag:String, index:uint, vector:Vector.<String>):void {
+					_tagEditor.addTag(tag, false);
+				});
+			}
 		}
 		
 		public function removeUrlChecker():void

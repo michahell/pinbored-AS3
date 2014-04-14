@@ -27,7 +27,7 @@ package nl.powergeek.feathers.themes
 	
 	import nl.powergeek.feathers.components.Pager;
 	import nl.powergeek.feathers.components.RoundedStrokeButtonSkin;
-	import nl.powergeek.feathers.components.TagTextInput;
+	import nl.powergeek.feathers.components.FilterBar;
 	import nl.powergeek.pinbored.model.BookmarkEvent;
 	
 	import starling.display.DisplayObject;
@@ -60,7 +60,10 @@ package nl.powergeek.feathers.themes
 		public static const BACKGROUND2:Class;
 		
 
-		// logo
+		// logos
+		[Embed(source="assets/images/pinbored/logo/pinbored-icon.png")]
+		public static const ICON_TRANSPARENT:Class;
+		
 		[Embed(source="assets/images/pinbored/logo/pinbored-logo-transparent-text.png")]
 		public static const LOGO_TRANSPARENT:Class;
 		
@@ -140,6 +143,7 @@ package nl.powergeek.feathers.themes
 			BUTTON_QUAD_CONTEXT_ALTERNATIVE:String = 'pinbored-quad-context-ternary-button',
 			BUTTON_PAGER_SMALL_DEFAULT:String = 'pinbored-pager-small-default-button',
 			BUTTON_NUMBERED_PAGER_SMALL_DEFAULT:String = 'pinbored-pager-small-numbered-default-button',
+			BUTTON_QUAD_HOTKEYABLE:String = 'pinbored-quad-hotkeyable-button',
 			
 			PAGER_HORIZONTAL_DEFAULT:String = 'pinbored-horizontal-default-pager';
 			
@@ -201,6 +205,8 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(Button, pagerDefaultButtonInitializer, BUTTON_PAGER_SMALL_DEFAULT);
 			this.setInitializerForClass(Button, pagerDefaultNumberedButtonInitializer, BUTTON_NUMBERED_PAGER_SMALL_DEFAULT);
 			
+			this.setInitializerForClass(Button, quadContextHotkeyableButtonInitializer, BUTTON_QUAD_HOTKEYABLE);
+			
 			// transparent panel
 			this.setInitializerForClass(Panel, transparentPanelInitializer, PANEL_TRANSPARENT_BACKGROUND);
 			
@@ -212,6 +218,32 @@ package nl.powergeek.feathers.themes
 			this.setInitializerForClass(Label, bookmarkLabelInitializer, LABEL_BOOKMARK_DESCRIPTION);
 			this.setInitializerForClass(Label, bookmarkHrefInitializer, LABEL_BOOKMARK_HREF);
 			
+		}
+		
+		private function quadContextHotkeyableButtonInitializer(button:Button):void
+		{
+			this.quadContextPrimaryButtonInitializer(button);
+			
+			var topOffset:Number = 0;
+			
+			if(button.height != 0) {
+				topOffset = button.height / 4;
+			} else {
+				topOffset = button.paddingTop;
+			}
+			
+			// create stripe
+			var stripe:Shape = new Shape();
+			stripe.graphics.lineStyle(1, uint(TEXTFORMAT_BUTTON_DEFAULT.color), 1);
+			stripe.graphics.moveTo(0, 0);
+			stripe.graphics.lineTo(Number(TEXTFORMAT_BUTTON_DEFAULT.size) - 3, 0);
+			stripe.graphics.endFill();
+			
+			// set stripe under label
+			stripe.x = button.paddingLeft + 2;
+			stripe.y = topOffset + Number(TEXTFORMAT_BUTTON_DEFAULT.size) + 5;
+			
+			button.addChild(stripe);
 		}
 		
 		override protected function scrollContainerToolbarInitializer(container:ScrollContainer):void {
@@ -629,23 +661,22 @@ package nl.powergeek.feathers.themes
 		
 		private function quadContextPrimaryButtonInitializer(button:Button):void
 		{
-//			var defaultSkin:RoundedStrokeButtonSkin = drawRoundedRectStrokeButton(10, 10, 3, 2, 0xFFFFFF, 1, 0x000000, 0.2);
-			
 			var defaultSkin:Quad = new Quad(10, 10, 0x428BCA);
-//			defaultSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.defaultSkin = defaultSkin;
 			
-			var downSkin:Quad = new Quad(10, 10, 0x3276B1);
-//			downSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
+			var downSkin:Quad = new Quad(10, 10, 0x2266A1);
 			button.downSkin = downSkin;
 			
 			var hoverSkin:Quad = new Quad(10, 10, 0x3276B1);
-//			hoverSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.hoverSkin = hoverSkin;
 			
 			var disabledSkin:Quad = new Quad(10, 10, 0x80B0DB);
-//			disabledSkin.alpha = CONTEXT_BUTTON_DEFAULT_ALPHA;
 			button.disabledSkin = disabledSkin;
+			
+			// SELECTED SKIN
+			button.selectedHoverSkin = hoverSkin;
+			button.selectedDownSkin = defaultSkin;
+			button.selectedUpSkin = downSkin;
 			
 			button.padding = 5;
 			button.paddingLeft = button.paddingRight = 15;

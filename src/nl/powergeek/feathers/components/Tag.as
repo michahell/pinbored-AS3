@@ -46,7 +46,7 @@ package nl.powergeek.feathers.components
 			const texture:Texture = Texture.fromBitmap(new PinboredDesktopTheme.SCALE_3_TAG_IMAGE(), false);
 			const textures:Scale3Textures = new Scale3Textures(texture, 60, 80, Scale3Textures.DIRECTION_HORIZONTAL);
 			this._image = new Scale3Image(textures, this._screenDPIscale);
-			this._image.height = TagTextInput.TAG_HEIGHT;
+			this._image.height = FilterBar.TAG_HEIGHT;
 			this.addChild(this._image);
 			
 			// add the label

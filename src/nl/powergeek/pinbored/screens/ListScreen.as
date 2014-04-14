@@ -35,7 +35,7 @@ package nl.powergeek.pinbored.screens
 	import nl.powergeek.feathers.components.PinboardLayoutGroupItemRenderer;
 	import nl.powergeek.feathers.components.PinboredHeader;
 	import nl.powergeek.feathers.components.Tag;
-	import nl.powergeek.feathers.components.TagTextInput;
+	import nl.powergeek.feathers.components.FilterBar;
 	import nl.powergeek.feathers.themes.PinboredDesktopTheme;
 	import nl.powergeek.pinbored.model.AppModel;
 	import nl.powergeek.pinbored.model.BookMark;
@@ -64,7 +64,9 @@ package nl.powergeek.pinbored.screens
 		// GUI related
 		private var 
 			panel:Panel = new Panel(),
-			searchTags:TagTextInput,
+			filterContainer:LayoutGroup,
+			filterBar:FilterBar,
+			filterToggleButton:Button,
 			pagingControl:Pager,
 			listScrollContainer:ScrollContainer,
 			list:List = new List(),
@@ -110,7 +112,7 @@ package nl.powergeek.pinbored.screens
 			list.addEventListener( FeathersEventType.SCROLL_COMPLETE, onListScrollComplete );
 			
 			// when searched for tags, update the bookmarks list
-			searchTags.searchTagsTriggered.add(function(tagNames:Vector.<String>):void {
+			filterBar.searchTagsTriggered.add(function(tagNames:Vector.<String>):void {
 				
 				// show loading icon
 				showLoading();
@@ -134,8 +136,12 @@ package nl.powergeek.pinbored.screens
 				}
 			});
 			
+			filterBar.filterToggleTriggered.add(function():void {
+				trace('filter bar should drop down now...');
+			});
+			
 			// listen to Tag input signals
-			searchTags.tagsChanged.add(function(tags:Vector.<String>):void {
+			filterBar.tagsChanged.add(function(tags:Vector.<String>):void {
 				ListScreenModel.setCurrentTags(tags);
 			});
 			
@@ -440,7 +446,7 @@ package nl.powergeek.pinbored.screens
 						// update to visualize directly
 						editedBookmark.update();
 						
-						// TODO PROBLEM: solve tag problem
+						// TODO FIX: solve tag not being visualized / updated properly here
 						//trace('edited bookmark tags: ' + editedBookmark.tags.toString());
 						
 						list.invalidate();
@@ -605,6 +611,11 @@ package nl.powergeek.pinbored.screens
 				header.paddingLeft = 10;
 				header.gap = 0;
 				
+				// add icon
+//				var icon:Image = new Image(Texture.fromBitmap(new PinboredDesktopTheme.ICON_TRANSPARENT(), true));
+//				icon.scaleX = icon.scaleY = 0.25;
+//				header.leftItems = new <DisplayObject>[ icon ];
+				
 				header.titleFactory = function():ITextRenderer
 				{
 					var titleRenderer:TextFieldTextRenderer = new TextFieldTextRenderer();
@@ -718,10 +729,30 @@ package nl.powergeek.pinbored.screens
 			panelLayout.padding = 0;
 			this.panel.layout = panelLayout;
 			
+			// add the tag search and filter container
+			this.filterContainer = new LayoutGroup();
+			var filterContainerLayout:HorizontalLayout = new HorizontalLayout();
+			filterContainerLayout.gap = 5;
+			filterContainerLayout.padding = 0;
+			this.filterContainer.layout = filterContainerLayout;
+			this.panel.addChild(this.filterContainer);
+			
 			// add the tag search 'bar'
-			this.searchTags = new TagTextInput(this._dpiScale, null);
-			this.searchTags.width = this.width;
-			this.panel.addChild(this.searchTags);
+			this.filterBar = new FilterBar(this._dpiScale, null);
+			this.filterBar.width = this.width;
+			//this.panel.addChild(this.searchTags);
+			this.filterContainer.addChild(this.filterBar);
+			
+			// add the filterToggleButton
+//			this.filterToggleButton = new Button();
+//			//this.filterToggleButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
+//			this.filterToggleButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_HOTKEYABLE);
+//			this.filterToggleButton.padding = 10;
+//			this.filterToggleButton.paddingLeft = 20;
+//			this.filterToggleButton.paddingRight = 20;
+//			this.filterToggleButton.label = 'Filter';
+//			this.filterContainer.addChild(this.filterToggleButton);
+			
 			
 			// add the list result paging bar, initially set to invisible
 			this.pagingControl = new Pager();
@@ -802,7 +833,10 @@ package nl.powergeek.pinbored.screens
 			_backgroundImage.height = this.height;
 			
 			// update searchtags
-			searchTags.width = panel.width;
+			//searchTags.width = panel.width;
+			filterContainer.width = panel.width;
+			
+			filterBar.width = filterContainer.width;// - filterToggleButton.width;
 			
 			// update paging control
 			pagingControl.width = panel.width;
@@ -814,8 +848,8 @@ package nl.powergeek.pinbored.screens
 			// update listcontainerHeight
 			var listContainerHeight:Number = 0;
 			
-			if(header && footer && pagingControl && searchTags)
-				listContainerHeight = header.height + footer.height + pagingControl.height + searchTags.height + 1;
+			if(header && footer && pagingControl && filterBar)
+				listContainerHeight = header.height + footer.height + pagingControl.height + filterBar.height + 1;
 			
 			// update scrollcontainer height
 			//this.listScrollContainer.height = panel.height - listContainerHeight - searchTags.height - 123;

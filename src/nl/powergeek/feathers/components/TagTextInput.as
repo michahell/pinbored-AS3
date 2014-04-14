@@ -48,7 +48,7 @@ package nl.powergeek.feathers.components
 			_background:DisplayObject,
 			_separatorTop:DisplayObject,
 			_separatorBottom:DisplayObject,
-			_searchButton:Button;
+			_revertButton:Button;
 		
 		// internal state
 		private var
@@ -63,13 +63,14 @@ package nl.powergeek.feathers.components
 			tagsChanged:Signal = new Signal(Vector.<String>),
 			searchTagsTriggered:Signal = new Signal(Vector.<String>);
 			
-		// setttings / options through params object in constructor
+		// settings / options through params object in constructor
 		private var 
 			useBackground:Boolean = true,
 			useSeparators:Boolean = true,
 			useKeys:Boolean = true,
 			maxTags:uint = 3,
-			textInputPrompt:String = 'add tags for filtering';
+			textInputPrompt:String = 'add tags for filtering',
+			tagPadding:Number = 20;
 
 			
 		public function TagTextInput(screenDPIscale:Number, tagTextOptions:Object)
@@ -89,6 +90,10 @@ package nl.powergeek.feathers.components
 				
 				if(tagTextOptions.padding) {
 					this._padding = tagTextOptions.padding;
+				}
+				
+				if(tagTextOptions.tagPadding) {
+					this.tagPadding = tagTextOptions.tagPadding;
 				}
 				
 				if(tagTextOptions.maxTags != 3)
@@ -135,11 +140,20 @@ package nl.powergeek.feathers.components
 			// assign layout type and add the tags layoutGroup
 			_tagContainer.layout = tagLayout;
 			
+			// add tag layout group
+			this._componentLayoutGroup.addChild(_tagContainer);
+			
 			// create and add textinput
 			this._textInput.prompt = this.textInputPrompt;
-//			this._textInput.width = 200;
-			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+//			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_TRANSPARENT_BACKGROUND);
+			this._textInput.nameList.add(PinboredDesktopTheme.TEXTINPUT_INLINE_TRANSLUCENT);			
 			this._textInput.padding = this._padding / 2;
+			var layoutData:AnchorLayoutData = new AnchorLayoutData();
+			layoutData.leftAnchorDisplayObject = _tagContainer;
+			layoutData.left = 5;
+			layoutData.right = 10;
+			layoutData.verticalCenter = 0;
+			this._textInput.layoutData = layoutData;
 			
 			// add tag icon in front of tag text input
 			var tagIcon:ImageLoader = new ImageLoader();
@@ -160,29 +174,10 @@ package nl.powergeek.feathers.components
 				this._tagContainer.addEventListener(KeyboardEvent.KEY_DOWN, keyInputHandler);
 			}
 			
-			this._tagContainer.addChild(this._textInput);
+			this._componentLayoutGroup.addChild(this._textInput);
 			
-			// add tag layout group
-			this._componentLayoutGroup.addChild(_tagContainer);
-			this._tagContainer.validate();
-			
-			// create searchbutton
-			_searchButton = new Button();
-			_searchButton.label = 'search & filter';
-			_searchButton.height = SEARCHBUTTON_HEIGHT;
-			_searchButton.nameList.add(PinboredDesktopTheme.BUTTON_QUAD_CONTEXT_PRIMARY);
-			_searchButton.addEventListener(Event.TRIGGERED, searchButtonTriggeredHandler); 
-				
-			var buttonLayoutData:AnchorLayoutData = new AnchorLayoutData();
-			buttonLayoutData.verticalCenter = 0;
-			buttonLayoutData.right = this._padding;
-			_searchButton.layoutData = buttonLayoutData;
-			this._componentLayoutGroup.addChild(this._searchButton);
-		}
-		
-		private function searchButtonTriggeredHandler():void
-		{
-			searchTagsTriggered.dispatch(this._tagNames);
+			// and invalidate, need to redraw this thing
+			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 		}
 		
 		private function keyInputHandler(event:KeyboardEvent):void
@@ -192,10 +187,6 @@ package nl.powergeek.feathers.components
 					if(_tagNames.length > 0)
 						removeTag(_tagsArray[_tagsArray.length - 1]);
 				}
-			}
-			
-			if(event.keyCode == Keyboard.ENTER) {
-				//searchTagsTriggered.dispatch(this._tagNames);
 			}
 		}
 		
@@ -217,7 +208,7 @@ package nl.powergeek.feathers.components
 				var commaIndex:Number = text.indexOf(', ');
 				
 				// if we do not yet have reached the max. number of tags
-				if(this._tagCount < maxTags) {
+				if(this._tagCount < maxTags || maxTags == 0) {
 					
 					if(spaceIndex > -1 || commaIndex > -1) {
 						
@@ -239,16 +230,17 @@ package nl.powergeek.feathers.components
 						textInput.text = '';
 						
 						// and invalidate, need to redraw this thing
-						//invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
+						invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 					}
 				}
 			}
 		}
 		
-		public function addTag(tagText:String):void
+		public function addTag(tagText:String, notify:Boolean = true):void
 		{
 			// create the tag and add it to the list o tags
 			var tag:Tag = _tagFactory(tagText);
+			tag.padding = tagPadding;
 			
 			// add listener to tag removed signal
 			tag.removed.addOnce(function():void {
@@ -256,63 +248,65 @@ package nl.powergeek.feathers.components
 			});
 			
 			// quickly remove the textInput, then add the tag, then re-add the textInput!
-			_tagContainer.removeChild(this._textInput);
 			_tagContainer.addChild(tag);
-			_tagContainer.addChild(this._textInput);
-			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 			
 			// add tag text to tagText array for quick access
 			_tagNames.push(tag.text);
 			_tagsArray.push(tag);
 			
 			// fire tagsChanged signal
-			tagsChanged.dispatch(_tagNames);
+			if(notify == true)
+				tagsChanged.dispatch(_tagNames);
 			
 			// increment tagCount
 			_tagCount++;
+			
+			// and invalidate, need to redraw this thing
+			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
 		}
 		
-		public function removeTag(tag:Tag):void {
+		public function removeTag(tag:Tag, notify:Boolean = true):void
+		{
 			// remove from display list
 			_tagContainer.removeChild(tag);
+			
 			// remove from tags array
 			_tagsArray.splice(_tagsArray.indexOf(tag), 1);
+			
 			// remove from tagNames
 			_tagNames.splice(_tagNames.indexOf(tag.text), 1);
+			
 			// decrement tagCount
 			_tagCount--;
+			
+			// fire tagsChanged signal
+			if(notify == true)
+				tagsChanged.dispatch(_tagNames);
+			
 			// update component
 			invalidate(FeathersControl.INVALIDATION_FLAG_ALL);
-			// fire tagsChanged signal
-			tagsChanged.dispatch(_tagNames);
+		}
+		
+		public function removeAllTags(notify:Boolean = false):void
+		{
+			while(_tagsArray && _tagsArray.length > 0) {
+				removeTag(_tagsArray[0], notify);	
+			}
 		}
 		
 		override protected function draw():void
 		{
 			CONFIG::TESTING {
-				trace('tag text input draw called');
+				trace('tag text input 2 draw called');
 			}
 			
 			// phase 1 commit
 			_tagContainer.validate();
-			
-			// enable or disable tag input
-			if(this.maxTags > 0) {
-				if(this._tagCount < maxTags) {
-					this._textInput.isEnabled = true;
-				} else {
-					// disable tag input
-					this._textInput.text = '';
-					this._textInput.isEnabled = false;
-				}
-			} else {
-				this._textInput.isEnabled = true;
-			}
 			this._textInput.validate();
 			
 			// phase 2 measurements
 			_componentLayoutGroup.width = this.width;
-			_componentLayoutGroup.height = this._tagContainer.height;
+			_componentLayoutGroup.height = Math.max(this._tagContainer.height, TAG_HEIGHT + this._padding + this.tagPadding / 2);
 			
 			if(this.useBackground == true) {
 				_background.width = _componentLayoutGroup.width;
@@ -320,7 +314,12 @@ package nl.powergeek.feathers.components
 			}
 			
 			// resize textinput to remaining width between tags and search button
-			this._textInput.width = _componentLayoutGroup.width - (_tagContainer.width - _textInput.width) - _searchButton.width;
+//			var tfWidth:Number = _componentLayoutGroup.width - _tagContainer.width - _revertButton.width - this._padding * 3;
+//			if(this._textInput.width != tfWidth) {
+//				this._textInput.width = tfWidth; 
+//				this._textInput.invalidate(INVALIDATION_FLAG_SIZE);
+//				invalidate(INVALIDATION_FLAG_ALL);
+//			}
 			
 			// separators need to be on top and bottom
 			if(this.useSeparators == true) {
@@ -345,8 +344,6 @@ package nl.powergeek.feathers.components
 				_separatorBottom.width = _background.width;
 			}
 			
-//			this.width = Math.max(this.actualWidth, this.width);
-			
 			if(this.useSeparators == true) {
 				this.height = this._separatorTop.height + this._componentLayoutGroup.height + this._separatorBottom.height;
 			} else {
@@ -354,7 +351,7 @@ package nl.powergeek.feathers.components
 			}
 			
 			// phase 3 layout
-			_searchButton.validate();
+//			_searchButton.validate();
 		}
 		
 		private function defaultTagFactory(text:String):Tag

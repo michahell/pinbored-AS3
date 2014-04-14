@@ -78,9 +78,8 @@ package
 			// show login screen
 			this._navigator.showScreen( LOGIN_SCREEN );
 			
-			//TODO PROBLEM: look into JSON data tag being displayed while it is not there.
-			//TODO PROBLEM: tags not being updated / displayed correctly.
 			//TODO FEAT: create tag autocompletion!
+			//TODO FEAT: fix login button
 		}
 	}
 }

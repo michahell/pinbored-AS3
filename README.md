@@ -16,7 +16,7 @@ Big fat disclaimer
 ------------------
 Everything is provided AS-IS. Use this project in any way you wish, just not to bother me :) If you have a question i will be happy to answer but i will not feel obliged in any way. Also, i probably violated several conventions of AS3 or the Feathers UI so do not expect perfect Feathers-compliant theming and components :)
 
-Roadmap V1
+Roadmap V1 (basics)
 ----------
 * finish all TODO's in code
 * show amount of bookmarks retrieved / number of pages in header
@@ -33,21 +33,22 @@ Roadmap V1
 * ~~delete animation~~
 * ~~basic skin~~
 
-Roadmap V2
+Roadmap V2 (tags centered)
+----------
+* initial loading of all tags and using that for tag autocompletion
+* tag information screen (tag statistics)
+
+Roadmap V3 (search & stale)
 ----------
 * search initially highlights text in current screen
 * massive 'stale' checker screen (check all your bookmarks for broken links)
-* tag information screen (tag statistics)
-* more transitional interface design
+* better transitional interface design
 	* button design similar to http://www.meetup.com/jobs/, https://getpebble.com/discover
 	* nice bookmark list update animations (bookmarks fading/moving in one by one for example)
 
-Roadmap V3
+Roadmap V4
 ----------
-* abstract and complete Pager component
-* abstract and complete TagInput component
-* abstract and complete Pinbored Theme
-* release Pinbored theme and skins (maybe separate GitHub repo)
+* release Pinbored theme and skins as separate, completed components (maybe separate GitHub repo)
 
 libraries used
 --------------

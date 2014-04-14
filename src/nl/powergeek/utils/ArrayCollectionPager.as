@@ -1,7 +1,6 @@
 package nl.powergeek.utils
 {
 	import feathers.data.ListCollection;
-	
 
 	public class ArrayCollectionPager
 	{
@@ -74,6 +73,9 @@ package nl.powergeek.utils
 			if(_arrayCollection && _arrayCollection.length > 0) {
 				if(number < _numPages + 1) {
 					_currentPage = number - 1;
+					CONFIG::TESTING {
+						trace('data: \n' + arrayToString(_arrayCollection[number - 1]));
+					}
 					return _arrayCollection[number - 1];
 				} else {
 					throw new Error('ArrayCollectionPager: Error: this page number is out of bounds, num pages: ' + _numPages);
@@ -94,10 +96,14 @@ package nl.powergeek.utils
 			if(_arrayCollection && _arrayCollection.length > 0) {
 				_currentPage = 0;
 				// check if the first item of arrayCollection is an item, it could be the case that there simply are no result 'pages'
-				if(_arrayCollection[0] is Array)
+				if(_arrayCollection[0] is Array) {
+					CONFIG::TESTING {
+						trace('data: \n' + arrayToString(_arrayCollection[0]));
+					}
 					return _arrayCollection[0];
-				else
+				} else {
 					return _arrayCollection;
+				}
 			} else {
 				throw new Error('ArrayCollectionPager: Error: there is no internal _listCollections Vector!');
 			}
@@ -113,6 +119,9 @@ package nl.powergeek.utils
 		public function last():Array {
 			if(_arrayCollection && _arrayCollection.length > 0) {
 				_currentPage = _arrayCollection.length - 1;
+				CONFIG::TESTING {
+					trace('data: \n' + arrayToString(_arrayCollection[_arrayCollection.length - 1]));
+				}
 				return _arrayCollection[_arrayCollection.length - 1];
 			} else {
 				throw new Error('ArrayCollectionPager: Error: there is no internal _listCollections Vector!');
@@ -129,6 +138,9 @@ package nl.powergeek.utils
 			if(_arrayCollection && _arrayCollection.length > 0) {
 				if(_arrayCollection.length > _currentPage) {
 					_currentPage++;		
+					CONFIG::TESTING {
+						trace('data: \n' + arrayToString(_arrayCollection[_currentPage]));
+					}
 					return _arrayCollection[_currentPage];
 				} else {
 					throw new Error('ArrayCollectionPager: Error: not possible to return next result page, current result page = ' + _currentPage + ' !');
@@ -147,7 +159,10 @@ package nl.powergeek.utils
 		public function previous():Array {
 			if(_arrayCollection && _arrayCollection.length > 0) {
 				if(_currentPage > 0) {
-					_currentPage--;					
+					_currentPage--;
+					CONFIG::TESTING {
+						trace('data: \n' + arrayToString(_arrayCollection[_currentPage]));
+					}
 					return _arrayCollection[_currentPage];
 				} else {
 					throw new Error('ArrayCollectionPager: Error: not possible to return previous result page, current result page = ' + _currentPage + ' !');
