@@ -205,7 +205,7 @@ package nl.powergeek.feathers.components
 		{
 			trace('toggling more section...');
 			
-			//TODO collapse or expand more section!
+			//TODO FEAT: collapse or expand more section!
 			
 			filterToggleTriggered.dispatch();
 		}

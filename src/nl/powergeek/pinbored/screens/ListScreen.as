@@ -418,16 +418,22 @@ package nl.powergeek.pinbored.screens
 					}
 					
 					// execute request and attach listener to returned signal
-					PinboardService.deleteBookmark(tappedBookmark, true).then(requestCompleted, requestFailed);
 					
-					// mock deleted confirmed
-					setTimeout(function():void {
-						CONFIG::TESTING {
-							trace('[MOCK] bookmark delete request completed.');
-						}
-						// update the bookmark by confirming delete
-						tappedBookmark.deleteConfirmed.dispatch();
-					}, 500);
+					if (CONFIG::TESTING) {
+						PinboardService.deleteBookmark(tappedBookmark, true).then(requestCompleted, requestFailed);
+						
+						// mock deleted confirmed
+						setTimeout(function():void {
+							CONFIG::TESTING {
+								trace('[MOCK] bookmark delete request completed.');
+							}
+							// update the bookmark by confirming delete
+							tappedBookmark.deleteConfirmed.dispatch();
+						}, 500);
+						
+					} else {
+						PinboardService.deleteBookmark(tappedBookmark, false).then(requestCompleted, requestFailed);
+					}
 					
 				});
 				
@@ -446,7 +452,7 @@ package nl.powergeek.pinbored.screens
 						// update to visualize directly
 						editedBookmark.update();
 						
-						// TODO FIX: solve tag not being visualized / updated properly here
+						// TODO PROBLEM: solve tag not being visualized / updated properly here
 						//trace('edited bookmark tags: ' + editedBookmark.tags.toString());
 						
 						list.invalidate();

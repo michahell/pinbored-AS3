@@ -78,6 +78,7 @@ package
 			// show login screen
 			this._navigator.showScreen( LOGIN_SCREEN );
 			
+			//TODO PROBLEM: hyperlinks are clickable.
 			//TODO FEAT: create tag autocompletion!
 			//TODO FEAT: fix login button
 		}
