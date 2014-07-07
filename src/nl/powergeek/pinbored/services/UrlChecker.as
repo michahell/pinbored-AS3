@@ -30,7 +30,7 @@ package nl.powergeek.pinbored.services
 			this.callback = callback;
 			request = new URLRequest(url);
 			request.method = URLRequestMethod.GET;
-			request.followRedirects = true;
+//			request.followRedirects = true;
 			loader.load(request);
 		}
 		

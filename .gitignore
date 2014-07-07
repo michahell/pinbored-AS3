@@ -1,5 +1,6 @@
 z_resources/
 bin-debug/
+bin-release/
 .actionScriptProperties
 .project
 .settings/

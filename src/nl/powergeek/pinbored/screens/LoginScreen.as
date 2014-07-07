@@ -350,9 +350,11 @@ package nl.powergeek.pinbored.screens
 		
 		protected function login():void {
 			
+//			modify the text values for your own quick login when 
+//			testing the project with conditional compiling
 			CONFIG::QUICKTEST {
-				usernameInput.text = 'michahell';
-				passwordInput.text = 'Yefjq7ct!';
+				usernameInput.text = '';
+				passwordInput.text = '';
 			}
 			
 			// first, get the username and password
