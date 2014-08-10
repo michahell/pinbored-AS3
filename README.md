@@ -2,6 +2,12 @@
 pinbored
 ========
 
+important! this project is abandonware
+--------------------------------------
+I decided to continue working on the concept of a bookmark manager with node-webkit and html/css/javascript for rapid
+UI development and other things that could be greatly simplified. The new project is located here: https://github.com/michahell/pinbored-webkit and is under active development, but any contributions are appreciated!
+
+
 Why yet another bookmark manager?
 ---------------------------------
 Because i was annoyed with the ~1300 bookmarks that i had on PinBoard, and NO free, open source application that i could use to quickly batch 'CRUD' them. Also, an excuse to create something with the amazing Starling [Feathers UI](https://github.com/joshtynjala/feathers).
